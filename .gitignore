@@ -1,0 +1,14 @@
+*.class
+
+# Package Files #
+*.war
+*.ear
+*.jasper
+# Files #
+*.iml
+.DS_Store
+*.log
+
+# Folders #
+.idea/
+target/

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ananya-jasper-reports" xmlns:flyway="antlib:com.googlecode.flyway.ant">
+    <target name="clean.existing.reports">
+
+        <echo message="Cleaning all reports"/>
+        <flyway:clean driver="org.postgresql.Driver"
+                      url="jdbc:postgresql://localhost/ananya/"
+                      user="postgres"
+                      password="password"
+                      schemas="jasper_report"
+                      classpath="${runtime-classpath}"/>
+
+        <flyway:init driver="org.postgresql.Driver"
+                     url="jdbc:postgresql://localhost/ananya/"
+                     user="postgres"
+                     password="password"
+                     schemas="jasper_report"
+                     classpath="${runtime-classpath}"
+                     initialVersion="0"
+                     initialDescription="Base setup" />
+    </target>
+
+    <target name="migrate.reports">
+        <echo message="Applying reports migrations"/>
+        <flyway:migrate driver="org.postgresql.Driver"
+                        url="jdbc:postgresql://localhost/ananya/"
+                        user="postgres"
+                        password="password"
+                        schemas="jasper_report"
+                        classpath="${runtime-classpath}"/>
+    </target>
+</project>
