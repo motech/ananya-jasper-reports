@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="QuizScoreReport" language="groovy" pageWidth="1110" pageHeight="842" columnWidth="1070" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0d3591a9-259a-4ff3-ba90-1633e9c463a2">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="chapterLessonQuizCompletionReport" language="groovy" pageWidth="1100" pageHeight="842" columnWidth="1060" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0ad0360b-20b7-4b68-8d94-aee8cbcb1d78">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
-	<property name="ireport.zoom" value="1.0"/>
+    <property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="StartDate" class="java.util.Date">
@@ -13,14 +13,7 @@
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select flw.msisdn,flw.operator,flw.circle,flw.name as "FLW Name",ld.district,ld.block,ld.panchayat,flw.status,flw.designation,
-	cd.name as "Course Name",sum(COALESCE(score,0)) as "Overall Score",round(avg(COALESCE(score,0)),2) as "Avg Score",
-	min(COALESCE(score,0)) as "Min Score",max(COALESCE(score,0)) as "Max Score"
-from report.course_item_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,
-	report.course_item_dimension cd,report.time_dimension td
-where td.id = c.time_id and cd.type = 'QUIZ' and cd.id = c.course_item_id and c.event = 'END' and c.flw_id=flw.id and c.location_id = ld.id
-	and td.date >=$P{StartDate} and td.date <= $P{EndDate}
-group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,cd.content_id,cd.name,flw.circle]]>
+		<![CDATA[select flw.msisdn,flw.operator,flw.circle,flw.name as "FLW Name",ld.district,ld.block,ld.panchayat,flw.status,flw.designation,cd.type as "Course Section",cd.name as "Course Status",count(c.*) as count from report.course_item_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,course_item_dimension cd,time_dimension td where td.id = c.time_id and cd.type in ('LESSON','CHAPTER','QUIZ') and cd.id = c.course_item_id and c.event = 'END' and c.flw_id=flw.id and c.location_id = ld.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,cd.type,cd.name,flw.circle]]>
 	</queryString>
 	<field name="msisdn" class="java.lang.Long"/>
 	<field name="operator" class="java.lang.String"/>
@@ -31,31 +24,29 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 	<field name="panchayat" class="java.lang.String"/>
 	<field name="status" class="java.lang.String"/>
 	<field name="designation" class="java.lang.String"/>
-	<field name="Course Name" class="java.lang.String"/>
-	<field name="Overall Score" class="java.lang.Long"/>
-	<field name="Avg Score" class="java.math.BigDecimal"/>
-	<field name="Min Score" class="java.lang.Integer"/>
-	<field name="Max Score" class="java.lang.Integer"/>
+	<field name="Course Section" class="java.lang.String"/>
+	<field name="Course Status" class="java.lang.String"/>
+	<field name="count" class="java.lang.Long"/>
 	<background>
 		<band/>
 	</background>
 	<title>
 		<band height="72">
 			<frame>
-				<reportElement uuid="e83d3a38-d192-41a7-b7c4-e057c92b07ee" mode="Opaque" x="-20" y="-20" width="1110" height="92" backcolor="#006699"/>
+				<reportElement uuid="eae3d7d3-fc5a-437d-9c54-3369bf2e5d54" mode="Opaque" x="-20" y="-20" width="1100" height="92" backcolor="#006699"/>
 				<staticText>
-					<reportElement uuid="b08d7842-54c8-4d67-958c-cd35639d2704" x="20" y="20" width="325" height="43" forecolor="#FFFFFF"/>
+					<reportElement uuid="ea438855-f36b-4591-aad9-be5dec8b796c" x="10" y="10" width="550" height="43" forecolor="#FFFFFF"/>
 					<textElement>
-						<font size="34" isBold="true"/>
+						<font size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Quiz Score Report]]></text>
+					<text><![CDATA[Chapter, Lesson, Quiz Completion Report]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="1242e29f-cae6-4584-b428-1e9b7687780e" x="20" y="63" width="362" height="17" forecolor="#FFFFFF"/>
-					<textElement textAlignment="Left">
+					<reportElement uuid="a0351f15-b2d6-4aa1-aec7-ee15e7e71109" x="10" y="53" width="550" height="20" forecolor="#FFFFFF"/>
+					<textElement verticalAlignment="Middle">
 						<font size="14" isBold="false"/>
 					</textElement>
-					<text><![CDATA[MSISDN-wise average quiz score report for Academy]]></text>
+					<text><![CDATA[MSISDN-wise chapter, lesson, quiz completion report for Academy]]></text>
 				</staticText>
 			</frame>
 		</band>
@@ -64,9 +55,9 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 		<band height="13"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="31">
+		<band height="39">
 			<staticText>
-				<reportElement uuid="ccc83a96-188f-4f30-92fc-7abbf98e7b05" mode="Opaque" x="0" y="0" width="95" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="4dbfdd2f-3119-4721-b14b-a915ae340219" mode="Opaque" x="0" y="0" width="105" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -80,7 +71,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 				<text><![CDATA[Msisdn]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="5ebb1e1a-3527-4736-9c2a-8c3fefc9cb69" mode="Opaque" x="95" y="0" width="61" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="719d6f0a-6455-410f-b5fa-40d100d0be1b" mode="Opaque" x="105" y="0" width="75" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -94,7 +85,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 				<text><![CDATA[Operator]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="62b6d4b7-fde2-4874-86cc-cb8ec82ff0b9" mode="Opaque" x="156" y="0" width="60" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="cf376130-3d6d-4cac-8b30-738ec1a8ceca" mode="Opaque" x="180" y="0" width="59" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -108,7 +99,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 				<text><![CDATA[Circle]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="1acf8793-e146-46f6-91aa-9fbd22f2e251" mode="Opaque" x="216" y="0" width="75" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="7734d76b-1914-4d3f-9f2c-03520adccdde" mode="Opaque" x="239" y="0" width="117" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -122,7 +113,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 				<text><![CDATA[FLW Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="733899c8-fa4b-4fae-9c21-3d012d3b43e6" mode="Opaque" x="291" y="0" width="60" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="0dc17047-161d-4dfd-bee8-4aae5583e403" mode="Opaque" x="356" y="0" width="104" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -136,7 +127,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 				<text><![CDATA[District]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="8a7e57c1-19c6-40ad-a5f8-51fa73e28f7e" mode="Opaque" x="351" y="0" width="64" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="2f915702-5b81-40d7-8bec-a4c56d31368f" mode="Opaque" x="460" y="0" width="73" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -150,7 +141,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 				<text><![CDATA[Block]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="6e77f267-da88-4cfe-87f0-4b3d8d149d3c" mode="Opaque" x="415" y="0" width="78" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="b84e7e9b-2ea4-49a7-b060-4a798f66c826" mode="Opaque" x="533" y="0" width="87" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -164,7 +155,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 				<text><![CDATA[Panchayat]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="3661841d-c126-4ee4-bcc4-4b9df49e06d7" mode="Opaque" x="493" y="0" width="104" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="424f8437-e416-4a41-9f8d-984cb84c525b" mode="Opaque" x="620" y="0" width="145" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -178,7 +169,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 				<text><![CDATA[Status]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="eed38311-5bf3-4d11-9507-873ab8861d18" mode="Opaque" x="597" y="0" width="95" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="84ba33c6-0882-4dd0-8789-4cf7f46ce89a" mode="Opaque" x="765" y="0" width="78" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -192,7 +183,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 				<text><![CDATA[Designation]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="90fcf6bb-a809-47d4-ae66-c1814597a2ad" mode="Opaque" x="692" y="0" width="78" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="2c755ae1-e498-48cc-9c53-1f6d9428e320" mode="Opaque" x="843" y="0" width="79" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -203,10 +194,10 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Course Name]]></text>
+				<text><![CDATA[Course Section]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="3bf718f5-b043-4828-8f85-48fe3610fe45" mode="Opaque" x="770" y="0" width="77" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="0b79def3-546a-4c1d-bbfc-8d8efc3c9adf" mode="Opaque" x="922" y="0" width="81" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -217,10 +208,10 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Overall Score]]></text>
+				<text><![CDATA[Course Status]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="ccc29552-27ca-4cef-8f1c-204a039a57fa" mode="Opaque" x="847" y="0" width="76" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="4a98c047-bf12-4cb2-9a85-9be71b558ab8" mode="Opaque" x="1003" y="0" width="57" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -231,42 +222,14 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Avg Score]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="3c74a54d-d56f-4f29-9225-7fab900c181e" mode="Opaque" x="923" y="0" width="73" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Min Score]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="a81a2ad6-801b-4e6b-9add-61b8de8822ca" mode="Opaque" x="996" y="0" width="74" height="31" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Max Score]]></text>
+				<text><![CDATA[Count]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="39">
+		<band height="36">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="a70528ab-6e0d-463c-8f01-3aa03309bfb7" x="0" y="0" width="95" height="39"/>
+				<reportElement uuid="82248047-a538-44c4-afbe-b294b2710f2d" x="0" y="0" width="105" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -275,12 +238,12 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{msisdn}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="a076bf5f-1977-430b-ab80-736a22a4072a" x="95" y="0" width="61" height="39"/>
+				<reportElement uuid="3f118f62-4606-46e3-a843-bda995d49ec0" x="105" y="0" width="75" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -289,12 +252,12 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{operator}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="6163c223-1c98-4d12-a7da-92637def4f87" x="156" y="0" width="60" height="39"/>
+				<reportElement uuid="a79ade54-5d26-4050-bf6f-ab3caddd9cfe" x="180" y="0" width="59" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -303,12 +266,12 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{circle}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="221f90e2-9480-47b5-ae19-519054e35a8e" x="216" y="0" width="75" height="39"/>
+				<reportElement uuid="1c242c51-5d38-4b84-a530-bcb442e576e9" x="239" y="0" width="117" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -317,12 +280,12 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{FLW Name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="21465c6c-b014-48ce-8b53-aa717b5cb454" x="291" y="0" width="60" height="39"/>
+				<reportElement uuid="3354e8d8-0c61-443b-a028-a877e44095dc" x="356" y="0" width="104" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -331,12 +294,12 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{district}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="c8c2578b-0ea7-4a5d-8f9f-d74abb3ac43f" x="351" y="0" width="64" height="39"/>
+				<reportElement uuid="d488fd15-47a6-4007-b686-3689f2fde3d9" x="460" y="0" width="73" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -345,12 +308,12 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{block}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="ca5c165b-c24c-4cbd-95f3-37661f4fa1cc" x="415" y="0" width="78" height="39"/>
+				<reportElement uuid="4bdf92c3-0960-44a3-934e-675b01692567" x="533" y="0" width="87" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -359,12 +322,12 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{panchayat}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="001a9b70-8819-4b82-b418-d7d8e5b5974e" x="493" y="0" width="104" height="39"/>
+				<reportElement uuid="356efd04-b150-4d86-9172-fcb96d9c89de" x="620" y="0" width="145" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -373,12 +336,12 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="32d1f805-fde9-4c19-804f-00f73bffbfac" x="597" y="0" width="95" height="39"/>
+				<reportElement uuid="85ce1657-0e84-4755-af5f-eb0c963de72e" x="765" y="0" width="78" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -387,12 +350,12 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="6a3252d3-b92e-483f-b358-8fcde28723a5" x="692" y="0" width="78" height="39"/>
+				<reportElement uuid="2d73e6bc-e4c9-4648-85b7-b9238fb3e77a" x="843" y="0" width="79" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -401,12 +364,12 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Course Name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Course Section}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="346fc800-abe2-4403-b6c4-7f4a77498f90" x="770" y="0" width="77" height="39"/>
+				<reportElement uuid="e187cb2a-eb67-45ae-ac74-cd1c87fb6ee6" x="922" y="0" width="81" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -415,12 +378,12 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Overall Score}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Course Status}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="5686f37f-aa99-4610-b93d-117c77b1804b" x="847" y="0" width="76" height="39"/>
+				<reportElement uuid="6232ddf7-68b9-4281-ac00-cc91c03c2237" x="1003" y="0" width="57" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -429,37 +392,9 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Avg Score}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="45d7ebae-481a-4583-b0bb-0d4599b84017" x="923" y="0" width="73" height="39"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Min Score}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="59b84ae8-f62a-4c4f-80c0-19c4b2d5bdd9" x="996" y="0" width="74" height="39"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Max Score}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{count}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -467,7 +402,23 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 		<band/>
 	</columnFooter>
 	<pageFooter>
-		<band/>
+		<band height="17">
+			<textField>
+				<reportElement uuid="2497dd81-34ca-4c91-a45c-a48bb87cde95" mode="Opaque" x="0" y="4" width="1020" height="13" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="7aff23e4-d886-42b6-b7b3-903e53944399" mode="Opaque" x="1020" y="4" width="40" height="13" backcolor="#E6E6E6"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="49630a77-7b06-414f-80a7-e148193baa02" x="0" y="4" width="224" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
 		<band/>
