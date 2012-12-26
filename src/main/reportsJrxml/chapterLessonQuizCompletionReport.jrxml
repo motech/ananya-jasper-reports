@@ -3,8 +3,8 @@
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
-    <property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="134"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="StartDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
@@ -13,7 +13,7 @@
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select flw.msisdn,flw.operator,flw.circle,flw.name as "FLW Name",ld.district,ld.block,ld.panchayat,flw.status,flw.designation,cd.type as "Course Section",cd.name as "Course Status",count(c.*) as count from report.course_item_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,course_item_dimension cd,time_dimension td where td.id = c.time_id and cd.type in ('LESSON','CHAPTER','QUIZ') and cd.id = c.course_item_id and c.event = 'END' and c.flw_id=flw.id and c.location_id = ld.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,cd.type,cd.name,flw.circle]]>
+		<![CDATA[select flw.msisdn,flw.operator,flw.circle,flw.name as "FLW Name",ld.district,ld.block,ld.panchayat,flw.status,flw.designation,cd.type as "Course Section",cd.name as "Course Status",count(c.*) as count from report.course_item_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,report.course_item_dimension cd,report.time_dimension td where td.id = c.time_id and cd.type in ('LESSON','CHAPTER','QUIZ') and cd.id = c.course_item_id and c.event = 'END' and c.flw_id=flw.id and c.location_id = ld.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,cd.type,cd.name,flw.circle]]>
 	</queryString>
 	<field name="msisdn" class="java.lang.Long"/>
 	<field name="operator" class="java.lang.String"/>
@@ -169,7 +169,7 @@
 				<text><![CDATA[Status]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="84ba33c6-0882-4dd0-8789-4cf7f46ce89a" mode="Opaque" x="765" y="0" width="78" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="84ba33c6-0882-4dd0-8789-4cf7f46ce89a" mode="Opaque" x="765" y="0" width="89" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -183,7 +183,7 @@
 				<text><![CDATA[Designation]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="2c755ae1-e498-48cc-9c53-1f6d9428e320" mode="Opaque" x="843" y="0" width="79" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="2c755ae1-e498-48cc-9c53-1f6d9428e320" mode="Opaque" x="854" y="0" width="68" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -341,7 +341,7 @@
 				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="85ce1657-0e84-4755-af5f-eb0c963de72e" x="765" y="0" width="78" height="36"/>
+				<reportElement uuid="85ce1657-0e84-4755-af5f-eb0c963de72e" x="765" y="0" width="89" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -355,7 +355,7 @@
 				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="2d73e6bc-e4c9-4648-85b7-b9238fb3e77a" x="843" y="0" width="79" height="36"/>
+				<reportElement uuid="2d73e6bc-e4c9-4648-85b7-b9238fb3e77a" x="854" y="0" width="68" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -414,7 +414,7 @@
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement uuid="49630a77-7b06-414f-80a7-e148193baa02" x="0" y="4" width="224" height="13"/>
+				<reportElement uuid="49630a77-7b06-414f-80a7-e148193baa02" x="0" y="4" width="271" height="13"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>

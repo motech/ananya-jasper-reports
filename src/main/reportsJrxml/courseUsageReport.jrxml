@@ -3,8 +3,8 @@
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
-	<property name="ireport.zoom" value="4.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="9"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="StartDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
@@ -13,7 +13,7 @@
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select flw.msisdn,flw.operator,flw.circle,flw.name as "FLW Name",ld.district,ld.block,ld.panchayat,flw.status,flw.designation,sum(COALESCE(c.duration,0))/(1000*60.0) as "Duration in Minutes" from report.course_item_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,course_item_dimension cd,time_dimension td where td.id = c.time_id and cd.id = c.course_item_id and c.flw_id=flw.id and c.location_id = ld.id and td.date >=$P{StartDate} and td.date <= $P{EndDate} group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,flw.circle]]>
+		<![CDATA[select flw.msisdn,flw.operator,flw.circle,flw.name as "FLW Name",ld.district,ld.block,ld.panchayat,flw.status,flw.designation,sum(COALESCE(c.duration,0))/(1000*60.0) as "Duration in Minutes" from report.course_item_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,report.course_item_dimension cd,report.time_dimension td where td.id = c.time_id and cd.id = c.course_item_id and c.flw_id=flw.id and c.location_id = ld.id and td.date >=$P{StartDate} and td.date <= $P{EndDate} group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,flw.circle]]>
 	</queryString>
 	<field name="msisdn" class="java.lang.Long"/>
 	<field name="operator" class="java.lang.String"/>
@@ -167,7 +167,7 @@
 				<text><![CDATA[Status]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="84ba33c6-0882-4dd0-8789-4cf7f46ce89a" mode="Opaque" x="766" y="0" width="78" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="84ba33c6-0882-4dd0-8789-4cf7f46ce89a" mode="Opaque" x="766" y="0" width="88" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -181,7 +181,7 @@
 				<text><![CDATA[Designation]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="b3353546-d575-472b-92da-d867d1c19089" mode="Opaque" x="844" y="0" width="91" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="b3353546-d575-472b-92da-d867d1c19089" mode="Opaque" x="854" y="0" width="91" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -311,7 +311,7 @@
 				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="ede89a63-47ed-4647-9841-32dc64998dda" x="766" y="0" width="78" height="44"/>
+				<reportElement uuid="ede89a63-47ed-4647-9841-32dc64998dda" x="766" y="0" width="88" height="44"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -324,8 +324,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="868d8713-aa5a-45d5-ac68-568364672506" x="844" y="0" width="91" height="44"/>
+			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
+				<reportElement uuid="868d8713-aa5a-45d5-ac68-568364672506" x="854" y="0" width="91" height="44"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
