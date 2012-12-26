@@ -5,7 +5,7 @@ import org.motechproject.ananya.jasper.reports.ReportsMigration;
 public class V1_1__InitialReports extends ReportsMigration {
     @Override
     public String[] getReportNamesToAdd() {
-        return new String[0];
+        return new String[]{"averageCallDuration"};
     }
 
     @Override
