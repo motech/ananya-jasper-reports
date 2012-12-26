@@ -9,7 +9,6 @@ public class V1_1__InitialReports extends ReportsMigration {
                 "AverageCallDuration",
                 "AverageLessonUsage",
                 "CertificateCourseUsage",
-                "QuizScore",
                 "CertificateLessonUsage",
                 "CertificateRepeatVisit",
                 "ChapterLessonQuizCompletion",
@@ -17,7 +16,9 @@ public class V1_1__InitialReports extends ReportsMigration {
                 "CourseUsage",
                 "DetailFLWRegistration",
                 "IvrCertification",
-                "JobAidDateWise"
+                "IVRContent",
+                "JobAidDateWise",
+                "QuizScore"
         };
     }
 
