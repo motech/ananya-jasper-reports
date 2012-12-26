@@ -15,7 +15,10 @@ public class V1_1__InitialReports extends ReportsMigration {
                 "ChapterLessonQuizCompletion",
                 "ContentAdmin",
                 "CourseUsage",
-                "DetailFLWRegistration"};
+                "DetailFLWRegistration",
+                "IvrCertification",
+                "JobAidDateWise"
+        };
     }
 
     @Override

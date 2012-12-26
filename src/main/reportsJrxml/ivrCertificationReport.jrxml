@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ivrCertificationReport" language="groovy" pageWidth="1385" pageHeight="842" columnWidth="1345" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2df126c8-06c4-4a66-8292-7d9e9b7084b5">
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="StartDate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EndDate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select sum(case when agg = 'COMP' then c1 else 0 end) as "Course Completed",sum(case when agg = 'COMP' then c2 else 0 end) as "Chapter Completed",
+ sum(case when agg = 'COMP' then c3 else 0 end) as "Lesson Completed",sum(case when agg = 'COMP' then c4 else 0 end) as "Quiz Completed",
+ sum(case when agg = 'SUBS' then c1 else 0 end) as "Course Accessed",sum(case when agg = 'CALLS' then c2 else 0 end) as "Chapter Calls",
+ sum(case when agg = 'CALLS' then c3 else 0 end) as "Lesson Calls",sum(case when agg = 'CALLS' then c4 else 0 end) as "Quiz Calls",
+ sum(case when agg = 'MOU' then c3 else 0 end) + sum(case when agg = 'MOU' then c4 else 0 end) as "Chapter Minutes of Usage",
+ sum(case when agg = 'MOU' then c3 else 0 end) as "Lesson Minutes of Usage",sum(case when agg = 'MOU' then c4 else 0 end) as "Quiz Minutes of Usage",
+ round(sum(case when agg = 'MOU' then c3 else 0 end)/sum(case when agg = 'CALLS' then c3 else 0 end),2) as "Lesson Average Duration",round(sum(case when agg = 'MOU' then c4 else 0 end)/sum(case when agg = 'CALLS' then c4 else 0 end),2) as "Quiz Average Duration",sum(case when agg = 'SMS' then c1 else 0 end) as "Sms Sent",sum(case when agg = 'DUR' then c1 else 0 end) as "Max Duration",sum(case when agg = 'DUR' then c2 else 0 end) as "Min Duration" from
+ (select 'COMP' as agg,sum(case when type = 'COURSE' then 1 else 0 end) as c1,sum(case when type = 'CHAPTER' then 1 else 0 end) as c2,
+ sum(case when type = 'LESSON' then 1 else 0 end) as c3,sum(case when type = 'QUIZ' then 1 else 0 end) as c4 from report.course_item_measure c,
+ report.course_item_dimension cd,report.time_dimension td where c.course_item_id = cd.id and event = 'END' and c.time_id = td.id and
+ td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1
+ union all
+ select 'CALLS' as agg,sum(case when type = 'COURSE' then c.calls else 0 end) as c1,sum(case when type = 'CHAPTER' then c.calls else 0 end) as c2,sum(case when type = 'LESSON' then c.calls else 0 end) as c3,
+ sum(case when type = 'QUIZ' then c.calls else 0 end) as c4 from (
+ select course_item_id,count(distinct(call_id)) as calls from report.course_item_measure c,report.time_dimension td where c.time_id = td.id and
+ td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1) c,report.course_item_dimension cd where c.course_item_id = cd.id group by 1
+ union all
+ select 'MOU' as agg,sum(case when type = 'COURSE' then a.mou else 0 end) as c1,sum(case when type = 'CHAPTER' then a.mou else 0 end) as c2,sum(case when type = 'LESSON' then a.mou else 0 end) as c3,sum(case when type = 'QUIZ' then a.mou else 0 end) as c4 from
+ (select pcd.type,round(sum(coalesce(c.duration,0))/(1000*60.0),2) as mou from report.course_item_measure c,report.course_item_dimension cd,report.course_item_dimension pcd,report.time_dimension td where cd.type = 'AUDIO' and cd.id = c.course_item_id and pcd.id = cd.parent_id and c.time_id = td.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1) a group by 1
+ union all
+ select 'SUBS' as agg,count(distinct(flw_id)) as c1,0 as c2,0 as c3,0 as c4 from report.course_item_measure c,report.time_dimension td where c.time_id = td.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1
+ union all
+ select 'SMS' as agg,count(*) as c1,0 as c2,0 as c3,0 as c4 from report.sms_sent_measure s,report.time_dimension td where sms_sent = 't' and s.time_id = td.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1
+ union all
+ select 'DUR' as agg, max(mou) as c1,min(mou) as c2,0 as c3,0 as c4 from
+ (select call_id,round(sum(coalesce(c.duration,0)/(1000*60.0)),2) as mou from report.course_item_measure c,report.course_item_dimension cd,report.time_dimension td where cd.id = c.course_item_id and c.time_id = td.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1) a group by 1) report]]>
+	</queryString>
+	<field name="Course Completed" class="java.math.BigDecimal"/>
+	<field name="Chapter Completed" class="java.math.BigDecimal"/>
+	<field name="Lesson Completed" class="java.math.BigDecimal"/>
+	<field name="Quiz Completed" class="java.math.BigDecimal"/>
+	<field name="Course Accessed" class="java.math.BigDecimal"/>
+	<field name="Chapter Calls" class="java.math.BigDecimal"/>
+	<field name="Lesson Calls" class="java.math.BigDecimal"/>
+	<field name="Quiz Calls" class="java.math.BigDecimal"/>
+	<field name="Chapter Minutes of Usage" class="java.math.BigDecimal"/>
+	<field name="Lesson Minutes of Usage" class="java.math.BigDecimal"/>
+	<field name="Quiz Minutes of Usage" class="java.math.BigDecimal"/>
+	<field name="Lesson Average Duration" class="java.math.BigDecimal"/>
+	<field name="Quiz Average Duration" class="java.math.BigDecimal"/>
+	<field name="Sms Sent" class="java.math.BigDecimal"/>
+	<field name="Max Duration" class="java.math.BigDecimal"/>
+	<field name="Min Duration" class="java.math.BigDecimal"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement uuid="4c4684f3-fc1c-4466-a7d0-7dbb94c88fda" mode="Opaque" x="-20" y="-20" width="1385" height="92" backcolor="#006699"/>
+				<staticText>
+					<reportElement uuid="ea438855-f36b-4591-aad9-be5dec8b796c" x="10" y="10" width="550" height="43" forecolor="#FFFFFF"/>
+					<textElement>
+						<font size="24" isBold="true"/>
+					</textElement>
+					<text><![CDATA[IVR Certification Report]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="a0351f15-b2d6-4aa1-aec7-ee15e7e71109" x="10" y="53" width="550" height="20" forecolor="#FFFFFF"/>
+					<textElement verticalAlignment="Middle">
+						<font size="14" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Summary of Academy usage report]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="13"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="46">
+			<staticText>
+				<reportElement uuid="76f55359-a375-41b2-b5ec-d3738fb8b73c" mode="Opaque" x="0" y="0" width="85" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Course Completed]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="423c7936-c29f-4bce-aa4e-dfdf31c880ae" mode="Opaque" x="85" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Chapter Completed]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5c86d678-ac6e-4c18-ad37-4ba97872b655" mode="Opaque" x="168" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lesson Completed]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e20673aa-a739-43ef-916c-985e0c561fea" mode="Opaque" x="252" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quiz Completed]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="79532bac-4eff-4365-aed5-2b7fee825016" mode="Opaque" x="336" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Course Accessed]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="11761b86-7dd2-446e-b18b-0efc405b75ad" mode="Opaque" x="420" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Chapter Calls]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d1715b7-879d-4a3b-bcfa-a4a201db02f1" mode="Opaque" x="504" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lesson Calls]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ef6e7e8a-608d-48c5-82b6-15ced402ce62" mode="Opaque" x="588" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quiz Calls]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="33a26dd1-4671-48b2-b206-d7231933e46a" mode="Opaque" x="672" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Chapter Minutes of Usage]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1c6a52dd-a0dd-4e4b-ae20-ee712e91ca0a" mode="Opaque" x="756" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lesson Minutes of Usage]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6dc99263-eb2f-4d77-a1e6-5ca5998f23f7" mode="Opaque" x="840" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quiz Minutes of Usage]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e22919ef-6e6b-46af-ad58-1ec8f6580448" mode="Opaque" x="924" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lesson Average Duration]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1efdca76-550a-4cd3-b8a0-8f91b067d185" mode="Opaque" x="1008" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quiz Average Duration]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d262e983-7906-4154-b8a1-54966f1d90e9" mode="Opaque" x="1092" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sms Sent]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c5ecb2e8-aa4c-46f1-86d5-f3fa3cafa3c9" mode="Opaque" x="1176" y="0" width="84" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Max Duration]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ed1c1fc6-b8b2-49f7-8394-e730a6bdbbed" mode="Opaque" x="1260" y="0" width="85" height="46" forecolor="#006699" backcolor="#E6E6E6"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Min Duration]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="29">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="431b523b-e663-439c-bbba-a6472f2a6572" x="0" y="0" width="85" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Course Completed}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="9f1127e4-0f9a-4fd8-badf-8413f3affe07" x="85" y="0" width="83" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Chapter Completed}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="f11fe2f7-1c55-43a4-b312-52b46ff10a0e" x="168" y="0" width="84" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Lesson Completed}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="bc924370-4295-4a7b-9f3c-5befe13b7301" x="252" y="0" width="84" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Quiz Completed}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="13cd3afd-6f3c-496e-a424-eb868ca00e7f" x="336" y="0" width="84" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Course Accessed}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="eda1b415-0821-44c1-bd6b-54c535b57438" x="420" y="0" width="84" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Chapter Calls}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="9f1280eb-df00-4b80-9279-234ccc8e3e4a" x="504" y="0" width="84" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Lesson Calls}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="6a3476a3-c534-437b-89d2-97ac88a7975a" x="588" y="0" width="84" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Quiz Calls}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="287ee530-6c70-468d-9c1d-1aec655148b7" x="672" y="0" width="84" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Chapter Minutes of Usage}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="bf323d46-eb5f-48cd-8bcb-7d3dfcd66946" x="756" y="0" width="84" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Lesson Minutes of Usage}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="5ff53308-40bd-48d6-9ce3-a0ddb025d4af" x="840" y="0" width="84" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Quiz Minutes of Usage}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="8b6fad4b-6ddc-48f4-a027-35a4cd5bd8d3" x="924" y="0" width="84" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Lesson Average Duration}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="c9909c04-ecfe-43cc-b2c7-3fbc9bce43eb" x="1008" y="0" width="84" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Quiz Average Duration}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="31c9c111-7519-47eb-8824-a5105ee7a042" x="1092" y="0" width="84" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Sms Sent}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="2c4c7667-21a1-4b08-86da-43d4fcfb6e3f" x="1176" y="0" width="84" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Max Duration}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="30349f45-b9ca-40be-9c39-18614728a98e" x="1260" y="0" width="85" height="29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+					<topPen lineWidth="0.5" lineColor="#999999"/>
+					<leftPen lineWidth="0.5" lineColor="#999999"/>
+					<bottomPen lineWidth="0.5" lineColor="#999999"/>
+					<rightPen lineWidth="0.5" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Min Duration}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement uuid="685c5b58-aab8-44be-a426-c74bef5843f9" mode="Opaque" x="0" y="4" width="1305" height="13" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="c58a4c1d-9859-43d1-95f6-4cc09366dd9c" mode="Opaque" x="1305" y="4" width="40" height="13" backcolor="#E6E6E6"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="abfb0513-db40-4dcf-8e30-eabd231281c9" x="0" y="4" width="280" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
