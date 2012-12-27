@@ -20,6 +20,7 @@ public class V1_1__InitialReports extends ReportsMigration {
                 "JobAidDateWise",
                 "JobAidUsage",
                 "PercentageUsage",
+                "JobAidLessonUsage",
                 "QuizScore"
         };
     }
