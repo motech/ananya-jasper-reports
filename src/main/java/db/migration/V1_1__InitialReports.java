@@ -18,6 +18,8 @@ public class V1_1__InitialReports extends ReportsMigration {
                 "IvrCertification",
                 "IVRContent",
                 "JobAidDateWise",
+                "JobAidUsage",
+                "PercentageUsage",
                 "QuizScore"
         };
     }
