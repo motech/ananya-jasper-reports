@@ -312,9 +312,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="29">
+		<band height="29" splitType="Prevent">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="431b523b-e663-439c-bbba-a6472f2a6572" x="0" y="0" width="85" height="29"/>
+				<reportElement uuid="431b523b-e663-439c-bbba-a6472f2a6572" stretchType="RelativeToTallestObject" x="0" y="0" width="85" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -328,7 +328,7 @@
 				<textFieldExpression><![CDATA[$F{Course Completed}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="9f1127e4-0f9a-4fd8-badf-8413f3affe07" x="85" y="0" width="83" height="29"/>
+				<reportElement uuid="9f1127e4-0f9a-4fd8-badf-8413f3affe07" stretchType="RelativeToTallestObject" x="85" y="0" width="83" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -342,7 +342,7 @@
 				<textFieldExpression><![CDATA[$F{Chapter Completed}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="f11fe2f7-1c55-43a4-b312-52b46ff10a0e" x="168" y="0" width="84" height="29"/>
+				<reportElement uuid="f11fe2f7-1c55-43a4-b312-52b46ff10a0e" stretchType="RelativeToTallestObject" x="168" y="0" width="84" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -356,7 +356,7 @@
 				<textFieldExpression><![CDATA[$F{Lesson Completed}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="bc924370-4295-4a7b-9f3c-5befe13b7301" x="252" y="0" width="84" height="29"/>
+				<reportElement uuid="bc924370-4295-4a7b-9f3c-5befe13b7301" stretchType="RelativeToTallestObject" x="252" y="0" width="84" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -370,7 +370,7 @@
 				<textFieldExpression><![CDATA[$F{Quiz Completed}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="13cd3afd-6f3c-496e-a424-eb868ca00e7f" x="336" y="0" width="84" height="29"/>
+				<reportElement uuid="13cd3afd-6f3c-496e-a424-eb868ca00e7f" stretchType="RelativeToTallestObject" x="336" y="0" width="84" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -384,7 +384,7 @@
 				<textFieldExpression><![CDATA[$F{Course Accessed}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="eda1b415-0821-44c1-bd6b-54c535b57438" x="420" y="0" width="84" height="29"/>
+				<reportElement uuid="eda1b415-0821-44c1-bd6b-54c535b57438" stretchType="RelativeToTallestObject" x="420" y="0" width="84" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -398,7 +398,7 @@
 				<textFieldExpression><![CDATA[$F{Chapter Calls}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="9f1280eb-df00-4b80-9279-234ccc8e3e4a" x="504" y="0" width="84" height="29"/>
+				<reportElement uuid="9f1280eb-df00-4b80-9279-234ccc8e3e4a" stretchType="RelativeToTallestObject" x="504" y="0" width="84" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -412,7 +412,7 @@
 				<textFieldExpression><![CDATA[$F{Lesson Calls}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="6a3476a3-c534-437b-89d2-97ac88a7975a" x="588" y="0" width="84" height="29"/>
+				<reportElement uuid="6a3476a3-c534-437b-89d2-97ac88a7975a" stretchType="RelativeToTallestObject" x="588" y="0" width="84" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -426,7 +426,7 @@
 				<textFieldExpression><![CDATA[$F{Quiz Calls}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="287ee530-6c70-468d-9c1d-1aec655148b7" x="672" y="0" width="84" height="29"/>
+				<reportElement uuid="287ee530-6c70-468d-9c1d-1aec655148b7" stretchType="RelativeToTallestObject" x="672" y="0" width="84" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -440,7 +440,7 @@
 				<textFieldExpression><![CDATA[$F{Chapter Minutes of Usage}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="bf323d46-eb5f-48cd-8bcb-7d3dfcd66946" x="756" y="0" width="84" height="29"/>
+				<reportElement uuid="bf323d46-eb5f-48cd-8bcb-7d3dfcd66946" stretchType="RelativeToTallestObject" x="756" y="0" width="84" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -454,7 +454,7 @@
 				<textFieldExpression><![CDATA[$F{Lesson Minutes of Usage}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="5ff53308-40bd-48d6-9ce3-a0ddb025d4af" x="840" y="0" width="84" height="29"/>
+				<reportElement uuid="5ff53308-40bd-48d6-9ce3-a0ddb025d4af" stretchType="RelativeToTallestObject" x="840" y="0" width="84" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -468,7 +468,7 @@
 				<textFieldExpression><![CDATA[$F{Quiz Minutes of Usage}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="8b6fad4b-6ddc-48f4-a027-35a4cd5bd8d3" x="924" y="0" width="84" height="29"/>
+				<reportElement uuid="8b6fad4b-6ddc-48f4-a027-35a4cd5bd8d3" stretchType="RelativeToTallestObject" x="924" y="0" width="84" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -482,7 +482,7 @@
 				<textFieldExpression><![CDATA[$F{Lesson Average Duration}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="c9909c04-ecfe-43cc-b2c7-3fbc9bce43eb" x="1008" y="0" width="84" height="29"/>
+				<reportElement uuid="c9909c04-ecfe-43cc-b2c7-3fbc9bce43eb" stretchType="RelativeToTallestObject" x="1008" y="0" width="84" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -496,7 +496,7 @@
 				<textFieldExpression><![CDATA[$F{Quiz Average Duration}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="31c9c111-7519-47eb-8824-a5105ee7a042" x="1092" y="0" width="84" height="29"/>
+				<reportElement uuid="31c9c111-7519-47eb-8824-a5105ee7a042" stretchType="RelativeToTallestObject" x="1092" y="0" width="84" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -510,7 +510,7 @@
 				<textFieldExpression><![CDATA[$F{Sms Sent}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="2c4c7667-21a1-4b08-86da-43d4fcfb6e3f" x="1176" y="0" width="84" height="29"/>
+				<reportElement uuid="2c4c7667-21a1-4b08-86da-43d4fcfb6e3f" stretchType="RelativeToTallestObject" x="1176" y="0" width="84" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -524,7 +524,7 @@
 				<textFieldExpression><![CDATA[$F{Max Duration}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="30349f45-b9ca-40be-9c39-18614728a98e" x="1260" y="0" width="85" height="29"/>
+				<reportElement uuid="30349f45-b9ca-40be-9c39-18614728a98e" stretchType="RelativeToTallestObject" x="1260" y="0" width="85" height="29"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>

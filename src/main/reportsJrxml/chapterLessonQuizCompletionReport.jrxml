@@ -4,7 +4,7 @@
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="134"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="StartDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
@@ -227,9 +227,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="36">
+		<band height="36" splitType="Prevent">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="82248047-a538-44c4-afbe-b294b2710f2d" x="0" y="0" width="105" height="36"/>
+				<reportElement uuid="82248047-a538-44c4-afbe-b294b2710f2d" stretchType="RelativeToTallestObject" x="0" y="0" width="105" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -243,7 +243,7 @@
 				<textFieldExpression><![CDATA[$F{msisdn}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="3f118f62-4606-46e3-a843-bda995d49ec0" x="105" y="0" width="75" height="36"/>
+				<reportElement uuid="3f118f62-4606-46e3-a843-bda995d49ec0" stretchType="RelativeToTallestObject" x="105" y="0" width="75" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -257,7 +257,7 @@
 				<textFieldExpression><![CDATA[$F{operator}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="a79ade54-5d26-4050-bf6f-ab3caddd9cfe" x="180" y="0" width="59" height="36"/>
+				<reportElement uuid="a79ade54-5d26-4050-bf6f-ab3caddd9cfe" stretchType="RelativeToTallestObject" x="180" y="0" width="59" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -271,7 +271,7 @@
 				<textFieldExpression><![CDATA[$F{circle}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="1c242c51-5d38-4b84-a530-bcb442e576e9" x="239" y="0" width="117" height="36"/>
+				<reportElement uuid="1c242c51-5d38-4b84-a530-bcb442e576e9" stretchType="RelativeToTallestObject" x="239" y="0" width="117" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -285,7 +285,7 @@
 				<textFieldExpression><![CDATA[$F{FLW Name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="3354e8d8-0c61-443b-a028-a877e44095dc" x="356" y="0" width="104" height="36"/>
+				<reportElement uuid="3354e8d8-0c61-443b-a028-a877e44095dc" stretchType="RelativeToTallestObject" x="356" y="0" width="104" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -299,7 +299,7 @@
 				<textFieldExpression><![CDATA[$F{district}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="d488fd15-47a6-4007-b686-3689f2fde3d9" x="460" y="0" width="73" height="36"/>
+				<reportElement uuid="d488fd15-47a6-4007-b686-3689f2fde3d9" stretchType="RelativeToTallestObject" x="460" y="0" width="73" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -313,7 +313,7 @@
 				<textFieldExpression><![CDATA[$F{block}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="4bdf92c3-0960-44a3-934e-675b01692567" x="533" y="0" width="87" height="36"/>
+				<reportElement uuid="4bdf92c3-0960-44a3-934e-675b01692567" stretchType="RelativeToTallestObject" x="533" y="0" width="87" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -327,7 +327,7 @@
 				<textFieldExpression><![CDATA[$F{panchayat}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="356efd04-b150-4d86-9172-fcb96d9c89de" x="620" y="0" width="145" height="36"/>
+				<reportElement uuid="356efd04-b150-4d86-9172-fcb96d9c89de" stretchType="RelativeToTallestObject" x="620" y="0" width="145" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -341,7 +341,7 @@
 				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="85ce1657-0e84-4755-af5f-eb0c963de72e" x="765" y="0" width="89" height="36"/>
+				<reportElement uuid="85ce1657-0e84-4755-af5f-eb0c963de72e" stretchType="RelativeToTallestObject" x="765" y="0" width="89" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -355,7 +355,7 @@
 				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="2d73e6bc-e4c9-4648-85b7-b9238fb3e77a" x="854" y="0" width="68" height="36"/>
+				<reportElement uuid="2d73e6bc-e4c9-4648-85b7-b9238fb3e77a" stretchType="RelativeToTallestObject" x="854" y="0" width="68" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -369,7 +369,7 @@
 				<textFieldExpression><![CDATA[$F{Course Section}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="e187cb2a-eb67-45ae-ac74-cd1c87fb6ee6" x="922" y="0" width="81" height="36"/>
+				<reportElement uuid="e187cb2a-eb67-45ae-ac74-cd1c87fb6ee6" stretchType="RelativeToTallestObject" x="922" y="0" width="81" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -383,7 +383,7 @@
 				<textFieldExpression><![CDATA[$F{Course Status}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="6232ddf7-68b9-4281-ac00-cc91c03c2237" x="1003" y="0" width="57" height="36"/>
+				<reportElement uuid="6232ddf7-68b9-4281-ac00-cc91c03c2237" stretchType="RelativeToTallestObject" x="1003" y="0" width="57" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -414,7 +414,7 @@
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement uuid="49630a77-7b06-414f-80a7-e148193baa02" x="0" y="4" width="271" height="13"/>
+				<reportElement uuid="49630a77-7b06-414f-80a7-e148193baa02" x="0" y="4" width="305" height="13"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>

@@ -3,7 +3,7 @@
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
-    <property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="StartDate" class="java.util.Date">
@@ -109,9 +109,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20">
+		<band height="20" splitType="Prevent">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="e197d9d9-fbc1-42fb-b88a-34d98d720faf" x="0" y="0" width="161" height="20"/>
+				<reportElement uuid="e197d9d9-fbc1-42fb-b88a-34d98d720faf" stretchType="RelativeToTallestObject" x="0" y="0" width="161" height="20"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -125,7 +125,7 @@
 				<textFieldExpression><![CDATA[$F{Course Name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="d127a3ca-e9c6-4a60-865f-9835f725d27e" x="161" y="0" width="138" height="20"/>
+				<reportElement uuid="d127a3ca-e9c6-4a60-865f-9835f725d27e" stretchType="RelativeToTallestObject" x="161" y="0" width="138" height="20"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -139,7 +139,7 @@
 				<textFieldExpression><![CDATA[$F{No. of Minutes}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="0739f7c4-cc3f-4ee8-9992-346e97c5fe04" x="299" y="0" width="159" height="20"/>
+				<reportElement uuid="0739f7c4-cc3f-4ee8-9992-346e97c5fe04" stretchType="RelativeToTallestObject" x="299" y="0" width="159" height="20"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -153,7 +153,7 @@
 				<textFieldExpression><![CDATA[$F{Avg Duration of Calls}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="9f41c64e-2d58-4d3a-ae24-3264706d75da" x="458" y="0" width="140" height="20"/>
+				<reportElement uuid="9f41c64e-2d58-4d3a-ae24-3264706d75da" stretchType="RelativeToTallestObject" x="458" y="0" width="140" height="20"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>

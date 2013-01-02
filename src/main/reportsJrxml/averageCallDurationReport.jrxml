@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AverageCallDurationReport" language="groovy" pageWidth="900" pageHeight="842" columnWidth="860" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2d91b369-73c4-4208-b3d0-35d84add282d">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AverageCallDurationReport" language="groovy" pageWidth="1030" pageHeight="842" columnWidth="990" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2d91b369-73c4-4208-b3d0-35d84add282d">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
@@ -37,7 +37,7 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 	<title>
 		<band height="72">
 			<frame>
-				<reportElement uuid="02738269-33de-4aac-a480-26bcd103726a" mode="Opaque" x="-20" y="-20" width="900" height="92" backcolor="#006699"/>
+				<reportElement uuid="02738269-33de-4aac-a480-26bcd103726a" mode="Opaque" x="-20" y="-20" width="1030" height="92" backcolor="#006699"/>
 				<staticText>
 					<reportElement uuid="9f64b73c-f69f-481a-9796-470e07c1f32c" x="20" y="20" width="375" height="33" forecolor="#FFFFFF"/>
 					<textElement>
@@ -61,7 +61,7 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 	<columnHeader>
 		<band height="33">
 			<staticText>
-				<reportElement uuid="2747dd89-e143-41e5-91ec-a86fa5941780" mode="Opaque" x="0" y="0" width="100" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="2747dd89-e143-41e5-91ec-a86fa5941780" mode="Opaque" x="0" y="0" width="105" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -70,12 +70,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Msisdn]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="fb741dfd-720d-432e-ae3a-c4083af0b2f7" mode="Opaque" x="100" y="0" width="67" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="fb741dfd-720d-432e-ae3a-c4083af0b2f7" mode="Opaque" x="105" y="0" width="117" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -84,12 +84,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="97e7bd3d-424a-4f01-8440-f94654eaea7a" mode="Opaque" x="167" y="0" width="69" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="97e7bd3d-424a-4f01-8440-f94654eaea7a" mode="Opaque" x="222" y="0" width="85" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -98,12 +98,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[District]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="f6ee7949-39eb-43fd-96ef-d85ef8fcb5c9" mode="Opaque" x="236" y="0" width="65" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="f6ee7949-39eb-43fd-96ef-d85ef8fcb5c9" mode="Opaque" x="307" y="0" width="84" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -112,12 +112,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Block]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="1d821d23-b6ef-42f0-8703-c5fab1a51251" mode="Opaque" x="301" y="0" width="78" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="1d821d23-b6ef-42f0-8703-c5fab1a51251" mode="Opaque" x="391" y="0" width="91" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -126,12 +126,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Panchayat]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="dc6355c2-a685-4bea-aa55-bff1e2e6c240" mode="Opaque" x="379" y="0" width="67" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="dc6355c2-a685-4bea-aa55-bff1e2e6c240" mode="Opaque" x="482" y="0" width="76" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -140,12 +140,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Operator]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="047f6c32-3ca6-4883-a367-59e4dc57b596" mode="Opaque" x="446" y="0" width="60" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="047f6c32-3ca6-4883-a367-59e4dc57b596" mode="Opaque" x="558" y="0" width="60" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -154,12 +154,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Circle]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="52239f68-8bef-4955-9d96-62152b765c3b" mode="Opaque" x="506" y="0" width="128" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="52239f68-8bef-4955-9d96-62152b765c3b" mode="Opaque" x="618" y="0" width="145" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -168,12 +168,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Status]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="03ea5bd7-fd32-4e83-b898-a7418ce06c3f" mode="Opaque" x="634" y="0" width="95" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="03ea5bd7-fd32-4e83-b898-a7418ce06c3f" mode="Opaque" x="763" y="0" width="95" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -182,12 +182,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Designation]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="2e870a64-ca3f-41c2-b0a5-9a70bfc6502a" mode="Opaque" x="729" y="0" width="131" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
+				<reportElement uuid="2e870a64-ca3f-41c2-b0a5-9a70bfc6502a" mode="Opaque" x="858" y="0" width="132" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -196,16 +196,16 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Average Call Duration in Mins]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="36">
+		<band height="36" splitType="Prevent">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="d067c53b-c5b8-485e-82c4-d6107b0b8e01" x="0" y="0" width="100" height="36"/>
+				<reportElement uuid="d067c53b-c5b8-485e-82c4-d6107b0b8e01" stretchType="RelativeToTallestObject" x="0" y="0" width="105" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -214,12 +214,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{msisdn}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="988c5908-1661-4b57-8e5a-f820b448b9d0" x="100" y="0" width="67" height="36"/>
+				<reportElement uuid="988c5908-1661-4b57-8e5a-f820b448b9d0" stretchType="RelativeToTallestObject" x="105" y="0" width="117" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -228,12 +228,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="9d74558b-3b4e-49d3-ab6f-7d01149d0173" x="167" y="0" width="69" height="36"/>
+				<reportElement uuid="9d74558b-3b4e-49d3-ab6f-7d01149d0173" stretchType="RelativeToTallestObject" x="222" y="0" width="85" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -242,12 +242,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{district}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="87901f6a-4078-4a7c-886d-f2a5b38bde2b" x="236" y="0" width="65" height="36"/>
+				<reportElement uuid="87901f6a-4078-4a7c-886d-f2a5b38bde2b" stretchType="RelativeToTallestObject" x="307" y="0" width="84" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -256,12 +256,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{block}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="7635df41-8b73-43f7-a73b-4f754287c29d" x="301" y="0" width="78" height="36"/>
+				<reportElement uuid="7635df41-8b73-43f7-a73b-4f754287c29d" stretchType="RelativeToTallestObject" x="391" y="0" width="91" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -270,12 +270,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{panchayat}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="c16a2b03-f255-429c-bf49-42b188d7f3e6" x="379" y="0" width="67" height="36"/>
+				<reportElement uuid="c16a2b03-f255-429c-bf49-42b188d7f3e6" stretchType="RelativeToTallestObject" x="482" y="0" width="76" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -284,12 +284,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{operator}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="64fefaab-ee88-4ece-aaf0-3e023113a31a" x="446" y="0" width="60" height="36"/>
+				<reportElement uuid="64fefaab-ee88-4ece-aaf0-3e023113a31a" stretchType="RelativeToTallestObject" x="558" y="0" width="60" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -298,12 +298,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{circle}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="9400698c-e873-4d83-b400-2c05837cb699" x="506" y="0" width="128" height="36"/>
+				<reportElement uuid="9400698c-e873-4d83-b400-2c05837cb699" stretchType="RelativeToTallestObject" x="618" y="0" width="145" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -312,12 +312,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="9344d626-8b54-48b0-b969-b54b9556ee6a" x="634" y="0" width="95" height="36"/>
+				<reportElement uuid="9344d626-8b54-48b0-b969-b54b9556ee6a" stretchType="RelativeToTallestObject" x="763" y="0" width="95" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -326,12 +326,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="bcbc0278-044e-4aaa-a3e4-e6ef65a141ac" x="729" y="0" width="131" height="36"/>
+				<reportElement uuid="bcbc0278-044e-4aaa-a3e4-e6ef65a141ac" stretchType="RelativeToTallestObject" x="858" y="0" width="132" height="36"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -340,7 +340,7 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 					<rightPen lineWidth="0.5" lineColor="#999999"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Average Call Duration in Mins}]]></textFieldExpression>
 			</textField>
@@ -352,12 +352,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 	<pageFooter>
 		<band height="17">
 			<textField>
-				<reportElement uuid="874dc1d2-e94d-45dc-8c49-7c613b68c945" mode="Opaque" x="0" y="4" width="820" height="13" backcolor="#E6E6E6"/>
+				<reportElement uuid="874dc1d2-e94d-45dc-8c49-7c613b68c945" mode="Opaque" x="0" y="4" width="949" height="13" backcolor="#E6E6E6"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="9700f5ef-c137-41fd-972e-5b5c5c378ae2" mode="Opaque" x="820" y="4" width="40" height="13" backcolor="#E6E6E6"/>
+				<reportElement uuid="9700f5ef-c137-41fd-972e-5b5c5c378ae2" mode="Opaque" x="949" y="4" width="41" height="13" backcolor="#E6E6E6"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>

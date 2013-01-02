@@ -15,7 +15,7 @@ public class V1_1__InitialReports extends ReportsMigration {
                 "ContentAdmin",
                 "CourseUsage",
                 "DetailFLWRegistration",
-                "IvrCertification",
+                "IVRCertification",
                 "IVRContent",
                 "JobAidDateWise",
                 "JobAidUsage",

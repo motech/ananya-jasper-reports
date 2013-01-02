@@ -4,7 +4,7 @@
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="34"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<queryString language="SQL">
 		<![CDATA[select 'IVR Certification' as "Mobile Service",content_id as "Content ID",file_name as "File Name",name as "Content Name" from report.course_item_dimension where upper(type) = 'AUDIO'
@@ -103,9 +103,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="43">
+		<band height="43" splitType="Prevent">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="da3099e7-2c9e-423c-a164-99cd729cfe79" x="0" y="0" width="158" height="43"/>
+				<reportElement uuid="da3099e7-2c9e-423c-a164-99cd729cfe79" stretchType="RelativeToTallestObject" x="0" y="0" width="158" height="43"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -119,7 +119,7 @@
 				<textFieldExpression><![CDATA[$F{Mobile Service}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="25b5d532-1c47-4940-94ae-860534bf3ea9" x="158" y="0" width="321" height="43"/>
+				<reportElement uuid="25b5d532-1c47-4940-94ae-860534bf3ea9" stretchType="RelativeToTallestObject" x="158" y="0" width="321" height="43"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -133,7 +133,7 @@
 				<textFieldExpression><![CDATA[$F{Content ID}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="ec936d0d-079e-40b2-b63e-733566ad6156" x="479" y="0" width="245" height="43"/>
+				<reportElement uuid="ec936d0d-079e-40b2-b63e-733566ad6156" stretchType="RelativeToTallestObject" x="479" y="0" width="245" height="43"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -147,7 +147,7 @@
 				<textFieldExpression><![CDATA[$F{File Name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="5dc61c07-14d9-4c00-9eae-94d562721347" x="724" y="0" width="236" height="43"/>
+				<reportElement uuid="5dc61c07-14d9-4c00-9eae-94d562721347" stretchType="RelativeToTallestObject" x="724" y="0" width="236" height="43"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 					<topPen lineWidth="0.5" lineColor="#999999"/>
