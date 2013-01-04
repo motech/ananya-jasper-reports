@@ -17,3 +17,4 @@ $jasper_export_script --uris /Ananya/Reports/Job_Aid_Lesson_Usage/Job_Aid_Lesson
 $jasper_export_script --uris /Ananya/Reports/Job_Aid_Usage/Job_Aid_Usage_Report --output-zip $reports_destination/JobAidUsage.zip --repository-permissions --users --roles --report-jobs
 $jasper_export_script --uris /Ananya/Reports/Percentage_Usage/Percentage_Usage_Report --output-zip $reports_destination/PercentageUsage.zip --repository-permissions --users --roles --report-jobs
 $jasper_export_script --uris /Ananya/Reports/Quiz_Score/Quiz_Score_Report --output-zip $reports_destination/QuizScore.zip --repository-permissions --users --roles --report-jobs
+$jasper_export_script --uris /Ananya/Reports/Job_Aid_Usage_with_Flw_Id --output-zip $reports_destination/JobAidUsageWithFlwId.zip --repository-permissions --users --roles --report-jobs
