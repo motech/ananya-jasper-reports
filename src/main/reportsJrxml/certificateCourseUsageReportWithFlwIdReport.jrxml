@@ -64,7 +64,7 @@
 		report.front_line_worker_dimension flw where ld.id = a.location_id and flw.id = a.flw_id group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.circle,
 		flw.name,flw.status,flw.designation, flw.flw_id, a.last_call order by flw.msisdn]]>
 		</queryString>
-		<field name="FLW Id" class="java.lang.Object"/>
+		<field name="FLW Id" class="java.lang.String"/>
 		<field name="msisdn" class="java.lang.Long"/>
 		<field name="operator" class="java.lang.String"/>
 		<field name="circle" class="java.lang.String"/>
@@ -174,7 +174,7 @@
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="ded2f12a-7bb4-4a1e-8f48-869de3431b67" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[""+$F{FLW Id}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{FLW Id}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
