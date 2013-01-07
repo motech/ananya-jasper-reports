@@ -22,7 +22,8 @@ public class V1_1__InitialReports extends ReportsMigration {
                 "PercentageUsage",
                 "JobAidLessonUsage",
                 "QuizScore",
-                "JobAidUsageWithFlwId"
+                "JobAidUsageWithFlwId",
+                "CertificationCourseUsageWithFlwId"
         };
     }
 
