@@ -4,7 +4,7 @@
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="619"/>
+	<property name="ireport.x" value="99"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -38,7 +38,7 @@
  max(to_char(course_start,'yyyy-mm-dd hh24:mi:ss')) as "Course Start",max(to_char(course_end,'yyyy-mm-dd hh24:mi:ss')) as "Course End",
  max(chapters_completed) as "Chapters Completed", max(lessons_completed) as "Lessons Completed",max(quiz_completed) as "Quizes Completed",
  max(Individual_score_for_each_quiz) as "Individual Score for each Quiz",max(quiz_score) as "Overall Score",
- (case when max(to_char(course_end,'yyyy-mm-dd hh24:mi:ss')) != '' then 'Y' else 'N' end) as "Certification Course Completed", to_char(last_call,'yyyy-mm-dd') as "Last Call Date",to_char(last_call,'hh24:mi:ss') as "Last Call Time", max("Duration in Minutes") as "Total Minutes Used",
+ (case when max(to_char(course_end,'yyyy-mm-dd hh24:mi:ss')) != '' then 'Y' else 'N' end) as "Certification Course Completed", to_char(last_call,'yyyy-mm-dd') as "Last Call End Date",to_char(last_call,'hh24:mi:ss') as "Last Call End Time", max("Duration in Minutes") as "Total Minutes Used",
  max(sms_sent) as "SMS Sent",max(sms_reference_number) as "SMS Reference Number"
 	from (
 	select c.location_id,c.flw_id,'DETAILSCOMPLETED' as ctype,min(case when c.event = 'START' and cd.type = 'COURSE' THEN timestamp end) as course_start,
@@ -82,8 +82,8 @@
 		<field name="Individual Score for each Quiz" class="java.lang.String"/>
 		<field name="Overall Score" class="java.math.BigDecimal"/>
 		<field name="Certification Course Completed" class="java.lang.String"/>
-		<field name="Last Call Date" class="java.lang.String"/>
-		<field name="Last Call Time" class="java.lang.String"/>
+		<field name="Last Call End Date" class="java.lang.String"/>
+		<field name="Last Call End Time" class="java.lang.String"/>
 		<field name="Total Minutes Used" class="java.math.BigDecimal"/>
 		<field name="SMS Sent" class="java.lang.String"/>
 		<field name="SMS Reference Number" class="java.lang.String"/>
@@ -491,14 +491,14 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
-								<text><![CDATA[Last Call Date]]></text>
+								<text><![CDATA[Last Call End Date]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="30" rowSpan="1">
 							<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy h.mm a" isBlankWhenNull="true">
 								<reportElement uuid="1342e922-7a37-4563-841b-85fd752bb4f7" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{Last Call Date}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{Last Call End Date}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -509,14 +509,14 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
-								<text><![CDATA[Last Call Time]]></text>
+								<text><![CDATA[Last Call End Time]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="30" rowSpan="1">
 							<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy h.mm a" isBlankWhenNull="true">
 								<reportElement uuid="f5fe1840-58a3-11e2-bcfd-0800200c9a66" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{Last Call Time}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{Last Call End Time}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
