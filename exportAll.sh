@@ -5,6 +5,7 @@ $jasper_export_script --uris /Ananya/Reports/Average_Call_Duration/Average_Call_
 $jasper_export_script --uris /Ananya/Reports/Average_Lesson_Usage/AverageLessonUsageReport --output-zip $reports_destination/AverageLessonUsage.zip --repository-permissions --users --roles --report-jobs
 $jasper_export_script --uris /Ananya/Reports/Certificate_Course_Usage/Certificate_Course_Usage_Report --output-zip $reports_destination/CertificateCourseUsage.zip --repository-permissions --users --roles --report-jobs
 $jasper_export_script --uris /Ananya/Reports/Certificate_Lesson_Usage_Report/Certificate_Lesson_Usage_Report --output-zip $reports_destination/CertificateLessonUsage.zip --repository-permissions --users --roles --report-jobs
+$jasper_export_script --uris /Ananya/Reports/Certificate_Course_Usage_with_Flw_Id/Certificate_Course_Usage_with_Flw_Id --output-zip $reports_destination/CertificationCourseUsageWithFlwId.zip --repository-permissions --users --roles --report-jobs
 $jasper_export_script --uris /Ananya/Reports/Certificate_Repeat_Visit/Certificate_Repeat_Visit --output-zip $reports_destination/CertificateRepeatVisit.zip --repository-permissions --users --roles --report-jobs
 $jasper_export_script --uris /Ananya/Reports/Chapter__Lesson__Quiz_Completion_Report/Chapter__Lesson__Quiz_Completion_Report --output-zip $reports_destination/ChapterLessonQuizCompletion.zip --repository-permissions --users --roles --report-jobs
 $jasper_export_script --uris /Ananya/Reports/Content_Admin/Content_Admin_Report --output-zip $reports_destination/ContentAdmin.zip --repository-permissions --users --roles --report-jobs
@@ -18,4 +19,3 @@ $jasper_export_script --uris /Ananya/Reports/Job_Aid_Usage/Job_Aid_Usage_Report 
 $jasper_export_script --uris /Ananya/Reports/Percentage_Usage/Percentage_Usage_Report --output-zip $reports_destination/PercentageUsage.zip --repository-permissions --users --roles --report-jobs
 $jasper_export_script --uris /Ananya/Reports/Quiz_Score/Quiz_Score_Report --output-zip $reports_destination/QuizScore.zip --repository-permissions --users --roles --report-jobs
 $jasper_export_script --uris /Ananya/Reports/Job_Aid_Usage_with_Flw_Id --output-zip $reports_destination/JobAidUsageWithFlwId.zip --repository-permissions --users --roles --report-jobs
-$jasper_export_script --uris /Ananya/Reports/Certificate_Course_Usage_with_Flw_Id/Certificate_Course_Usage_with_Flw_Id --output-zip $reports_destination/CertificationCourseUsageWithFlwId.zip --repository-permissions --users --roles --report-jobs
