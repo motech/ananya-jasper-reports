@@ -6,6 +6,48 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#999999"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#999999"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#999999"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#999999"/>
+		</box>
+	</style>
+	<subDataset name="JobAidUsageDS" uuid="e5bd2efa-981a-46e4-a679-782daf1d0ab8">
+		<parameter name="StartDate" class="java.util.Date">
+			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+		</parameter>
+		<parameter name="EndDate" class="java.util.Date">
+			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select msisdn,operator,circle,name,designation,status,count(call_id) as "Call count",round(sum(duration_in_seconds)/60.0,2) as "Usage in Mins",round(avg(duration_in_seconds)/60.0,2) as "Average Usage in Mins" from (
+
+ select flw.operator,flw.msisdn,flw.name,flw.designation,flw.circle,flw.status,call_id,sum(duration) as duration_in_seconds from report.call_duration_measure cd,report.time_dimension td,report.front_line_worker_dimension flw where cd.flw_id = flw.id and td.id = cd.time_id and cd.type = 'JOBAID' and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by flw.operator,flw.msisdn,flw.name,flw.designation,flw.status,flw.circle,call_id) a group by operator,circle,msisdn,name,designation,status order by operator,status]]>
+		</queryString>
+		<field name="msisdn" class="java.lang.Long"/>
+		<field name="operator" class="java.lang.String"/>
+		<field name="circle" class="java.lang.String"/>
+		<field name="name" class="java.lang.String"/>
+		<field name="designation" class="java.lang.String"/>
+		<field name="status" class="java.lang.String"/>
+		<field name="Call count" class="java.lang.Long"/>
+		<field name="Usage in Mins" class="java.math.BigDecimal"/>
+		<field name="Average Usage in Mins" class="java.math.BigDecimal"/>
+	</subDataset>
 	<parameter name="StartDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
@@ -13,19 +55,9 @@
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select msisdn,operator,circle,name,designation,status,count(call_id) as "Call count",round(sum(duration_in_seconds)/60.0,2) as "Usage in Mins",round(avg(duration_in_seconds)/60.0,2) as "Average Usage in Mins" from (
-
- select flw.operator,flw.msisdn,flw.name,flw.designation,flw.circle,flw.status,call_id,sum(duration) as duration_in_seconds from report.call_duration_measure cd,report.time_dimension td,report.front_line_worker_dimension flw where cd.flw_id = flw.id and td.id = cd.time_id and cd.type = 'JOBAID' and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by flw.operator,flw.msisdn,flw.name,flw.designation,flw.status,flw.circle,call_id) a group by operator,circle,msisdn,name,designation,status order by operator,status]]>
+		<![CDATA[select 1 as dummy_field]]>
 	</queryString>
-	<field name="msisdn" class="java.lang.Long"/>
-	<field name="operator" class="java.lang.String"/>
-	<field name="circle" class="java.lang.String"/>
-	<field name="name" class="java.lang.String"/>
-	<field name="designation" class="java.lang.String"/>
-	<field name="status" class="java.lang.String"/>
-	<field name="Call count" class="java.lang.Long"/>
-	<field name="Usage in Mins" class="java.math.BigDecimal"/>
-	<field name="Average Usage in Mins" class="java.math.BigDecimal"/>
+	<field name="dummy_field" class="java.lang.Integer"/>
 	<background>
 		<band/>
 	</background>
@@ -50,272 +82,186 @@
 			</frame>
 		</band>
 	</title>
-	<pageHeader>
-		<band height="13"/>
-	</pageHeader>
-	<columnHeader>
-		<band height="39">
-			<staticText>
-				<reportElement uuid="4dbfdd2f-3119-4721-b14b-a915ae340219" mode="Opaque" x="0" y="0" width="106" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Msisdn]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="719d6f0a-6455-410f-b5fa-40d100d0be1b" mode="Opaque" x="106" y="0" width="75" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Operator]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="cf376130-3d6d-4cac-8b30-738ec1a8ceca" mode="Opaque" x="181" y="0" width="59" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Circle]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="7734d76b-1914-4d3f-9f2c-03520adccdde" mode="Opaque" x="240" y="0" width="117" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[FLW Name]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="84ba33c6-0882-4dd0-8789-4cf7f46ce89a" mode="Opaque" x="357" y="0" width="93" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Designation]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="424f8437-e416-4a41-9f8d-984cb84c525b" mode="Opaque" x="450" y="0" width="145" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Status]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="c781423a-b42c-463a-86a9-419a7b9f3506" mode="Opaque" x="595" y="0" width="91" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Call count]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="80a5b8aa-d133-48b1-8c41-22af2f7eb8f6" mode="Opaque" x="686" y="0" width="123" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Usage in Mins]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="d066f1c9-656a-45f9-84e5-8e64e242298e" mode="Opaque" x="809" y="0" width="151" height="39" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Average Usage in Mins]]></text>
-			</staticText>
-		</band>
-	</columnHeader>
 	<detail>
-		<band height="33" splitType="Prevent">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="be5b341f-4bff-4472-8e9b-e695c428a298" stretchType="RelativeToTallestObject" x="0" y="0" width="106" height="33"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{msisdn}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="404c2732-2c59-415c-85ba-f5c877fa91f4" stretchType="RelativeToTallestObject" x="106" y="0" width="75" height="33"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{operator}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="bf6ad972-5be1-4245-bb3a-29351f7763ad" stretchType="RelativeToTallestObject" x="181" y="0" width="59" height="33"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{circle}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="243d33b1-f225-4437-826c-e785db08f071" stretchType="RelativeToTallestObject" x="240" y="0" width="117" height="33"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="d45decc1-d074-43ac-8283-8e4817c82cad" stretchType="RelativeToTallestObject" x="357" y="0" width="93" height="33"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="bc89e3be-f5e1-4867-8a03-3776b9dd6b26" stretchType="RelativeToTallestObject" x="450" y="0" width="145" height="33"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="fb2eeac1-ad14-4dd6-b098-5fd449a43e4b" stretchType="RelativeToTallestObject" x="595" y="0" width="91" height="33"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Call count}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="297f12f1-8fd3-4008-852a-d9a5fd89b032" stretchType="RelativeToTallestObject" x="686" y="0" width="123" height="33"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Usage in Mins}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="e2642ed0-8872-44b8-bca7-d64cd1dd4cb2" stretchType="RelativeToTallestObject" x="809" y="0" width="151" height="33"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Average Usage in Mins}]]></textFieldExpression>
-			</textField>
+		<band height="65" splitType="Stretch">
+			<componentElement>
+				<reportElement uuid="2fe9fbd9-e0bd-4018-9232-237ee47e17e5" key="table" style="table" x="45" y="13" width="871" height="38"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="JobAidUsageDS" uuid="123dab9c-a06d-4f2c-963c-d695713c0374">
+						<datasetParameter name="StartDate">
+							<datasetParameterExpression><![CDATA[$P{StartDate}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="EndDate">
+							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column uuid="723d1808-b5b4-44c8-a8c3-7fa0e9c3f722" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="ecffa293-b095-49ef-aba5-339987440e09" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Msisdn]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="5e0ac901-bef8-431e-a69e-670e5ea052ce" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{msisdn}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="6087deac-71c5-481e-9fe6-3d449c42a4c0" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="5517b01d-e282-4152-b6b2-d1b058621d0a" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Operator]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="b7fa727b-22af-4705-af0d-bd236e0ef27c" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{operator}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="5cf6c0d0-8beb-445c-8f9a-f611353239c9" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="0b55bb12-ae43-4abb-9671-05471778feca" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Circle]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="2e026fdc-1039-47f0-b42e-567d630ee7d2" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{circle}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="5904bcc9-5fba-4625-8e50-f45ccc351f67" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="06105b0b-4e3f-4722-8d89-510b183bcc41" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Name]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="baba4372-a451-427b-9ddf-5d124c0637d8" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="caaa80e6-147e-404d-8453-9a7f96764f4c" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="f9f911d6-ff41-4240-a667-c38e40ac6a28" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Designation]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="b94c9225-62ac-470e-b4a0-240f63190ff0" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="7a20ea63-f17d-4cbc-9f3b-28a4fd45d755" width="150">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="41e407e3-ea26-4e2d-a360-da67e623961c" x="0" y="0" width="150" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Status]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="6d98ec98-048a-4cc2-a49e-36d850b5aec2" x="0" y="0" width="150" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="7c7f2b6a-7053-4d80-a46e-1c43a4a303e9" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="fa44c358-67cd-4073-ac84-aa1ac6ab048e" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Call count]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="a2ed65fe-f68e-4adf-bfe6-54e3d4f92f41" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Call count}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="33a9ef2d-448c-4180-bd46-276f2f1d3184" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="158d3b50-b706-481a-8718-8fb60205375b" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Usage(mins)]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="f0ee325d-0350-4278-906d-4ecb5c975614" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Usage in Mins}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="30e4972a-0328-41a2-a63b-733facd0fe48" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="8b4ff747-5f75-4623-ae8c-f12faebc77da" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Average Usage(mins)]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="1ce66264-36a6-4086-b810-b817b021d67c" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Average Usage in Mins}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
 		</band>
 	</detail>
-	<columnFooter>
-		<band/>
-	</columnFooter>
 	<pageFooter>
 		<band height="17">
 			<textField>
@@ -335,7 +281,4 @@
 			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band/>
-	</summary>
 </jasperReport>

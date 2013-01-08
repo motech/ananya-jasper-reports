@@ -6,6 +6,48 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#999999"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#999999"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#999999"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#999999"/>
+		</box>
+	</style>
+	<subDataset name="PercentageUsageDS" uuid="44bcf514-e23e-45fb-aa3d-677b23f27946">
+		<parameter name="StartDate" class="java.util.Date">
+			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+		</parameter>
+		<parameter name="EndDate" class="java.util.Date">
+			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select a.service as "Mobile Service",a.operator,a.total_count as "Total number",round((a.total_count::numeric/b.total_count::numeric)*100,1) as "Total %",a.total_uu_count as "Total UU",round((a.total_uu_count::numeric/b.total_uu_count::numeric)*100,1) as "Total UU %"
+ from (select 'Job Aid' as service,flw.operator,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw where td.id= jm.time_id and flw.id = jm.flw_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1,2
+ union all
+ select 'IVR Certification' as service,flw.operator,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.course_item_dimension jd,report.course_item_measure jm,report.time_dimension td, report.front_line_worker_dimension flw where td.id= jm.time_id and flw.id = jm.flw_id and jm.course_item_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1,2) a,(select 'Job Aid' as service,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw where td.id= jm.time_id and flw.id = jm.flw_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1
+ union all
+ select 'IVR Certification' as service,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.course_item_dimension jd,report.course_item_measure jm,report.time_dimension td, report.front_line_worker_dimension flw where td.id= jm.time_id and flw.id = jm.flw_id and jm.course_item_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1) b where a.service=b.service order by a.service]]>
+		</queryString>
+		<field name="Mobile Service" class="java.lang.String"/>
+		<field name="operator" class="java.lang.String"/>
+		<field name="Total number" class="java.lang.Long"/>
+		<field name="Total %" class="java.math.BigDecimal"/>
+		<field name="Total UU" class="java.lang.Long"/>
+		<field name="Total UU %" class="java.math.BigDecimal"/>
+	</subDataset>
 	<parameter name="StartDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
@@ -13,19 +55,9 @@
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select a.service as "Mobile Service",a.operator,a.total_count as "Total number",round((a.total_count::numeric/b.total_count::numeric)*100,1) as "Total %",a.total_uu_count as "Total UU",round((a.total_uu_count::numeric/b.total_uu_count::numeric)*100,1) as "Total UU %"
- from (select 'Job Aid' as service,flw.operator,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw where td.id= jm.time_id and flw.id = jm.flw_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1,2
- union all
- select 'IVR Certification' as service,flw.operator,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.course_item_dimension jd,report.course_item_measure jm,report.time_dimension td, report.front_line_worker_dimension flw where td.id= jm.time_id and flw.id = jm.flw_id and jm.course_item_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1,2) a,(select 'Job Aid' as service,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw where td.id= jm.time_id and flw.id = jm.flw_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1
- union all
- select 'IVR Certification' as service,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.course_item_dimension jd,report.course_item_measure jm,report.time_dimension td, report.front_line_worker_dimension flw where td.id= jm.time_id and flw.id = jm.flw_id and jm.course_item_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1) b where a.service=b.service order by a.service]]>
+		<![CDATA[select 1 as dummy_field]]>
 	</queryString>
-	<field name="Mobile Service" class="java.lang.String"/>
-	<field name="operator" class="java.lang.String"/>
-	<field name="Total number" class="java.lang.Long"/>
-	<field name="Total %" class="java.math.BigDecimal"/>
-	<field name="Total UU" class="java.lang.Long"/>
-	<field name="Total UU %" class="java.math.BigDecimal"/>
+	<field name="dummy_field" class="java.lang.Integer"/>
 	<background>
 		<band/>
 	</background>
@@ -50,188 +82,132 @@
 			</frame>
 		</band>
 	</title>
-	<pageHeader>
-		<band height="13"/>
-	</pageHeader>
-	<columnHeader>
-		<band height="33">
-			<staticText>
-				<reportElement uuid="80092ed4-319a-43c8-93c6-eb890b22be8c" mode="Opaque" x="0" y="0" width="153" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Mobile Service]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="7b23d737-0195-4adc-89bb-f039e775857c" mode="Opaque" x="153" y="0" width="97" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Operator]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="1b8eaaba-3136-4ec1-a9bf-48e9c218a669" mode="Opaque" x="250" y="0" width="92" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Total number]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="7264dc0c-3cf4-4c35-b6db-5718ab0fcc62" mode="Opaque" x="342" y="0" width="92" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Total %]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="4cd2cc6f-5bac-4951-b261-de4274b99273" mode="Opaque" x="434" y="0" width="92" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Total UU]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="00345fd3-d01a-444f-aafd-8fc008f52ebd" mode="Opaque" x="526" y="0" width="94" height="33" forecolor="#006699" backcolor="#E6E6E6"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Total UU %]]></text>
-			</staticText>
-		</band>
-	</columnHeader>
 	<detail>
-		<band height="26" splitType="Prevent">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="0895d910-9284-494a-9a42-32305f9b4821" stretchType="RelativeToTallestObject" x="0" y="0" width="153" height="26"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Mobile Service}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="522f827d-6c6a-4ef9-af86-af28ea498d11" stretchType="RelativeToTallestObject" x="153" y="0" width="97" height="26"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{operator}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="5dbb200b-2bd9-48cd-bd4c-1d4c1d7b721b" stretchType="RelativeToTallestObject" x="250" y="0" width="92" height="26"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Total number}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="0276a095-7e3d-4a25-895d-f2e3c6c6934b" stretchType="RelativeToTallestObject" x="526" y="0" width="94" height="26"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Total UU %}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="85883a86-7c79-403e-88a1-980c71e6021e" stretchType="RelativeToTallestObject" x="434" y="0" width="92" height="26"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Total UU}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="90db8150-6680-478a-91c8-9c75f3eff048" stretchType="RelativeToTallestObject" x="342" y="0" width="92" height="26"/>
-				<box>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-					<topPen lineWidth="0.5" lineColor="#999999"/>
-					<leftPen lineWidth="0.5" lineColor="#999999"/>
-					<bottomPen lineWidth="0.5" lineColor="#999999"/>
-					<rightPen lineWidth="0.5" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Total %}]]></textFieldExpression>
-			</textField>
+		<band height="68" splitType="Stretch">
+			<componentElement>
+				<reportElement uuid="66c6b952-b499-42f2-8860-c96761991408" key="table" style="table" x="40" y="9" width="540" height="50"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="PercentageUsageDS" uuid="d2aee5e1-5fec-4376-ad2c-c0f9b80ace04">
+						<datasetParameter name="StartDate">
+							<datasetParameterExpression><![CDATA[$P{StartDate}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="EndDate">
+							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column uuid="87f46238-814b-4b87-a7c3-8caf63109e5b" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="4b20688d-7e32-4d65-a5dc-7dd19e1f45ab" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Mobile Service]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="c69321b5-1cb6-4233-aa6e-cab2f8610812" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Mobile Service}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="86a4b2af-56fe-45f8-b7d0-2faf370fa979" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="960bb974-77f3-4a9f-b5f9-4327485a7629" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Operator]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="f0b56418-3ba6-47de-8a79-75d994f455e7" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{operator}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="a8a47bbd-57ad-4a0a-b982-8afc64aa212e" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="41aa251a-df24-4db0-9389-0e616c3540ee" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Total Number]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="39c940fb-d0bd-4db0-bc6a-36d4b7fd05e6" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Total number}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="bdedf6da-ee58-4689-b65a-db30c5f34ce8" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="bed3594c-566a-4efd-b444-33c87108ccec" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Total %]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="f7114501-c060-4058-933c-b80ce29c3855" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Total %}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="97437f5c-f58c-47c7-832d-e53994eac12f" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="99c10f66-d13c-4030-939d-35c2c1f590f9" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Total UU]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="ab849550-3678-4889-b0c9-b6c8c5c2aa23" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Total UU}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="65b5e14a-ad8f-449e-bc64-67d56ff963ba" width="90">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="042d5a3a-1d4b-4482-bcc2-19668217eaa8" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Total UU %]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="e342b5f0-fda3-4ada-bced-a8c942e830b2" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Total UU %}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
 		</band>
 	</detail>
-	<columnFooter>
-		<band/>
-	</columnFooter>
 	<pageFooter>
 		<band height="17">
 			<textField>
