@@ -21,3 +21,4 @@ $jasper_export_script --uris /Ananya/Reports/Quiz_Score/Quiz_Score_Report --outp
 $jasper_export_script --uris /Ananya/Reports/Job_Aid_Usage_with_Flw_Id --output-zip $reports_destination/JobAidUsageWithFlwId.zip --repository-permissions --users --roles --report-jobs
 $jasper_export_script --uris /Ananya/Reports/Certificate_Course_Usage_with_Flw_Id/Certificate_Course_Usage_with_Flw_Id --output-zip $reports_destination/CertificationCourseUsageWithFlwId.zip --repository-permissions --users --roles --report-jobs
 $jasper_export_script --uris /Ananya/Reports/Partially_Registered_FLWs/Partially_Registered_FLWs_Report --output-zip $reports_destination/PartiallyRegisteredFLWs.zip  --repository-permissions --users --roles --report-jobs
+$jasper_export_script --uris /Ananya/Reports/Job_Aid_Date_wise_Night_Time_Usage/Job_Aid_Date_wise_Night_Usage_Report --output-zip $reports_destination/JobAidDatewiseNightUsage.zip  --repository-permissions --users --roles --report-jobs
