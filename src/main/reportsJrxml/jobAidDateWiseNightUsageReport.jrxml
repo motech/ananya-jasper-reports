@@ -32,16 +32,17 @@
 		<parameter name="EndDate" class="java.util.Date">
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
-		<parameter name="StartTime" class="java.lang.String">
+		<parameter name="DayEndTime" class="java.lang.String">
 			<defaultValueExpression><![CDATA["19:00"]]></defaultValueExpression>
 		</parameter>
-		<parameter name="EndTime" class="java.lang.String">
+		<parameter name="DayStartTime" class="java.lang.String">
 			<defaultValueExpression><![CDATA["07:00"]]></defaultValueExpression>
 		</parameter>
 		<queryString>
 			<![CDATA[SELECT
 	flw.flw_id as GUID,
 	flw.name as Name,
+	flw.status as "FLW Registration Status",
 	loc.district as District,
 	loc.block as Block,
 	loc.panchayat as Panchayat,
@@ -64,11 +65,13 @@ WHERE
     call.called_number <> 5771102 AND
     call.start_time >= $P{StartDate} AND
     call.end_time <= $P{EndDate} AND
-    not ("time" (call.end_time) < "time" '$P!{StartTime}' and "time" (call.start_time) > "time" '$P!{EndTime}')
+    (("time" (call.start_time) not between "time" '$P!{DayStartTime}' and "time" '$P!{DayEndTime}') OR
+     ("time" (call.end_time) not between "time" '$P!{DayStartTime}' and "time" '$P!{DayEndTime}'))
     ORDER BY MSISDN, "Start Date" asc, "Start Time" asc, "End Date" asc, "End Time" asc;]]>
 		</queryString>
 		<field name="guid" class="java.lang.Object"/>
 		<field name="name" class="java.lang.String"/>
+		<field name="FLW Registration Status" class="java.lang.String"/>
 		<field name="district" class="java.lang.String"/>
 		<field name="block" class="java.lang.String"/>
 		<field name="panchayat" class="java.lang.String"/>
@@ -88,10 +91,10 @@ WHERE
 	<parameter name="EndDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
-	<parameter name="StartTime" class="java.lang.String">
+	<parameter name="DayEndTime" class="java.lang.String">
 		<defaultValueExpression><![CDATA["19:00"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="EndTime" class="java.lang.String">
+	<parameter name="DayStartTime" class="java.lang.String">
 		<defaultValueExpression><![CDATA["07:00"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -127,124 +130,16 @@ WHERE
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
 						</datasetParameter>
-						<datasetParameter name="StartTime">
-							<datasetParameterExpression><![CDATA[$P{StartTime}]]></datasetParameterExpression>
+						<datasetParameter name="DayStartTime">
+							<datasetParameterExpression><![CDATA[$P{DayStartTime}]]></datasetParameterExpression>
 						</datasetParameter>
-						<datasetParameter name="EndTime">
-							<datasetParameterExpression><![CDATA[$P{EndTime}]]></datasetParameterExpression>
+						<datasetParameter name="DayEndTime">
+							<datasetParameterExpression><![CDATA[$P{DayEndTime}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:column width="90" uuid="63ee3873-2c13-495b-b67c-df970e9772e4">
-						<jr:columnHeader style="table_CH" height="30">
-							<staticText>
-								<reportElement uuid="ad3f1737-8875-4638-a602-a6226f7d55fe" x="0" y="0" width="90" height="30"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="12"/>
-								</textElement>
-								<text><![CDATA[GUID]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="fc5c6208-fac7-4637-91c2-ec804ddda76c" x="0" y="0" width="90" height="20"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[""+$F{guid}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="90" uuid="41c5ab28-39c8-40ef-8d17-d45e0ba3a142">
-						<jr:columnHeader style="table_CH" height="30">
-							<staticText>
-								<reportElement uuid="da5462e4-24e2-43cb-a183-cd656b334a72" x="0" y="0" width="90" height="30"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="12"/>
-								</textElement>
-								<text><![CDATA[Name]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="e08b11af-0f8e-480c-b7c0-5181d6ed52bb" x="0" y="0" width="90" height="20"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="90" uuid="a9e25d27-af68-47e0-8812-f3619bfb3327">
-						<jr:columnHeader style="table_CH" height="30">
-							<staticText>
-								<reportElement uuid="ba8b35b9-a676-40d5-8dd9-f028095665b8" x="0" y="0" width="90" height="30"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="12"/>
-								</textElement>
-								<text><![CDATA[District]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="05976b89-d356-4b22-bb48-d757398482d0" x="0" y="0" width="90" height="20"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{district}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="90" uuid="8a2895c8-2701-4c02-ae09-ee0c24b363f3">
-						<jr:columnHeader style="table_CH" height="30">
-							<staticText>
-								<reportElement uuid="f536ec23-5c00-410b-a7d3-b95855fff8f9" x="0" y="0" width="90" height="30"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="12"/>
-								</textElement>
-								<text><![CDATA[Block]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="2b20c75b-1a9c-451c-bc4b-48e1cfaf2df1" x="0" y="0" width="90" height="20"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{block}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="90" uuid="059640bf-33f5-4857-953e-343ef8ca84da">
-						<jr:columnHeader style="table_CH" height="30">
-							<staticText>
-								<reportElement uuid="dffe88a1-3ed8-4374-a2fd-5b8de5fa1e58" x="0" y="0" width="90" height="30"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="12"/>
-								</textElement>
-								<text><![CDATA[Panchayat]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="58395177-cfac-4322-b5e9-2143762d73fd" x="0" y="0" width="90" height="20"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{panchayat}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="90" uuid="3e540b5f-7e81-4662-a473-874f13f9e262">
-						<jr:columnHeader style="table_CH" height="30">
-							<staticText>
-								<reportElement uuid="03362d48-170d-48c7-a647-668f12a02ec2" x="0" y="0" width="90" height="30"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="12"/>
-								</textElement>
-								<text><![CDATA[Designation]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="51de9c13-a92d-42f3-a811-ac6837d4a340" x="0" y="0" width="90" height="20"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
 					<jr:column width="90" uuid="fac6096e-b9dd-44a5-b4cf-4536997e4ae1">
-						<jr:columnHeader style="table_CH" height="30">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="6cf01ac6-0095-44fd-8854-e4eed8493f7f" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -253,7 +148,7 @@ WHERE
 								<text><![CDATA[MSISDN]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="d411cbbd-f6b3-4194-9ba0-b1f4b3cc9218" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -262,7 +157,7 @@ WHERE
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="a47785d6-d4c1-4d06-8267-09f30da64843">
-						<jr:columnHeader style="table_CH" height="30">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="59b83bb6-e106-421b-af9a-e15e1220871e" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -271,7 +166,7 @@ WHERE
 								<text><![CDATA[Operator]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="f6665c53-f8bc-4830-a96c-9d94b3559362" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -280,7 +175,7 @@ WHERE
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="ddbf30b0-027d-49e8-bdbe-9658ceaaddb3">
-						<jr:columnHeader style="table_CH" height="30">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="77d5ffdb-fcda-46e1-b40e-5d3841397f5c" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -289,7 +184,7 @@ WHERE
 								<text><![CDATA[Circle]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="c783c745-8218-40c9-a34a-2fcedf73f8c4" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -298,7 +193,7 @@ WHERE
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="da47a2fe-87a8-47ac-9a9c-3040a5549222">
-						<jr:columnHeader style="table_CH" height="30">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="7ab5f539-0a09-40ac-bb59-e8b95dd73d68" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -307,7 +202,7 @@ WHERE
 								<text><![CDATA[Start Date]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="b15d7c7b-1ddf-4e40-ba81-1d47d8858102" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -316,7 +211,7 @@ WHERE
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="88cdabc2-8f91-436b-a431-69eee4a2edfb">
-						<jr:columnHeader style="table_CH" height="30">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="bbbdf4be-8c61-4245-b612-83428e1f6bd7" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -325,7 +220,7 @@ WHERE
 								<text><![CDATA[Start Time]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="d1316544-09b6-472c-8f31-302078351496" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -334,7 +229,7 @@ WHERE
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="e75755d4-5828-4a3a-94e9-0de24bf76cc7">
-						<jr:columnHeader style="table_CH" height="30">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="771e9819-e76c-440a-93bf-36e57b3c4e25" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -343,7 +238,7 @@ WHERE
 								<text><![CDATA[End Date]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="14016a55-dbb4-4a07-9f38-2a1156462142" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -352,7 +247,7 @@ WHERE
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="9e37da57-f87b-4dc3-b87b-fd5fdf3a7950">
-						<jr:columnHeader style="table_CH" height="30">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="bf094655-d206-4b6e-b50d-c2cf18f38fb6" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -361,7 +256,7 @@ WHERE
 								<text><![CDATA[End Time]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="6451cba6-d209-4876-b4c6-6e22f4f21117" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -370,7 +265,7 @@ WHERE
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="ac5ce177-af8e-43c7-a714-2a113a11d13d">
-						<jr:columnHeader style="table_CH" height="30">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="db5a15ff-2f7a-4291-9bcb-5139727fb8b8" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -379,11 +274,137 @@ WHERE
 								<text><![CDATA[Call Duration(sec)]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20">
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="73efc1d4-af30-403a-ad70-29ca9d634353" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{Call Duration(sec)}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="63ee3873-2c13-495b-b67c-df970e9772e4">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="ad3f1737-8875-4638-a602-a6226f7d55fe" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[GUID]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="fc5c6208-fac7-4637-91c2-ec804ddda76c" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[""+$F{guid}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="41c5ab28-39c8-40ef-8d17-d45e0ba3a142">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="da5462e4-24e2-43cb-a183-cd656b334a72" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Name]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="e08b11af-0f8e-480c-b7c0-5181d6ed52bb" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="41c5ab28-39c8-40ef-8d17-d45e0ba3a1af">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="da5462e4-24e2-43cb-a183-cd656b334aaf" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<text><![CDATA[FLW Registration Status]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="e08b11af-0f8e-480c-b7c0-5181d6ed52af" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{FLW Registration Status}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="a9e25d27-af68-47e0-8812-f3619bfb3327">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="ba8b35b9-a676-40d5-8dd9-f028095665b8" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[District]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="05976b89-d356-4b22-bb48-d757398482d0" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{district}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="8a2895c8-2701-4c02-ae09-ee0c24b363f3">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="f536ec23-5c00-410b-a7d3-b95855fff8f9" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Block]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="2b20c75b-1a9c-451c-bc4b-48e1cfaf2df1" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{block}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="059640bf-33f5-4857-953e-343ef8ca84da">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="dffe88a1-3ed8-4374-a2fd-5b8de5fa1e58" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Panchayat]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="58395177-cfac-4322-b5e9-2143762d73fd" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{panchayat}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="3e540b5f-7e81-4662-a473-874f13f9e262">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="03362d48-170d-48c7-a647-668f12a02ec2" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Designation]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="51de9c13-a92d-42f3-a811-ac6837d4a340" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
