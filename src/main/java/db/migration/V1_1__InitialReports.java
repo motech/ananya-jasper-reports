@@ -24,7 +24,8 @@ public class V1_1__InitialReports extends ReportsMigration {
                 "QuizScore",
                 "JobAidUsageWithFlwId",
                 "CertificationCourseUsageWithFlwId",
-                "PartiallyRegisteredFLWs"
+                "PartiallyRegisteredFLWs",
+                "JobAidDatewiseNightUsage"
         };
     }
 
