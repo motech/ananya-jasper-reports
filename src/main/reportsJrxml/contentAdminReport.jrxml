@@ -3,6 +3,7 @@
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.key.col_header"/>
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -79,7 +80,7 @@
 					<jr:column uuid="e2e3d7b8-0299-4ac2-8363-253f9fd9a7ee" width="160">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="f84d0f50-638f-4a32-8258-1cea6dda9bf3" x="0" y="0" width="160" height="30"/>
+								<reportElement uuid="f84d0f50-638f-4a32-8258-1cea6dda9bf3" x="0" y="0" width="160" key="col_header" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -97,7 +98,7 @@
 					<jr:column uuid="db7e5b17-506b-42bc-b645-052d87ac37b0" width="240">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="49c61f55-ae2a-4341-ac9c-e8e3579d5adc" x="0" y="0" width="240" height="30"/>
+								<reportElement uuid="49c61f55-ae2a-4341-ac9c-e8e3579d5adc" x="0" y="0" width="240" key="col_header" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -115,7 +116,7 @@
 					<jr:column uuid="9b1be6a4-a6fd-4b81-84d9-1411138ebf3b" width="200">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="b196bd24-9c4c-4f83-9671-f7866e5266a9" x="0" y="0" width="200" height="30"/>
+								<reportElement uuid="b196bd24-9c4c-4f83-9671-f7866e5266a9" x="0" y="0" width="200" key="col_header" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -133,7 +134,7 @@
 					<jr:column uuid="27c0f26d-e5b2-4255-b55f-f619f1921170" width="200">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="b4eabb8a-fdf1-407e-99ec-5e0337d90b8f" x="0" y="0" width="200" height="30"/>
+								<reportElement uuid="b4eabb8a-fdf1-407e-99ec-5e0337d90b8f" x="0" y="0" width="200" key="col_header" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
