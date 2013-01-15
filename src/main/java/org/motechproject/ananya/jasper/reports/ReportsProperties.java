@@ -27,8 +27,10 @@ public class ReportsProperties {
     }
 
     public String getJasperserverResourceURL() {
-        return properties.getProperty("jasper.resource.url");
+        String resourcePath = properties.getProperty("jasper.resource.path");
+        return String.format("http://%s%s", getJasperserverURL(), resourcePath);
     }
+
 
     public String getJasperserverUserName() {
         return properties.getProperty("jasper.username");
@@ -36,5 +38,19 @@ public class ReportsProperties {
 
     public String getJasperserverPassword() {
         return properties.getProperty("jasper.password");
+    }
+
+    public String getJasperRoleCreationURL() {
+        String roleCreationPath = properties.getProperty("jasper.role.creation.path");
+        return String.format("http://%s%s", getJasperserverURL(), roleCreationPath);
+    }
+
+    private String getJasperserverURL() {
+        return properties.getProperty("jasper.url");
+    }
+
+    public String getJasperPermissionsURL() {
+        String setPermissionsPath = properties.getProperty("jasper.set.permissions.path");
+        return String.format("http://%s%s", getJasperserverURL(), setPermissionsPath);
     }
 }

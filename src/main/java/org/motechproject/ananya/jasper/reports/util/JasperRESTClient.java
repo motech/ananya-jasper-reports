@@ -17,6 +17,11 @@ public class JasperRESTClient {
         restTemplate = new RestTemplate();
     }
 
+    public JasperRESTClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+        this.properties = new ReportsProperties();
+    }
+
     public void deleteResource(String resourceName) {
         HttpHeaders httpHeaders = new HttpHeaders();
         String authorisation = properties.getJasperserverUserName() + ":" + properties.getJasperserverPassword();
@@ -24,5 +29,14 @@ public class JasperRESTClient {
         httpHeaders.add("Authorization", "Basic " + new String(encodedBytes).replace("\n", ""));
         HttpEntity<Object> httpEntity = new HttpEntity<Object>(null, httpHeaders);
         restTemplate.exchange(properties.getJasperserverResourceURL() + resourceName, HttpMethod.DELETE, httpEntity, Object.class);
+    }
+
+    public void put(String url, Object requestBody) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        String authorisation = properties.getJasperserverUserName() + ":" + properties.getJasperserverPassword();
+        byte[] encodedBytes = new Base64().encode(authorisation.getBytes());
+        httpHeaders.add("Authorization", "Basic " + new String(encodedBytes).replace("\n", ""));
+        HttpEntity<Object> httpEntity = new HttpEntity<Object>(requestBody, httpHeaders);
+        restTemplate.exchange(url, HttpMethod.PUT, httpEntity, Object.class);
     }
 }

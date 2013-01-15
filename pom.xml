@@ -10,6 +10,7 @@
 
     <properties>
         <spring.version>3.1.0.RELEASE</spring.version>
+        <motech-contrib.version>0.1-SNAPSHOT</motech-contrib.version>
     </properties>
 
     <distributionManagement>
@@ -63,6 +64,17 @@
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.1-901.jdbc4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.8.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
         </dependency>
     </dependencies>
 
