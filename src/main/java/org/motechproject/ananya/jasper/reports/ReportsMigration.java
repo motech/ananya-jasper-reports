@@ -28,6 +28,7 @@ public abstract class ReportsMigration implements JavaMigration {
     public void migrate(JdbcTemplate jdbcTemplate) throws Exception {
         processReportDeletion(getReportNamesToDelete());
         processReportsImport(getReportNamesToAdd());
+        processImportOfReportWithName("inputcontrols");
     }
 
     private void processReportsImport(String[] reportNamesToAdd) throws Exception {
