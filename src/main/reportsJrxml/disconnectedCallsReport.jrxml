@@ -68,6 +68,7 @@ JOIN disconnectedcalls ON cdm.call_id = disconnectedcalls.call_id
 JOIN report.front_line_worker_dimension AS flw ON cdm.flw_id = flw.id
 LEFT OUTER JOIN report.location_dimension AS ld ON cdm.location_id = ld.id
 WHERE (cdm.start_time,cdm.end_time) overlaps(DATE '$P!{StartDateExpression}', DATE '$P!{EndDatePlusDayExpression}')
+AND (cdm.called_number = 5771102 OR cdm.called_number = 33578057)
 ORDER BY flw.msisdn,cdm.start_time;]]>
 		</queryString>
 		<field name="MSISDN" class="java.lang.Long"/>
