@@ -25,7 +25,8 @@ public class V1_1__InitialReports extends ReportsMigration {
                 "JobAidUsageWithFlwId",
                 "CertificationCourseUsageWithFlwId",
                 "PartiallyRegisteredFLWs",
-                "JobAidDatewiseNightUsage"
+                "JobAidDatewiseNightUsage",
+                "DisconnectedCalls"
         };
     }
 
