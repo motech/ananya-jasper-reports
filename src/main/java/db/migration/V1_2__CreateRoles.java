@@ -1,9 +1,9 @@
 package db.migration;
 
 import db.migration.domain.Role;
-import org.motechproject.ananya.jasper.reports.ReportsProperties;
-import org.motechproject.ananya.jasper.reports.ReportsRoles;
-import org.motechproject.ananya.jasper.reports.util.JasperRESTClient;
+import org.motechproject.jasper.reports.ReportsProperties;
+import org.motechproject.jasper.reports.ReportsRoles;
+import org.motechproject.jasper.reports.util.JasperRESTClient;
 
 import java.util.ArrayList;
 import java.util.List;

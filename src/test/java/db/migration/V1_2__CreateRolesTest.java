@@ -7,8 +7,8 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.motechproject.ananya.jasper.reports.ReportsProperties;
-import org.motechproject.ananya.jasper.reports.util.JasperRESTClient;
+import org.motechproject.jasper.reports.ReportsProperties;
+import org.motechproject.jasper.reports.util.JasperRESTClient;
 
 import java.util.List;
 

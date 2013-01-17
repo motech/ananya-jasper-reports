@@ -3,10 +3,10 @@ package db.migration;
 import db.migration.domain.EntityResource;
 import db.migration.domain.Item;
 import db.migration.domain.PermissionRecipient;
-import org.motechproject.ananya.jasper.reports.AccessRights;
-import org.motechproject.ananya.jasper.reports.ReportsPermissions;
-import org.motechproject.ananya.jasper.reports.ReportsProperties;
-import org.motechproject.ananya.jasper.reports.util.JasperRESTClient;
+import org.motechproject.jasper.reports.AccessRights;
+import org.motechproject.jasper.reports.ReportsPermissions;
+import org.motechproject.jasper.reports.ReportsProperties;
+import org.motechproject.jasper.reports.util.JasperRESTClient;
 
 import java.util.ArrayList;
 import java.util.List;

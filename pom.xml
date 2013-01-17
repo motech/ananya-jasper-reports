@@ -71,6 +71,11 @@
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
         </dependency>
+        <dependency>
+            <groupId>org.motechproject.contrib-ananya</groupId>
+            <artifactId>motech-jasper-reports-migration</artifactId>
+            <version>${motech-contrib.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
