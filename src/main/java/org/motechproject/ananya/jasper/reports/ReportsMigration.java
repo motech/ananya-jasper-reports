@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 public abstract class ReportsMigration implements JavaMigration {
 
     private static final String REPORTS_PATH = "/Reports/";
-    private static final String IMPORT_COMMAND = "$JASPER_HOME/buildomatic/js-import.sh --input-zip %s --update";
+    private static final String IMPORT_COMMAND = "cd $JASPER_HOME/buildomatic/ && $JASPER_HOME/buildomatic/js-import.sh --input-zip %s --update";
 
     private final ReportsProperties reportsProperties;
 
