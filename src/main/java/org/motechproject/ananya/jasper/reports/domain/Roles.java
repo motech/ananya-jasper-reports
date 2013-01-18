@@ -3,7 +3,7 @@ package org.motechproject.ananya.jasper.reports.domain;
 import db.migration.domain.Role;
 
 public enum Roles {
-    ROLE_FLW("ROW_FLW"), ROLE_USER("ROW_USER");
+    ROLE_FLW("ROLE_FLW"), ROLE_USER("ROLE_USER");
 
     private Role role;
 
