@@ -35,6 +35,7 @@ public class V1_3__ConfigurePermissions extends ReportsPermissions {
     }
 
     private void setExecuteOnlyPermissionOnSystemFolders(Roles role, List<Item> items) {
+        items.add(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(role.name()), "repo:/Themes"));
         items.add(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(role.name()), "repo:/System Properties"));
     }
 
