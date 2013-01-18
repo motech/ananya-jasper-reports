@@ -94,7 +94,7 @@ WHERE
 		<field name="Call Duration(sec)" class="java.lang.Integer"/>
 	</subDataset>
 	<parameter name="StartDate" class="java.util.Date">
-		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Date().minus(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EndDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
