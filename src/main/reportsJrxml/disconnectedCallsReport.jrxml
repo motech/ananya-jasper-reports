@@ -307,7 +307,7 @@ ORDER BY flw.msisdn,cdm.start_time;]]>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
-								<text><![CDATA[Duration]]></text>
+								<text><![CDATA[Duration (sec)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="30" rowSpan="1">
