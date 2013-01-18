@@ -105,6 +105,9 @@ WHERE
 	<parameter name="DayStartTime" class="java.lang.String">
 		<defaultValueExpression><![CDATA["07:00"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{StartDate} < $P{EndDate}]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select 1 as dummy_field]]>
 	</queryString>
@@ -154,10 +157,25 @@ WHERE
 			</frame>
 		</band>
 	</title>
+	<pageHeader>
+		<band height="34">
+			<staticText>
+				<reportElement uuid="94ef1556-1809-430f-9d3a-498024e2df0e" x="0" y="7" width="1360" height="20" forecolor="#FF0033">
+					<printWhenExpression><![CDATA[$P{isDateValid} == false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[The given date range is invalid.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
 	<detail>
 		<band height="73" splitType="Stretch">
 			<componentElement>
-				<reportElement uuid="a21dff90-d8a3-4dac-92ba-4d893f649f02" key="table" style="table" x="5" y="11" width="1350" height="50"/>
+				<reportElement uuid="a21dff90-d8a3-4dac-92ba-4d893f649f02" key="table" style="table" x="5" y="11" width="1350" height="50">
+					<printWhenExpression><![CDATA[$P{isDateValid}]]></printWhenExpression>
+				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
 					<datasetRun subDataset="jobAidDateWiseNIghtUsageDS" uuid="6d23590c-8f0d-4881-8d2c-bb1397a0876c">
 						<datasetParameter name="StartDate">

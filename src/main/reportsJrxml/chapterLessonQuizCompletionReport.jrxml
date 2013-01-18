@@ -56,6 +56,9 @@
 	<parameter name="EndDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
+	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{StartDate} < $P{EndDate}]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select 1]]>
 	</queryString>
@@ -85,12 +88,24 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="13"/>
+		<band height="34">
+			<staticText>
+				<reportElement uuid="94ef1556-1809-430f-9d3a-498024e2df0e" x="0" y="7" width="1060" height="20" forecolor="#FF0033">
+					<printWhenExpression><![CDATA[$P{isDateValid} == false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[The given date range is invalid.]]></text>
+			</staticText>
+		</band>
 	</pageHeader>
 	<detail>
 		<band height="261">
 			<componentElement>
-				<reportElement uuid="229808c0-7d1b-4081-b121-d961fa3a76e0" key="table" style="table" x="0" y="0" width="1060" height="260"/>
+				<reportElement uuid="229808c0-7d1b-4081-b121-d961fa3a76e0" key="table" style="table" x="0" y="0" width="1060" height="260">
+					<printWhenExpression><![CDATA[$P{isDateValid}]]></printWhenExpression>
+				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
 					<datasetRun subDataset="ChapterLessonQuizDS" uuid="b4f58eb8-9ef2-4131-a8a8-28fdab48847d">
 						<datasetParameter name="StartDate">
@@ -104,7 +119,7 @@
 					<jr:column uuid="d9534f02-be5f-48ac-b3af-317ae5a79e93" width="90">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
-								<reportElement uuid="d2b9a430-6237-4cb0-9b48-10227334e33e" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="d2b9a430-6237-4cb0-9b48-10227334e33e" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -122,7 +137,7 @@
 					<jr:column uuid="b560be5b-09a2-45cf-b41a-ebe8da6369ad" width="90">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
-								<reportElement uuid="c7d6d22e-ec86-4578-8c1d-605501ca4b1f" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="c7d6d22e-ec86-4578-8c1d-605501ca4b1f" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -140,7 +155,7 @@
 					<jr:column uuid="e3906b40-ece4-43b9-989b-2d35481b72c6" width="90">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
-								<reportElement uuid="a93e27fd-3716-4946-a42f-4d33ddf18969" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="a93e27fd-3716-4946-a42f-4d33ddf18969" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -158,7 +173,7 @@
 					<jr:column uuid="e03c0623-168a-48ea-9869-3f01f89ca95d" width="90">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
-								<reportElement uuid="f5bd139a-3447-4584-a42a-513ead63edb1" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="f5bd139a-3447-4584-a42a-513ead63edb1" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -176,7 +191,7 @@
 					<jr:column uuid="36c2ceb2-24d5-4843-a3f3-d7daf314edc6" width="90">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
-								<reportElement uuid="fd3c5250-1472-4016-9517-3a7445915301" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="fd3c5250-1472-4016-9517-3a7445915301" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -194,7 +209,7 @@
 					<jr:column uuid="414a656d-9044-4a32-9635-c7cb674edfc4" width="90">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
-								<reportElement uuid="d1bce211-70a3-467b-b8e2-b21ac61e70e9" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="d1bce211-70a3-467b-b8e2-b21ac61e70e9" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -212,7 +227,7 @@
 					<jr:column uuid="b82fa470-e837-498d-9e09-ac999593451e" width="90">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
-								<reportElement uuid="f5ae0cdc-04bf-4d5d-8b83-049e87a5f089" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="f5ae0cdc-04bf-4d5d-8b83-049e87a5f089" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -230,7 +245,7 @@
 					<jr:column uuid="b80e31fe-e629-402b-9534-8f47022c89cf" width="90">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
-								<reportElement uuid="94753a10-e34d-4fab-acba-311730d916f7" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="94753a10-e34d-4fab-acba-311730d916f7" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -248,7 +263,7 @@
 					<jr:column uuid="9342226b-dfab-4e8b-83fa-62829d2e5a0b" width="90">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
-								<reportElement uuid="9a23856e-8a95-43b9-b9fe-c00a80e2783e" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="9a23856e-8a95-43b9-b9fe-c00a80e2783e" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -266,7 +281,7 @@
 					<jr:column uuid="33d5f84d-9036-4f5d-964f-f3ae50333eb2" width="90">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
-								<reportElement uuid="92e677ec-b3ac-4e65-ab40-dc2a53e84eba" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="92e677ec-b3ac-4e65-ab40-dc2a53e84eba" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -284,7 +299,7 @@
 					<jr:column uuid="960943cd-ab39-404d-807e-9850bf74e44b" width="90">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
-								<reportElement uuid="3cc9dcb5-e5f1-445f-a854-a076f8b6d2ce" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="3cc9dcb5-e5f1-445f-a854-a076f8b6d2ce" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -302,7 +317,7 @@
 					<jr:column uuid="63b4dcd4-5224-4574-a56e-6c121099f8a1" width="90">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
-								<reportElement uuid="e3fd4a36-ba0e-48ba-912e-f9bd17a79c5b" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="e3fd4a36-ba0e-48ba-912e-f9bd17a79c5b" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>

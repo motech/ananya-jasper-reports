@@ -4,8 +4,8 @@
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.key.col_header"/>
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="983"/>
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -65,6 +65,9 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 	<parameter name="EndDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
+	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{StartDate} < $P{EndDate}]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select 1 as dummy_field]]>
 	</queryString>
@@ -93,10 +96,25 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 			</frame>
 		</band>
 	</title>
+	<pageHeader>
+		<band height="50">
+			<staticText>
+				<reportElement uuid="94ef1556-1809-430f-9d3a-498024e2df0e" x="0" y="15" width="1360" height="20" forecolor="#FF0033">
+					<printWhenExpression><![CDATA[$P{isDateValid} == false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[The given date range is invalid.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
 	<detail>
 		<band height="71" splitType="Stretch">
 			<componentElement>
-				<reportElement uuid="6b2de475-3747-4835-a5b4-c270c8e72f1b" key="table" style="table" x="20" y="10" width="1320" height="50"/>
+				<reportElement uuid="6b2de475-3747-4835-a5b4-c270c8e72f1b" key="table" style="table" x="20" y="10" width="1320" height="50">
+					<printWhenExpression><![CDATA[$P{isDateValid}]]></printWhenExpression>
+				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
 					<datasetRun subDataset="QuizScoreReport" uuid="5a8dfe2a-8bb4-45cc-b3a6-1d117baf58d6">
 						<datasetParameter name="StartDate">
@@ -110,7 +128,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="1e4f641d-aef3-4590-8612-30d795349d29" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="44bba5e5-042a-49dd-a19f-b6783d5baff4" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="44bba5e5-042a-49dd-a19f-b6783d5baff4" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -128,7 +146,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="3c389f74-c187-4f9d-b4a7-0ecfb168a927" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="797141a7-0c19-4f63-88d0-5948b52cc579" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="797141a7-0c19-4f63-88d0-5948b52cc579" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -146,7 +164,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="14301f29-f09f-4dd7-972b-0e7f829552ec" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="5fcaec6c-70e8-4c10-b31a-8e843e9b7048" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="5fcaec6c-70e8-4c10-b31a-8e843e9b7048" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -164,7 +182,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="c51c7435-a843-4001-87c8-1c2b579aa243" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="79f41a12-12af-44d1-bd9c-a31ba6097d54" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="79f41a12-12af-44d1-bd9c-a31ba6097d54" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -182,7 +200,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="ccfcc40d-b41b-45ff-99a6-aed407082100" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="045e9c7e-8012-4da2-bebf-61429ef081e9" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="045e9c7e-8012-4da2-bebf-61429ef081e9" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -200,7 +218,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="250dcd84-f5b8-4764-b1c0-08b63e3df2a5" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="0104293b-0b7d-4145-923b-1cd28ba1f5ae" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="0104293b-0b7d-4145-923b-1cd28ba1f5ae" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -218,7 +236,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="4d98703d-f7c6-4983-ac2f-5d2b29b45711" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="251988c4-e958-4aaa-b8da-5bef2cc5a8a2" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="251988c4-e958-4aaa-b8da-5bef2cc5a8a2" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -236,7 +254,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="6adbddd7-40b4-4339-9642-db62f76332e8" width="150">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="5fe85654-a203-4102-9f19-54ec3ac13350" x="0" y="0" width="150" key="col_header" height="30"/>
+								<reportElement uuid="5fe85654-a203-4102-9f19-54ec3ac13350" key="col_header" x="0" y="0" width="150" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -254,7 +272,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="57e7973b-1976-4ebf-9f2a-b029869d4db5" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="63bef745-4200-4e0a-8610-8b0b168973e1" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="63bef745-4200-4e0a-8610-8b0b168973e1" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -272,7 +290,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="417e9d70-f6e7-4bf6-bada-084eb01169db" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="99d04488-5f02-4c29-9973-d975d6c338fa" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="99d04488-5f02-4c29-9973-d975d6c338fa" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -290,7 +308,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="a031f1c0-ea46-4f89-ac2e-e6fcc886f115" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="749dc4f8-6310-438e-9af0-653cc2b5135d" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="749dc4f8-6310-438e-9af0-653cc2b5135d" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -308,7 +326,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="1a95586b-4b94-4fc7-a281-f8cc5d4821af" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="29001a3a-b5f4-4c35-befd-be3a8c70899d" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="29001a3a-b5f4-4c35-befd-be3a8c70899d" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -326,7 +344,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="28682ec8-ac2d-4b2e-bee7-1ddfceab2e91" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="b9fb7aaf-22d6-497f-a589-11183e98693c" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="b9fb7aaf-22d6-497f-a589-11183e98693c" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -344,7 +362,7 @@ group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.
 					<jr:column uuid="7c415cd3-d3c6-47cf-a074-5e04d4b0617d" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="d330e124-b715-473b-b147-0a5f43d5f159" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="d330e124-b715-473b-b147-0a5f43d5f159" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>

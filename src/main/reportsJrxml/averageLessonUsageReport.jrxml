@@ -55,6 +55,9 @@
 	<parameter name="EndDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
+	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{StartDate} < $P{EndDate}]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select 1 as dummy_field]]>
 	</queryString>
@@ -84,12 +87,24 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="13"/>
+		<band height="36">
+			<staticText>
+				<reportElement uuid="94ef1556-1809-430f-9d3a-498024e2df0e" x="0" y="8" width="1175" height="20" forecolor="#FF0033">
+					<printWhenExpression><![CDATA[$P{isDateValid} == false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[The given date range is invalid.]]></text>
+			</staticText>
+		</band>
 	</pageHeader>
 	<detail>
 		<band height="128">
 			<componentElement>
-				<reportElement uuid="3e928abd-14a9-4942-a17b-7d7d07081c34" key="table" style="table" x="0" y="0" width="1175" height="126"/>
+				<reportElement uuid="3e928abd-14a9-4942-a17b-7d7d07081c34" key="table" style="table" x="0" y="0" width="1175" height="126">
+					<printWhenExpression><![CDATA[$P{isDateValid}]]></printWhenExpression>
+				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
 					<datasetRun subDataset="AverageLessonUsageDS" uuid="3943a9be-bca0-49f2-afef-5fac49df4d22">
 						<datasetParameter name="StartDate">
@@ -103,7 +118,7 @@
 					<jr:column uuid="de8e11ac-0f26-4d22-9e7c-208991a98754" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="5617ab76-77c8-4f94-8557-71ef71a008bf" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="5617ab76-77c8-4f94-8557-71ef71a008bf" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12" isBold="false"/>
 								</textElement>
@@ -121,7 +136,7 @@
 					<jr:column uuid="9dc8a7df-5f6f-4e09-af38-3401a8278189" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="bba0acd5-8684-4ff5-a84f-2898584e102d" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="bba0acd5-8684-4ff5-a84f-2898584e102d" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12" isBold="false"/>
 								</textElement>
@@ -139,7 +154,7 @@
 					<jr:column uuid="8fec26c6-3924-4473-83e8-73ada5b3e782" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="94d7733f-42bb-4cb2-afdf-59701fe41771" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="94d7733f-42bb-4cb2-afdf-59701fe41771" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12" isBold="false"/>
 								</textElement>
@@ -157,7 +172,7 @@
 					<jr:column uuid="ff8c8f19-97d2-48ed-9ee0-8a5866734b31" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="db9f394d-44d1-4163-9e0a-b1eec3bfaa48" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="db9f394d-44d1-4163-9e0a-b1eec3bfaa48" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12" isBold="false"/>
 								</textElement>
@@ -175,7 +190,7 @@
 					<jr:column uuid="bfe3dbfa-af34-496e-9569-8fc38221f993" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="197845a0-54b6-41a7-ae0a-077370e002d3" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="197845a0-54b6-41a7-ae0a-077370e002d3" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12" isBold="false"/>
 								</textElement>
@@ -193,7 +208,7 @@
 					<jr:column uuid="a3f913ca-b5e8-4228-a22c-85c53b54f047" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="bc3044cf-4bfe-4754-b04a-f9ebbd164d3f" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="bc3044cf-4bfe-4754-b04a-f9ebbd164d3f" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12" isBold="false"/>
 								</textElement>
@@ -211,7 +226,7 @@
 					<jr:column uuid="a4454370-6172-413d-b0a0-7e5dc9cf951d" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="f36db02e-d915-4b14-b73c-88672d7ea1ec" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="f36db02e-d915-4b14-b73c-88672d7ea1ec" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12" isBold="false"/>
 								</textElement>
@@ -229,7 +244,7 @@
 					<jr:column uuid="f89ac95a-5860-4191-bc6f-1e11226c1470" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="1789f6da-27ef-41fb-8044-957cba3c34d4" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="1789f6da-27ef-41fb-8044-957cba3c34d4" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12" isBold="false"/>
 								</textElement>
@@ -247,7 +262,7 @@
 					<jr:column uuid="27f7ae0f-854a-4cb8-9c10-a37428e8db85" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="4f4eb09f-58d5-4735-a9a5-70258fd174aa" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="4f4eb09f-58d5-4735-a9a5-70258fd174aa" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12" isBold="false"/>
 								</textElement>
@@ -265,7 +280,7 @@
 					<jr:column uuid="9f51ded0-6dd9-4f64-8eac-fc3947d0bbb0" width="180">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="08d211db-1d5e-417c-907d-56937a60020d" x="0" y="0" width="180" key="col_header" height="30"/>
+								<reportElement uuid="08d211db-1d5e-417c-907d-56937a60020d" key="col_header" x="0" y="0" width="180" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12" isBold="false"/>
 								</textElement>
@@ -283,7 +298,7 @@
 					<jr:column uuid="8f5a87c3-2e14-45c7-8288-1b3635114033" width="90">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="95f283cc-4aa5-4721-a945-9467907cd312" x="0" y="0" width="90" key="col_header" height="30"/>
+								<reportElement uuid="95f283cc-4aa5-4721-a945-9467907cd312" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12" isBold="false"/>
 								</textElement>
