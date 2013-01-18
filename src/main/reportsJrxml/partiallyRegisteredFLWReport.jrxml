@@ -163,7 +163,9 @@ LIMIT $P{Count}]]>
 				<textElement verticalAlignment="Middle">
 					<font size="24" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Partially Registered FLWs Report]]></text>
+				<text><![CDATA[Partially Registered FLWs Report
+
+]]></text>
 			</staticText>
 		</band>
 	</title>

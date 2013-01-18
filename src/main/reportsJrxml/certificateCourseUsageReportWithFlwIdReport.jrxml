@@ -217,7 +217,9 @@ ORDER BY flw.msisdn]]>
 					<textElement verticalAlignment="Middle">
 						<font size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Certificate Course Usage Report]]></text>
+					<text><![CDATA[Certificate Course Usage with Flw Id
+
+]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="5d2c8f71-3ae3-472d-a75d-0f87c5608142" x="20" y="58" width="748" height="20" forecolor="#FFFFFF"/>

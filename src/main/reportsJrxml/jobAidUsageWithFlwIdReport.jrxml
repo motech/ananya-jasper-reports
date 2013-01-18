@@ -95,7 +95,9 @@
 					<textElement>
 						<font size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Job Aid Usage Report]]></text>
+					<text><![CDATA[Job Aid Lesson Usage Report with Flw Id
+
+]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="a0351f15-b2d6-4aa1-aec7-ee15e7e71109" x="10" y="53" width="550" height="20" forecolor="#FFFFFF"/>

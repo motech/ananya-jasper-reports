@@ -112,7 +112,7 @@ ORDER BY flw.msisdn,cdm.start_time;]]>
 					<textElement>
 						<font size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Disconnected Calls]]></text>
+					<text><![CDATA[Disconnected Calls Report]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="1242e29f-cae6-4584-b428-1e9b7687780f" x="20" y="63" width="243" height="20" forecolor="#FFFFFF"/>
