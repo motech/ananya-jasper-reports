@@ -200,7 +200,7 @@ ORDER BY flw.msisdn]]>
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
 	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
-		<defaultValueExpression><![CDATA[$P{StartDate} < $P{EndDate}]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[Select 1 as dummy_field]]>

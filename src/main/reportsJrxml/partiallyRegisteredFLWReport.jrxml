@@ -144,7 +144,7 @@ LIMIT $P{Count}]]>
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
-		<defaultValueExpression><![CDATA[$P{StartDate} < $P{EndDate}]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select 1 as dummy_field]]>
