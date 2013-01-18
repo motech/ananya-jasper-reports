@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.motechproject.ananya.jasper.reports.domain.Roles;
 import org.motechproject.jasper.reports.ReportsProperties;
 import org.motechproject.jasper.reports.util.JasperRESTClient;
 
@@ -41,6 +42,6 @@ public class V1_2__CreateRolesTest {
         verify(jasperRESTClient).put(eq(url), captor.capture());
         List<Role> actualRequestBody = captor.getAllValues();
         assertEquals(1, actualRequestBody.size());
-        assertEquals(new Role("ROLE_FLW"), actualRequestBody.get(0));
+        assertEquals(Roles.ROLE_FLW.getRole(), actualRequestBody.get(0));
     }
 }
