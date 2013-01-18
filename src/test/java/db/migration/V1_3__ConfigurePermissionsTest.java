@@ -47,7 +47,7 @@ public class V1_3__ConfigurePermissionsTest {
         assertEquals(new Item(AccessRights.READ_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya"), actualRequestBody.getItem().get(1));
         assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya/Data_Sources"), actualRequestBody.getItem().get(2));
         assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya/Input_Controls"), actualRequestBody.getItem().get(3));
-        assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/Themes"), actualRequestBody.getItem().get(4));
-        assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/System Properties"), actualRequestBody.getItem().get(5));
+        assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/themes"), actualRequestBody.getItem().get(4));
+        assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/properties"), actualRequestBody.getItem().get(5));
     }
 }
