@@ -42,12 +42,11 @@ public class V1_3__ConfigurePermissionsTest {
         ArgumentCaptor<EntityResource> captor = ArgumentCaptor.forClass(EntityResource.class);
         verify(jasperRESTClient).put(eq(url), captor.capture());
         EntityResource actualRequestBody = captor.getValue();
-        assertEquals(6, actualRequestBody.getItem().size());
+        assertEquals(5, actualRequestBody.getItem().size());
         assertEquals(new Item(AccessRights.NO_ACCESS.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/Ananya"), actualRequestBody.getItem().get(0));
         assertEquals(new Item(AccessRights.READ_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya"), actualRequestBody.getItem().get(1));
         assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya/Data_Sources"), actualRequestBody.getItem().get(2));
         assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya/Input_Controls"), actualRequestBody.getItem().get(3));
-        assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/Themes"), actualRequestBody.getItem().get(4));
-        assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/System Properties"), actualRequestBody.getItem().get(5));
+        assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/System Properties"), actualRequestBody.getItem().get(4));
     }
 }
