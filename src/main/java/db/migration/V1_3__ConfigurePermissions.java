@@ -23,26 +23,25 @@ public class V1_3__ConfigurePermissions extends ReportsPermissions {
 
     @Override
     protected EntityResource getResourcePermissions() {
-        List<Item> items = new ArrayList<>();
-        restrictAccessTo(Roles.ROLE_USER, items);
-        setAppropriatePermissionTo(Roles.ROLE_FLW, items);
-        setExecuteOnlyPermissionOnSystemFolders(Roles.ROLE_USER, items);
-        return new EntityResource(items);
+        List<Item> permissions = new ArrayList<>();
+
+        addPermissionsForDefaultRole(permissions);
+        addPermissionsForFLWRole(permissions);
+
+        return new EntityResource(permissions);
     }
 
-    private void restrictAccessTo(Roles role, List<Item> items) {
-        items.add(new Item(AccessRights.NO_ACCESS.getPermissionMask(), new PermissionRecipient(role.name()), "repo:/Ananya"));
+    private void addPermissionsForDefaultRole(List<Item> permissions) {
+        PermissionRecipient permissionRecipient = new PermissionRecipient(Roles.ROLE_USER.name());
+        permissions.add(new Item(AccessRights.NO_ACCESS.getPermissionMask(), permissionRecipient, "repo:/Ananya"));
+        permissions.add(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), permissionRecipient, "repo:/themes"));
+        permissions.add(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), permissionRecipient, "repo:/properties"));
     }
 
-    private void setExecuteOnlyPermissionOnSystemFolders(Roles role, List<Item> items) {
-        items.add(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(role.name()), "repo:/themes"));
-        items.add(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(role.name()), "repo:/properties"));
-    }
-
-    private void setAppropriatePermissionTo(Roles role, List<Item> items) {
-        String roleName = role.name();
-        items.add(new Item(AccessRights.READ_ONLY.getPermissionMask(), new PermissionRecipient(roleName), "repo:/Ananya"));
-        items.add(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(roleName), "repo:/Ananya/Data_Sources"));
-        items.add(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(roleName), "repo:/Ananya/Input_Controls"));
+    private void addPermissionsForFLWRole(List<Item> permissions) {
+        PermissionRecipient permissionRecipient = new PermissionRecipient(Roles.ROLE_FLW.name());
+        permissions.add(new Item(AccessRights.READ_ONLY.getPermissionMask(), permissionRecipient, "repo:/Ananya"));
+        permissions.add(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), permissionRecipient, "repo:/Ananya/Data_Sources"));
+        permissions.add(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), permissionRecipient, "repo:/Ananya/Input_Controls"));
     }
 }
