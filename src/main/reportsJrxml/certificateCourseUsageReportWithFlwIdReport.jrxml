@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateCourseUsageReport" language="groovy" pageWidth="2110" pageHeight="842" columnWidth="2070" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="098071cc-0603-4b48-82ef-303920d38ecf">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateCourseUsageReport" language="groovy" pageWidth="2210" pageHeight="842" columnWidth="2170" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="098071cc-0603-4b48-82ef-303920d38ecf">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.key.col_header"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="1264"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -44,6 +44,7 @@
        ld.block,
        ld.panchayat,
        flw.status,
+       flw.verification_status,
        flw.designation,
        max(to_char(course_start,'yyyy-mm-dd hh24:mi:ss')) AS "Course Start",
        max(to_char(course_end,'yyyy-mm-dd hh24:mi:ss')) AS "Course End",
@@ -165,11 +166,12 @@ GROUP BY ld.district,
          flw.circle,
          flw.name,
          flw.status,
+         flw.verification_status,
          flw.designation,
          flw.flw_id
 ORDER BY flw.msisdn]]>
 		</queryString>
-		<field name="FLW Id" class="java.lang.String"/>
+		<field name="FLW Id" class="java.lang.Object"/>
 		<field name="msisdn" class="java.lang.Long"/>
 		<field name="operator" class="java.lang.String"/>
 		<field name="circle" class="java.lang.String"/>
@@ -178,6 +180,7 @@ ORDER BY flw.msisdn]]>
 		<field name="block" class="java.lang.String"/>
 		<field name="panchayat" class="java.lang.String"/>
 		<field name="status" class="java.lang.String"/>
+		<field name="verification_status" class="java.lang.String"/>
 		<field name="designation" class="java.lang.String"/>
 		<field name="Course Start" class="java.lang.String"/>
 		<field name="Course End" class="java.lang.String"/>
@@ -209,9 +212,9 @@ ORDER BY flw.msisdn]]>
 		<band/>
 	</background>
 	<title>
-		<band height="81">
+		<band height="66">
 			<frame>
-				<reportElement uuid="d2fed292-47c7-4c88-9161-d035455dd291" mode="Opaque" x="0" y="0" width="2070" height="81" backcolor="#006699"/>
+				<reportElement uuid="d2fed292-47c7-4c88-9161-d035455dd291" mode="Opaque" x="-21" y="-19" width="2210" height="81" backcolor="#006699"/>
 				<staticText>
 					<reportElement uuid="488f193c-3fe4-4215-ab09-dec6e22d3f9d" x="20" y="13" width="748" height="43" forecolor="#FFFFFF"/>
 					<textElement verticalAlignment="Middle">
@@ -234,7 +237,7 @@ ORDER BY flw.msisdn]]>
 	<pageHeader>
 		<band height="37">
 			<staticText>
-				<reportElement uuid="94ef1556-1809-430f-9d3a-498024e2df0e" x="0" y="8" width="2070" height="20" forecolor="#FF0033">
+				<reportElement uuid="94ef1556-1809-430f-9d3a-498024e2df0e" x="0" y="8" width="2170" height="20" forecolor="#FF0033">
 					<printWhenExpression><![CDATA[$P{isDateValid} == false]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -247,7 +250,7 @@ ORDER BY flw.msisdn]]>
 	<detail>
 		<band height="181">
 			<componentElement>
-				<reportElement uuid="e8c92d21-7080-4e5f-af95-b973206bf2b1" key="table" style="table" stretchType="RelativeToBandHeight" x="1" y="1" width="2069" height="176">
+				<reportElement uuid="e8c92d21-7080-4e5f-af95-b973206bf2b1" key="table" style="table" stretchType="RelativeToBandHeight" x="0" y="2" width="2170" height="176">
 					<printWhenExpression><![CDATA[$P{isDateValid}]]></printWhenExpression>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
@@ -419,6 +422,24 @@ ORDER BY flw.msisdn]]>
 								<reportElement uuid="d5294e66-9109-4e09-bb28-06a30d166802" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="63a28aed-4a0a-4aed-90ec-e7373483bf30" width="90">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="29acc159-e629-43d7-a618-1d7d166533f2" key="col_header" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Verification Status]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="d5294ea6-9109-4e09-bb28-06a30d166802" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{verification_status}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -684,12 +705,12 @@ ORDER BY flw.msisdn]]>
 	<pageFooter>
 		<band height="17">
 			<textField>
-				<reportElement uuid="d99802c1-511a-4475-ae10-0b8c939f11b6" mode="Opaque" x="0" y="4" width="2030" height="13" backcolor="#E6E6E6"/>
+				<reportElement uuid="d99802c1-511a-4475-ae10-0b8c939f11b6" mode="Opaque" x="0" y="4" width="2129" height="13" backcolor="#E6E6E6"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="06c88fa4-b8b0-4e50-b803-b6e8682743b4" mode="Opaque" x="2030" y="4" width="40" height="13" backcolor="#E6E6E6"/>
+				<reportElement uuid="06c88fa4-b8b0-4e50-b803-b6e8682743b4" mode="Opaque" x="2129" y="4" width="40" height="13" backcolor="#E6E6E6"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
