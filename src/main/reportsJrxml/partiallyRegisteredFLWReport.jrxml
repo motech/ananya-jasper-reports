@@ -151,10 +151,17 @@ LIMIT $P{Count}]]>
 	<title>
 		<band height="105">
 			<frame>
-				<reportElement uuid="9f57f690-6abc-4405-b5b2-70c85fd58710" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="-20" y="0" width="1200" height="92" backcolor="#006699"/>
+				<reportElement uuid="9f57f690-6abc-4405-b5b2-70c85fd58710" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="-20" y="-19" width="1195" height="111" backcolor="#006699"/>
+				<staticText>
+					<reportElement uuid="a0351f15-b2d6-4aa1-aec7-ee15e7e71109" x="20" y="63" width="550" height="20" forecolor="#FFFFFF"/>
+					<textElement verticalAlignment="Middle">
+						<font size="14" isBold="false"/>
+					</textElement>
+					<text><![CDATA[List Of Partially Registered FLW's]]></text>
+				</staticText>
 			</frame>
 			<staticText>
-				<reportElement uuid="488f193c-3fe4-4215-ab09-dec6e22d3f9d" stretchType="RelativeToBandHeight" x="30" y="26" width="545" height="43" forecolor="#FFFFFF"/>
+				<reportElement uuid="488f193c-3fe4-4215-ab09-dec6e22d3f9d" stretchType="RelativeToBandHeight" x="0" y="0" width="545" height="43" forecolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
 					<font size="24" isBold="true"/>
 				</textElement>

@@ -152,7 +152,7 @@ OPERATOR,status]]>
 					<textElement>
 						<font size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Job Aid Lesson Usage Report with Flw Id
+					<text><![CDATA[Job Aid Usage Report with Flw Id
 
 ]]></text>
 				</staticText>

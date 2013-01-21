@@ -131,7 +131,7 @@ WHERE
 					<textElement textAlignment="Left">
 						<font size="14" isBold="false"/>
 					</textElement>
-					<text><![CDATA[List Of Disconnected Calls between]]></text>
+					<text><![CDATA[List Of Night Time Calls between]]></text>
 				</staticText>
 				<textField pattern="dd MMM yyyy">
 					<reportElement uuid="8ddecec5-0082-41a4-b1e6-953257128d6e" x="265" y="63" width="90" height="20" forecolor="#FFFFFF"/>
