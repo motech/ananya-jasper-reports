@@ -1,7 +1,7 @@
 package db.migration;
 
 import db.migration.domain.EntityResource;
-import db.migration.domain.Item;
+import db.migration.domain.PermissionItem;
 import db.migration.domain.PermissionRecipient;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,13 +43,13 @@ public class V1_3__ConfigurePermissionsTest {
         ArgumentCaptor<EntityResource> captor = ArgumentCaptor.forClass(EntityResource.class);
         verify(jasperRESTClient).put(eq(url), captor.capture());
         EntityResource actualRequestBody = captor.getValue();
-        assertEquals(6, actualRequestBody.getItem().size());
+        assertEquals(6, actualRequestBody.getPermissionItem().size());
 
-        assertTrue(actualRequestBody.getItem().contains(new Item(AccessRights.NO_ACCESS.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/Ananya")));
-        assertTrue(actualRequestBody.getItem().contains(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/themes")));
-        assertTrue(actualRequestBody.getItem().contains(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/properties")));
-        assertTrue(actualRequestBody.getItem().contains(new Item(AccessRights.READ_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya")));
-        assertTrue(actualRequestBody.getItem().contains(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya/Data_Sources")));
-        assertTrue(actualRequestBody.getItem().contains(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya/Input_Controls")));
+        assertTrue(actualRequestBody.getPermissionItem().contains(new PermissionItem(AccessRights.NO_ACCESS.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/Ananya")));
+        assertTrue(actualRequestBody.getPermissionItem().contains(new PermissionItem(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/themes")));
+        assertTrue(actualRequestBody.getPermissionItem().contains(new PermissionItem(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/properties")));
+        assertTrue(actualRequestBody.getPermissionItem().contains(new PermissionItem(AccessRights.READ_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya")));
+        assertTrue(actualRequestBody.getPermissionItem().contains(new PermissionItem(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya/Data_Sources")));
+        assertTrue(actualRequestBody.getPermissionItem().contains(new PermissionItem(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya/Input_Controls")));
     }
 }
