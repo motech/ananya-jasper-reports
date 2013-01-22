@@ -15,6 +15,7 @@ import org.motechproject.jasper.reports.ReportsProperties;
 import org.motechproject.jasper.reports.util.JasperRESTClient;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,11 +44,12 @@ public class V1_3__ConfigurePermissionsTest {
         verify(jasperRESTClient).put(eq(url), captor.capture());
         EntityResource actualRequestBody = captor.getValue();
         assertEquals(6, actualRequestBody.getItem().size());
-        assertEquals(new Item(AccessRights.NO_ACCESS.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/Ananya"), actualRequestBody.getItem().get(0));
-        assertEquals(new Item(AccessRights.READ_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya"), actualRequestBody.getItem().get(1));
-        assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya/Data_Sources"), actualRequestBody.getItem().get(2));
-        assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya/Input_Controls"), actualRequestBody.getItem().get(3));
-        assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/themes"), actualRequestBody.getItem().get(4));
-        assertEquals(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/properties"), actualRequestBody.getItem().get(5));
+
+        assertTrue(actualRequestBody.getItem().contains(new Item(AccessRights.NO_ACCESS.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/Ananya")));
+        assertTrue(actualRequestBody.getItem().contains(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/themes")));
+        assertTrue(actualRequestBody.getItem().contains(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_USER.name()), "repo:/properties")));
+        assertTrue(actualRequestBody.getItem().contains(new Item(AccessRights.READ_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya")));
+        assertTrue(actualRequestBody.getItem().contains(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya/Data_Sources")));
+        assertTrue(actualRequestBody.getItem().contains(new Item(AccessRights.EXECUTE_ONLY.getPermissionMask(), new PermissionRecipient(Roles.ROLE_FLW.name()), "repo:/Ananya/Input_Controls")));
     }
 }
