@@ -5,7 +5,7 @@
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.key.col_header"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="554"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -138,8 +138,19 @@ OPERATOR,status]]>
 	<parameter name="EndDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
-	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
-		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
+	<parameter name="isFutureDate" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{StartDate}.after(new Date()) || $P{EndDate}.after(new Date())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="isDateRangeInvalid" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{StartDate} > $P{EndDate}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="errorMessage" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Your Date Range Is Invalid \n" +
+($P{isFutureDate} ? "Your date(s) is/are in Future \n" : "")+
+($P{isDateRangeInvalid} ? "\"From Date\" must not be greater than \"To Date\"\n" : "")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="errorExists" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{isFutureDate} || $P{isDateRangeInvalid}]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[Select 1 as dummy_field]]>
@@ -173,22 +184,23 @@ OPERATOR,status]]>
 	</title>
 	<pageHeader>
 		<band height="31">
-			<staticText>
-				<reportElement uuid="94ef1556-1809-430f-9d3a-498024e2df0e" x="0" y="5" width="1460" height="20" forecolor="#FF0033">
-					<printWhenExpression><![CDATA[$P{isDateValid} == false]]></printWhenExpression>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="8c74029c-1194-479d-b446-57694076ff1f" mode="Transparent" x="0" y="2" width="1460" height="27" forecolor="#FF0033" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[$P{errorExists}]]></printWhenExpression>
 				</reportElement>
-				<textElement textAlignment="Center">
-					<font size="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[The given date range is invalid.]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$P{errorMessage}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
 		<band height="65" splitType="Stretch">
 			<componentElement>
 				<reportElement uuid="95d9681f-85f7-41af-a9d4-ee64b157ea30" key="table 1" style="table 1" x="5" y="7" width="1450" height="50">
-					<printWhenExpression><![CDATA[$P{isDateValid}]]></printWhenExpression>
+					<printWhenExpression><![CDATA[!$P{errorExists}]]></printWhenExpression>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="JobAidUsageDS" uuid="0e7d866e-360e-479f-903e-4a2052241cbd">
@@ -200,7 +212,7 @@ OPERATOR,status]]>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:column uuid="20543a11-201b-4caa-be73-c4d026806579" width="90">
+					<jr:column width="90" uuid="20543a11-201b-4caa-be73-c4d026806579">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="e2a99448-eb7d-4f67-b7e7-e8688de08a38" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -218,7 +230,7 @@ OPERATOR,status]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="d22cb242-ca67-4e43-a004-55c846c8a57a" width="90">
+					<jr:column width="90" uuid="d22cb242-ca67-4e43-a004-55c846c8a57a">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="0314e308-fc17-474b-b1a8-9326a1d9e2a8" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -236,7 +248,7 @@ OPERATOR,status]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="cd6d750b-f823-4485-8ad5-0c882b73fded" width="90">
+					<jr:column width="90" uuid="cd6d750b-f823-4485-8ad5-0c882b73fded">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="8367dfdc-e68d-44e5-9498-791b909fe7f8" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -254,7 +266,7 @@ OPERATOR,status]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="50a5371b-3e45-4733-bad4-6b8eec937dcf" width="90">
+					<jr:column width="90" uuid="50a5371b-3e45-4733-bad4-6b8eec937dcf">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="e449a7ba-b9e9-4dce-bc7a-5e9ae79ba083" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -272,7 +284,7 @@ OPERATOR,status]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="c30a6865-bb72-48e0-85e1-a9b51b4792b2" width="90">
+					<jr:column width="90" uuid="c30a6865-bb72-48e0-85e1-a9b51b4792b2">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="832fcedd-d768-4a41-8e10-c7a2476adc46" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -290,7 +302,7 @@ OPERATOR,status]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="e1e67f49-f41c-4d54-96d3-3ce8457aa22a" width="90">
+					<jr:column width="90" uuid="e1e67f49-f41c-4d54-96d3-3ce8457aa22a">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="832fcedd-d768-4a41-8e10-c7a2476adc46" key="col_header" mode="Transparent" x="0" y="0" width="90" height="30" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -309,7 +321,7 @@ OPERATOR,status]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="0f115bbb-62af-43e3-855f-cb2cb82da6dc" width="90">
+					<jr:column width="90" uuid="0f115bbb-62af-43e3-855f-cb2cb82da6dc">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="832fcedd-d768-4a41-8e10-c7a2476adc46" key="col_header" mode="Transparent" x="0" y="0" width="90" height="30" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -328,7 +340,7 @@ OPERATOR,status]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="6f8c1bda-5e98-4190-a9d1-9d0217f4e2d7" width="90">
+					<jr:column width="90" uuid="6f8c1bda-5e98-4190-a9d1-9d0217f4e2d7">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="832fcedd-d768-4a41-8e10-c7a2476adc46" key="col_header" mode="Transparent" x="0" y="0" width="90" height="30" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -347,7 +359,7 @@ OPERATOR,status]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="64bf4270-f5e3-489b-8d26-006ad7085af9" width="150">
+					<jr:column width="150" uuid="64bf4270-f5e3-489b-8d26-006ad7085af9">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="98bbb638-deb9-4e3b-a2e6-6fb46ce948c3" key="col_header" x="0" y="0" width="150" height="30"/>
@@ -365,7 +377,7 @@ OPERATOR,status]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="64bf4270-f5e3-489b-8d26-006ad7085aa9" width="150">
+					<jr:column width="150" uuid="64bf4270-f5e3-489b-8d26-006ad7085aa9">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="98bbb638-deb9-4e3b-a2e6-6fb46ce9a8c3" key="col_header" x="0" y="0" width="150" height="30"/>
@@ -383,7 +395,7 @@ OPERATOR,status]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="55e83dc9-1e4b-403b-9db5-de75b2ead1e0" width="90">
+					<jr:column width="90" uuid="55e83dc9-1e4b-403b-9db5-de75b2ead1e0">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="c9b09fbf-2e2f-4cf9-8705-2ce4d4e07daa" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -401,7 +413,7 @@ OPERATOR,status]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="2a882f7f-86d8-41de-be87-95d43ac520ce" width="90">
+					<jr:column width="90" uuid="2a882f7f-86d8-41de-be87-95d43ac520ce">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="376c269b-357b-4a6c-9aaa-0306192bcb1d" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -419,7 +431,7 @@ OPERATOR,status]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="2933f560-bf11-4824-8b16-1389f9ba3587" width="90">
+					<jr:column width="90" uuid="2933f560-bf11-4824-8b16-1389f9ba3587">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="8922b9c6-042d-4617-8166-857eb544ebe4" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -437,7 +449,7 @@ OPERATOR,status]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="8566648e-db4b-47cc-aaca-99a37c0217f7" width="150">
+					<jr:column width="150" uuid="8566648e-db4b-47cc-aaca-99a37c0217f7">
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="8dfc63e0-216f-4d29-983d-90b61964de16" key="col_header" x="0" y="0" width="150" height="30"/>

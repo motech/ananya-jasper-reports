@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jobAidDateWiseNightUsageReport" language="groovy" pageWidth="1600" pageHeight="842" columnWidth="1560" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1a86da0a-853c-41e0-b18a-0d301a0e9464">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="654"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="title"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageFooter"/>
@@ -107,8 +107,19 @@ WHERE
 	<parameter name="DayStartTime" class="java.lang.String">
 		<defaultValueExpression><![CDATA["07:00"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
-		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
+	<parameter name="isFutureDate" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{StartDate}.after(new Date()) || $P{EndDate}.after(new Date())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="isDateRangeInvalid" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{StartDate} > $P{EndDate}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="errorMessage" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Your Date Range Is Invalid \n" +
+($P{isFutureDate} ? "Your date(s) is/are in Future \n" : "")+
+($P{isDateRangeInvalid} ? "\"From Date\" must not be greater than \"To Date\"\n" : "")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="errorExists" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{isFutureDate} || $P{isDateRangeInvalid}]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select 1 as dummy_field]]>
@@ -160,23 +171,24 @@ WHERE
 		</band>
 	</title>
 	<pageHeader>
-		<band height="34">
-			<staticText>
-				<reportElement uuid="94ef1556-1809-430f-9d3a-498024e2df0e" x="0" y="7" width="1560" height="20" forecolor="#FF0033">
-					<printWhenExpression><![CDATA[$P{isDateValid} == false]]></printWhenExpression>
+		<band height="47">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="8c74029c-1194-479d-b446-57694076ff1f" mode="Transparent" x="0" y="10" width="1560" height="27" forecolor="#FF0033" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[$P{errorExists}]]></printWhenExpression>
 				</reportElement>
-				<textElement textAlignment="Center">
-					<font size="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[The given date range is invalid.]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$P{errorMessage}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
 		<band height="73" splitType="Stretch">
 			<componentElement>
 				<reportElement uuid="a21dff90-d8a3-4dac-92ba-4d893f649f02" key="table" style="table" x="30" y="11" width="1500" height="50">
-					<printWhenExpression><![CDATA[$P{isDateValid}]]></printWhenExpression>
+					<printWhenExpression><![CDATA[!$P{errorExists}]]></printWhenExpression>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
 					<datasetRun subDataset="jobAidDateWiseNIghtUsageDS" uuid="6d23590c-8f0d-4881-8d2c-bb1397a0876c">
@@ -194,7 +206,7 @@ WHERE
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:column uuid="fac6096e-b9dd-44a5-b4cf-4536997e4ae1" width="90">
+					<jr:column width="90" uuid="fac6096e-b9dd-44a5-b4cf-4536997e4ae1">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="6cf01ac6-0095-44fd-8854-e4eed8493f7f" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -212,7 +224,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="a47785d6-d4c1-4d06-8267-09f30da64843" width="90">
+					<jr:column width="90" uuid="a47785d6-d4c1-4d06-8267-09f30da64843">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="59b83bb6-e106-421b-af9a-e15e1220871e" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -230,7 +242,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="ddbf30b0-027d-49e8-bdbe-9658ceaaddb3" width="90">
+					<jr:column width="90" uuid="ddbf30b0-027d-49e8-bdbe-9658ceaaddb3">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="77d5ffdb-fcda-46e1-b40e-5d3841397f5c" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -248,7 +260,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="da47a2fe-87a8-47ac-9a9c-3040a5549222" width="90">
+					<jr:column width="90" uuid="da47a2fe-87a8-47ac-9a9c-3040a5549222">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="7ab5f539-0a09-40ac-bb59-e8b95dd73d68" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -266,7 +278,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="88cdabc2-8f91-436b-a431-69eee4a2edfb" width="90">
+					<jr:column width="90" uuid="88cdabc2-8f91-436b-a431-69eee4a2edfb">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="bbbdf4be-8c61-4245-b612-83428e1f6bd7" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -284,7 +296,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="e75755d4-5828-4a3a-94e9-0de24bf76cc7" width="90">
+					<jr:column width="90" uuid="e75755d4-5828-4a3a-94e9-0de24bf76cc7">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="771e9819-e76c-440a-93bf-36e57b3c4e25" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -302,7 +314,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="9e37da57-f87b-4dc3-b87b-fd5fdf3a7950" width="90">
+					<jr:column width="90" uuid="9e37da57-f87b-4dc3-b87b-fd5fdf3a7950">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="bf094655-d206-4b6e-b50d-c2cf18f38fb6" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -320,7 +332,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="ac5ce177-af8e-43c7-a714-2a113a11d13d" width="90">
+					<jr:column width="90" uuid="ac5ce177-af8e-43c7-a714-2a113a11d13d">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="db5a15ff-2f7a-4291-9bcb-5139727fb8b8" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -338,7 +350,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="63ee3873-2c13-495b-b67c-df970e9772e4" width="90">
+					<jr:column width="90" uuid="63ee3873-2c13-495b-b67c-df970e9772e4">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="ad3f1737-8875-4638-a602-a6226f7d55fe" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -356,7 +368,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="41c5ab28-39c8-40ef-8d17-d45e0ba3a142" width="90">
+					<jr:column width="90" uuid="41c5ab28-39c8-40ef-8d17-d45e0ba3a142">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="da5462e4-24e2-43cb-a183-cd656b334a72" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -374,7 +386,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="41c5ab28-39c8-40ef-8d17-d45e0ba3a1af" width="90">
+					<jr:column width="90" uuid="41c5ab28-39c8-40ef-8d17-d45e0ba3a1af">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="da5462e4-24e2-43cb-a183-cd656b334aaf" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -392,7 +404,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="41caab28-39c8-40ef-8d17-d45e0ba3a1af" width="90">
+					<jr:column width="90" uuid="41caab28-39c8-40ef-8d17-d45e0ba3a1af">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="daa462e4-24e2-43cb-a183-cd656b334aaf" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -410,7 +422,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="a9e25d27-af68-47e0-8812-f3619bfb3327" width="90">
+					<jr:column width="90" uuid="a9e25d27-af68-47e0-8812-f3619bfb3327">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="ba8b35b9-a676-40d5-8dd9-f028095665b8" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -428,7 +440,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="8a2895c8-2701-4c02-ae09-ee0c24b363f3" width="90">
+					<jr:column width="90" uuid="8a2895c8-2701-4c02-ae09-ee0c24b363f3">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="f536ec23-5c00-410b-a7d3-b95855fff8f9" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -446,7 +458,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="059640bf-33f5-4857-953e-343ef8ca84da" width="90">
+					<jr:column width="90" uuid="059640bf-33f5-4857-953e-343ef8ca84da">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="dffe88a1-3ed8-4374-a2fd-5b8de5fa1e58" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -464,7 +476,7 @@ WHERE
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="3e540b5f-7e81-4662-a473-874f13f9e262" width="90">
+					<jr:column width="90" uuid="3e540b5f-7e81-4662-a473-874f13f9e262">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="03362d48-170d-48c7-a647-668f12a02ec2" key="col_header" x="0" y="0" width="90" height="30"/>
