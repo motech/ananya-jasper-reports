@@ -5,7 +5,7 @@
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.key.col_header"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="1264"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -171,7 +171,7 @@ GROUP BY ld.district,
          flw.flw_id
 ORDER BY flw.msisdn]]>
 		</queryString>
-		<field name="FLW Id" class="java.lang.Object"/>
+		<field name="FLW Id" class="java.lang.String"/>
 		<field name="msisdn" class="java.lang.Long"/>
 		<field name="operator" class="java.lang.String"/>
 		<field name="circle" class="java.lang.String"/>
@@ -250,7 +250,7 @@ ORDER BY flw.msisdn]]>
 	<detail>
 		<band height="181">
 			<componentElement>
-				<reportElement uuid="e8c92d21-7080-4e5f-af95-b973206bf2b1" key="table" style="table" stretchType="RelativeToBandHeight" x="0" y="2" width="2170" height="176">
+				<reportElement uuid="e8c92d21-7080-4e5f-af95-b973206bf2b1" key="table" style="table" x="0" y="2" width="2170" height="176">
 					<printWhenExpression><![CDATA[$P{isDateValid}]]></printWhenExpression>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
@@ -263,7 +263,7 @@ ORDER BY flw.msisdn]]>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:column uuid="976f4704-2926-40db-9932-8ff1c994ee2a" width="90">
+					<jr:column width="90" uuid="976f4704-2926-40db-9932-8ff1c994ee2a">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="e109ee71-6b95-4a1c-9f3a-9c7dd4714bf4" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -281,7 +281,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="efa9cb82-2d4e-49e2-9976-732aa8c96ea5" width="90">
+					<jr:column width="90" uuid="efa9cb82-2d4e-49e2-9976-732aa8c96ea5">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="a4328684-7da8-41b2-8f3d-5a4e56cc68b8" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -299,7 +299,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="3fd975f5-bc4b-414c-98cb-e832f22999a1" width="90">
+					<jr:column width="90" uuid="3fd975f5-bc4b-414c-98cb-e832f22999a1">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="bcc6387b-c725-4cd6-a647-e4911635c5bb" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -317,7 +317,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="c357fec8-a9ae-42a8-9987-64319feb6748" width="90">
+					<jr:column width="90" uuid="c357fec8-a9ae-42a8-9987-64319feb6748">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="8ce56687-470b-4756-bfd4-d1a402af45d7" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -335,7 +335,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="920b690e-b34e-42f1-8603-e0e1dd6215f8" width="90">
+					<jr:column width="90" uuid="920b690e-b34e-42f1-8603-e0e1dd6215f8">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="671191b7-5ed1-4987-87d1-950c73b3bdeb" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -353,7 +353,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="b2ce2ff0-a07c-4ff0-af89-70ae2a48511b" width="90">
+					<jr:column width="90" uuid="b2ce2ff0-a07c-4ff0-af89-70ae2a48511b">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="7f4c415e-ec94-4fd1-ae56-bb2049119283" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -371,7 +371,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="6c991acf-415c-4a8b-ae73-7af181c6af3f" width="90">
+					<jr:column width="90" uuid="6c991acf-415c-4a8b-ae73-7af181c6af3f">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="cfdcea02-f267-4672-bc96-5ef550ee17c2" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -389,7 +389,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="ea5a9273-0bee-4450-90f4-0ac6bd98f089" width="90">
+					<jr:column width="90" uuid="ea5a9273-0bee-4450-90f4-0ac6bd98f089">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="9f27d822-e1ff-4084-8f81-ecb32038fb07" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -407,7 +407,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="63a28ced-4a0a-4aed-90ec-e7373483bf30" width="90">
+					<jr:column width="90" uuid="63a28ced-4a0a-4aed-90ec-e7373483bf30">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="292cc159-e629-43d7-a618-1d7d166533f2" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -425,7 +425,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="63a28aed-4a0a-4aed-90ec-e7373483bf30" width="90">
+					<jr:column width="90" uuid="63a28aed-4a0a-4aed-90ec-e7373483bf30">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="29acc159-e629-43d7-a618-1d7d166533f2" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -443,7 +443,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="fadbdb58-f4b2-4983-be90-80b84c922c66" width="90">
+					<jr:column width="90" uuid="fadbdb58-f4b2-4983-be90-80b84c922c66">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="97b9ed3e-34d4-46b5-adb6-a0f23ec01e0e" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -461,7 +461,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="a272dca9-a238-4f0d-91b6-050c37e5f527" width="90">
+					<jr:column width="90" uuid="a272dca9-a238-4f0d-91b6-050c37e5f527">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="d5b8c137-d342-4307-a45c-ffc5e1cbe8c7" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -479,7 +479,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="98a48fe2-0c9e-4faf-b904-4213ee2d30c5" width="90">
+					<jr:column width="90" uuid="98a48fe2-0c9e-4faf-b904-4213ee2d30c5">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="fb520f49-0463-4314-876f-46b03c36fd06" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -497,7 +497,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="e96255e1-ae43-4a6c-9581-b9184e581acc" width="90">
+					<jr:column width="90" uuid="e96255e1-ae43-4a6c-9581-b9184e581acc">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="9ce043e3-d7e5-481f-9372-82d85dd06f84" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -515,7 +515,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="0ffee813-1681-44ed-baf9-e42550c9ea03" width="90">
+					<jr:column width="90" uuid="0ffee813-1681-44ed-baf9-e42550c9ea03">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="93812b0d-c898-45f7-bb24-27d2f18e177c" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -533,7 +533,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="703f1eb4-b278-43dc-824b-cdfcf7568ae0" width="90">
+					<jr:column width="90" uuid="703f1eb4-b278-43dc-824b-cdfcf7568ae0">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="73658106-d093-471d-885e-73b4e58aa28f" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -551,7 +551,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="ab69b147-7e6a-4f1d-8fc3-834e9cf48bb3" width="90">
+					<jr:column width="90" uuid="ab69b147-7e6a-4f1d-8fc3-834e9cf48bb3">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="ed9eafd6-4840-4924-a66a-344f2f0dba6c" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -569,7 +569,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="397d3aa9-ac7d-4ef1-a0e0-06994f80fc72" width="90">
+					<jr:column width="90" uuid="397d3aa9-ac7d-4ef1-a0e0-06994f80fc72">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="3461c2c8-93a5-4e58-8a77-d4bd466ad753" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -587,7 +587,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="192afb5c-05a0-4891-807d-c8ee13322d56" width="90">
+					<jr:column width="90" uuid="192afb5c-05a0-4891-807d-c8ee13322d56">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="2a74c4a9-b8bd-458d-841d-8a26427cfe9e" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -605,7 +605,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="288452ab-11cb-4808-af4a-fa9983a66d2b" width="90">
+					<jr:column width="90" uuid="288452ab-11cb-4808-af4a-fa9983a66d2b">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="a5f3892b-d6a3-4a64-abbf-d61b543cb866" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -623,7 +623,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="c7de89e0-58a3-11e2-bcfd-0800200c9a66" width="90">
+					<jr:column width="90" uuid="c7de89e0-58a3-11e2-bcfd-0800200c9a66">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="e273ce50-58a3-11e2-bcfd-0800200c9a66" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -641,7 +641,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="a581d13d-3834-4efe-870f-91ccb70af6a7" width="90">
+					<jr:column width="90" uuid="a581d13d-3834-4efe-870f-91ccb70af6a7">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="ec4a1b1e-74be-4d64-9e70-10813924a128" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -659,7 +659,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="b137dbaa-4606-4ae6-bc47-56082f33f22d" width="90">
+					<jr:column width="90" uuid="b137dbaa-4606-4ae6-bc47-56082f33f22d">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="a583b6cb-5c05-41d5-a250-5d552730e409" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -677,7 +677,7 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="22471883-5d78-4de7-a5ed-eb9c7db56bb3" width="90">
+					<jr:column width="90" uuid="22471883-5d78-4de7-a5ed-eb9c7db56bb3">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="112bfc4c-3ddc-4cda-8595-6314a4512985" key="col_header" x="0" y="0" width="90" height="30"/>
