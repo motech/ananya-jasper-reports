@@ -103,7 +103,7 @@
 				<reportElement uuid="56b30670-b5ce-4f87-a9fc-0b4b2b28f874" key="table" style="table" x="35" y="1" width="841" height="50">
 					<printWhenExpression><![CDATA[$P{isDateValid}]]></printWhenExpression>
 				</reportElement>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
 					<datasetRun subDataset="JobAidDateWiseDS" uuid="4ed5893e-784d-4fc9-a960-702f2f6c8201">
 						<datasetParameter name="StartDate">
 							<datasetParameterExpression><![CDATA[$P{StartDate}]]></datasetParameterExpression>
@@ -113,7 +113,7 @@
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:column uuid="8edd4b67-1d47-44c4-adc0-1c576f015caf" width="90">
+					<jr:column width="90" uuid="8edd4b67-1d47-44c4-adc0-1c576f015caf">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="632dc425-76a6-4041-aec5-1df48881f3fe" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -131,7 +131,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="0b3eeec8-4c1e-4b7f-a06e-a952f6dddfea" width="90">
+					<jr:column width="90" uuid="0b3eeec8-4c1e-4b7f-a06e-a952f6dddfea">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="a796df25-08f7-45fa-9b27-14ac35b26aad" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -149,7 +149,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="e07e087b-a93a-4c9b-8514-f019bf8d82f0" width="90">
+					<jr:column width="90" uuid="e07e087b-a93a-4c9b-8514-f019bf8d82f0">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="a03956ea-ef54-405f-ba71-7f31f1a4be29" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -167,7 +167,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="13c9f31d-2196-4c6f-a5f6-2fc3a2463e23" width="90">
+					<jr:column width="90" uuid="13c9f31d-2196-4c6f-a5f6-2fc3a2463e23">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="f6cea6d4-90ce-4112-ae66-06758662cb75" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -185,7 +185,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="1703b98d-d59c-47c4-bbfa-3c6721b63208" width="90">
+					<jr:column width="90" uuid="1703b98d-d59c-47c4-bbfa-3c6721b63208">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="0cf68397-da25-4110-9928-79055e02cf06" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -203,7 +203,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="2e867fc9-24e8-46d2-9ba7-2f792c63ca24" width="120">
+					<jr:column width="120" uuid="2e867fc9-24e8-46d2-9ba7-2f792c63ca24">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="dfaaaae6-adac-4aac-be1b-8e3e4a15c642" key="col_header" x="0" y="0" width="120" height="30"/>
@@ -221,7 +221,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="4d147402-413e-42d9-a66b-c9670bd232bf" width="90">
+					<jr:column width="90" uuid="4d147402-413e-42d9-a66b-c9670bd232bf">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="94b296f1-3f52-4df1-bd84-5523f7986a2c" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -239,7 +239,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="de412f32-e837-4e20-ab6a-a3a869d7e381" width="90">
+					<jr:column width="90" uuid="de412f32-e837-4e20-ab6a-a3a869d7e381">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="2ec6b96d-ba38-4a70-ab4f-9865a285cea5" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -257,7 +257,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="69c09e3b-21e4-46e0-9853-6010d812dc64" width="90">
+					<jr:column width="90" uuid="69c09e3b-21e4-46e0-9853-6010d812dc64">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="3906fb0e-a426-4274-8827-704dbd8af99a" key="col_header" x="0" y="0" width="90" height="30"/>
