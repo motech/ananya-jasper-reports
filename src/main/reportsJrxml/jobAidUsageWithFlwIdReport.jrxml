@@ -202,7 +202,7 @@ OPERATOR,status]]>
 				<reportElement uuid="95d9681f-85f7-41af-a9d4-ee64b157ea30" key="table 1" style="table 1" x="5" y="7" width="1450" height="50">
 					<printWhenExpression><![CDATA[!$P{errorExists}]]></printWhenExpression>
 				</reportElement>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
 					<datasetRun subDataset="JobAidUsageDS" uuid="0e7d866e-360e-479f-903e-4a2052241cbd">
 						<datasetParameter name="StartDate">
 							<datasetParameterExpression><![CDATA[$P{StartDate}]]></datasetParameterExpression>
