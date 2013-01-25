@@ -117,7 +117,7 @@ GROUP BY flw.flw_id, flw.operator, flw.msisdn, flw.name, flw.designation, flw.st
 ORDER BY min(cd.start_time) DESC
 LIMIT $P{Count}]]>
 		</queryString>
-		<field name="FLW ID" class="java.lang.Object"/>
+		<field name="FLW ID" class="java.lang.String"/>
 		<field name="msisdn" class="java.lang.Long"/>
 		<field name="operator" class="java.lang.String"/>
 		<field name="circle" class="java.lang.String"/>
