@@ -130,7 +130,7 @@ OPERATOR,status]]>
 		<field name="Call count" class="java.lang.Long"/>
 		<field name="Usage in Mins" class="java.math.BigDecimal"/>
 		<field name="Average Usage in Mins" class="java.math.BigDecimal"/>
-		<field name="flw_id" class="java.lang.Object"/>
+		<field name="flw_id" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="StartDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
@@ -463,7 +463,7 @@ OPERATOR,status]]>
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="22e781e6-1954-4c97-8778-50fa406e5fc0" x="0" y="0" width="150" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[""+$F{flw_id}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{flw_id}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
