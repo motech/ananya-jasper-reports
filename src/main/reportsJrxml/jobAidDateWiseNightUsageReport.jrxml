@@ -78,7 +78,7 @@ WHERE
      ("time" (call.end_time) not between "time" '$P!{DayStartTime}' and "time" '$P!{DayEndTime}'))
     ORDER BY MSISDN, "Start Date" asc, "Start Time" asc, "End Date" asc, "End Time" asc;]]>
 		</queryString>
-		<field name="guid" class="java.lang.Object"/>
+		<field name="guid" class="java.lang.String"/>
 		<field name="name" class="java.lang.String"/>
 		<field name="FLW Registration Status" class="java.lang.String"/>
 		<field name="Verification Status" class="java.lang.String"/>
@@ -364,7 +364,7 @@ WHERE
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="fc5c6208-fac7-4637-91c2-ec804ddda76c" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[""+$F{guid}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{guid}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

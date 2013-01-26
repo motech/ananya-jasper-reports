@@ -80,7 +80,7 @@ ORDER BY flw.msisdn,cdm.start_time;]]>
 		<field name="End Date" class="java.lang.String"/>
 		<field name="End Time" class="java.lang.String"/>
 		<field name="Duration" class="java.lang.Double"/>
-		<field name="GUID" class="java.lang.Object"/>
+		<field name="GUID" class="java.lang.String"/>
 		<field name="Name" class="java.lang.String"/>
 		<field name="FLW Registration Status" class="java.lang.String"/>
 		<field name="Verification Status" class="java.lang.String"/>
@@ -346,7 +346,7 @@ ORDER BY flw.msisdn,cdm.start_time;]]>
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="867fa8b0-3594-4dff-a5ee-755e13ed4c24" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[""+$F{GUID}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{GUID}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
