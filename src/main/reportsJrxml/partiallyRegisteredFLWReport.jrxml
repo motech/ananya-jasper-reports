@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="partiallyRegisteredFLWReport" language="groovy" pageWidth="1200" pageHeight="842" columnWidth="1160" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eaacaa12-9d77-4fde-a8d4-3b2f9e7c4295">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="partiallyRegisteredFLWReport" language="groovy" pageWidth="1300" pageHeight="842" columnWidth="1260" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eaacaa12-9d77-4fde-a8d4-3b2f9e7c4295">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
@@ -100,22 +100,23 @@
 		<queryString>
 			<![CDATA[SELECT flw.flw_id as "FLW ID", flw.msisdn, flw.operator, flw.circle, flw.name AS "FLW Name",
        ld.district, ld.block, ld.panchayat,
-       flw.status, flw.designation, flw.verification_status
-FROM report.call_duration_measure cd,
-     report.time_dimension td,
-     report.front_line_worker_dimension flw,
-     report.location_dimension ld
-WHERE ld.id=cd.location_id
-  AND cd.flw_id = flw.id
-  AND td.id = cd.time_id
-  AND td.date >= $P{StartDate}
-  AND td.date <= $P{EndDate}
-  AND flw.status = 'PARTIALLY_REGISTERED'
+       flw.status, flw.designation, flw.verification_status,
+       round(sum(case when cd.type = 'CERTIFICATECOURSE' then cd.duration else 0 end)/60.0,2) AS "Certificate Course Duration in Mins",
+       round(sum(case when cd.type = 'JOBAID' then cd.duration else 0 end)/60.0,2) as "Job Aid Duration in Mins"
+FROM report.call_duration_measure cd
+join report.time_dimension td on td.id = cd.time_id
+join report.front_line_worker_dimension flw on cd.flw_id = flw.id
+join report.location_dimension ld on ld.id=cd.location_id
+WHERE
+    flw.status = 'PARTIALLY_REGISTERED'
+    AND td.date >= $P{StartDate}
+    AND td.date <= $P{EndDate}
   AND flw.verification_status IS NULL
 GROUP BY flw.flw_id, flw.operator, flw.msisdn, flw.name, flw.designation, flw.status,
          ld.district, ld.block, ld.panchayat, flw.circle, flw.verification_status
 ORDER BY min(cd.start_time) DESC
-LIMIT $P{Count}]]>
+LIMIT $P{Count};
+]]>
 		</queryString>
 		<field name="FLW ID" class="java.lang.String"/>
 		<field name="msisdn" class="java.lang.Long"/>
@@ -128,6 +129,8 @@ LIMIT $P{Count}]]>
 		<field name="status" class="java.lang.String"/>
 		<field name="designation" class="java.lang.String"/>
 		<field name="verification_status" class="java.lang.String"/>
+		<field name="Certificate Course Duration in Mins" class="java.lang.Double"/>
+		<field name="Job Aid Duration in Mins" class="java.lang.Double"/>
 	</subDataset>
 	<parameter name="StartDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date().parse("dd-MM-yyyy","01-05-2012")]]></defaultValueExpression>
@@ -162,7 +165,7 @@ LIMIT $P{Count}]]>
 	<title>
 		<band height="105">
 			<frame>
-				<reportElement uuid="9f57f690-6abc-4405-b5b2-70c85fd58710" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="-20" y="-19" width="1195" height="111" backcolor="#006699"/>
+				<reportElement uuid="9f57f690-6abc-4405-b5b2-70c85fd58710" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="-20" y="-19" width="1300" height="111" backcolor="#006699"/>
 				<staticText>
 					<reportElement uuid="a0351f15-b2d6-4aa1-aec7-ee15e7e71109" x="20" y="63" width="550" height="20" forecolor="#FFFFFF"/>
 					<textElement verticalAlignment="Middle">
@@ -185,7 +188,7 @@ LIMIT $P{Count}]]>
 	<pageHeader>
 		<band height="38">
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="8c74029c-1194-479d-b446-57694076ff1f" mode="Transparent" x="0" y="6" width="1160" height="27" forecolor="#FF0033" backcolor="#FFFFFF">
+				<reportElement uuid="8c74029c-1194-479d-b446-57694076ff1f" mode="Transparent" x="0" y="6" width="1260" height="27" forecolor="#FF0033" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[$P{errorExists}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
@@ -199,7 +202,7 @@ LIMIT $P{Count}]]>
 	<detail>
 		<band height="60">
 			<componentElement>
-				<reportElement uuid="77aa574d-3109-47e9-8318-4e7889f12636" key="table 3" style="table 3" x="45" y="0" width="1070" height="60" isPrintWhenDetailOverflows="true">
+				<reportElement uuid="77aa574d-3109-47e9-8318-4e7889f12636" key="table 3" style="table 3" x="0" y="0" width="1260" height="60" isPrintWhenDetailOverflows="true">
 					<printWhenExpression><![CDATA[!$P{errorExists}]]></printWhenExpression>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
@@ -216,9 +219,9 @@ LIMIT $P{Count}]]>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
 					<jr:column width="120" uuid="32dd75e8-13c8-44f0-87e5-f968afdd45e2">
-						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+						<jr:columnHeader style="table 3_CH" height="50" rowSpan="1">
 							<staticText>
-								<reportElement uuid="10ddb70c-d083-4866-8eb2-f6b919681cd4" key="col_header" x="0" y="0" width="120" height="30"/>
+								<reportElement uuid="10ddb70c-d083-4866-8eb2-f6b919681cd4" key="col_header" x="0" y="0" width="120" height="50"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -234,9 +237,9 @@ LIMIT $P{Count}]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="ef6ea8c5-9031-4c02-88e6-c0ccc9be4b77">
-						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+						<jr:columnHeader style="table 3_CH" height="50" rowSpan="1">
 							<staticText>
-								<reportElement uuid="8e46bc54-d9f8-4802-817b-0fb98b0f7964" key="col_header" x="0" y="0" width="90" height="30"/>
+								<reportElement uuid="8e46bc54-d9f8-4802-817b-0fb98b0f7964" key="col_header" x="0" y="0" width="90" height="50"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -252,9 +255,9 @@ LIMIT $P{Count}]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="fbf75676-ae01-4362-b1f2-be168081e60d">
-						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+						<jr:columnHeader style="table 3_CH" height="50" rowSpan="1">
 							<staticText>
-								<reportElement uuid="774249e0-4e51-4136-ad5d-11a9e11fdfcc" key="col_header" x="0" y="0" width="90" height="30"/>
+								<reportElement uuid="774249e0-4e51-4136-ad5d-11a9e11fdfcc" key="col_header" x="0" y="0" width="90" height="50"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -270,9 +273,9 @@ LIMIT $P{Count}]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="b5b79745-c385-435b-9b7f-92427c057990">
-						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+						<jr:columnHeader style="table 3_CH" height="50" rowSpan="1">
 							<staticText>
-								<reportElement uuid="eb729468-e2a0-401c-9d43-41907cd5303b" key="col_header" x="0" y="0" width="90" height="30"/>
+								<reportElement uuid="eb729468-e2a0-401c-9d43-41907cd5303b" key="col_header" x="0" y="0" width="90" height="50"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -288,9 +291,9 @@ LIMIT $P{Count}]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="8128c080-22b8-45d3-b1a6-0173dd2a7113">
-						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+						<jr:columnHeader style="table 3_CH" height="50" rowSpan="1">
 							<staticText>
-								<reportElement uuid="f9644b4f-39e0-4740-8ba4-0c57455b38e8" key="col_header" x="0" y="0" width="90" height="30"/>
+								<reportElement uuid="f9644b4f-39e0-4740-8ba4-0c57455b38e8" key="col_header" x="0" y="0" width="90" height="50"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -306,9 +309,9 @@ LIMIT $P{Count}]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="91874162-1234-4116-a6a8-519005a2cd34">
-						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+						<jr:columnHeader style="table 3_CH" height="50" rowSpan="1">
 							<staticText>
-								<reportElement uuid="9acfff77-c2b9-4a60-b680-b7f9cd5e6c89" key="col_header" x="0" y="0" width="90" height="30"/>
+								<reportElement uuid="9acfff77-c2b9-4a60-b680-b7f9cd5e6c89" key="col_header" x="0" y="0" width="90" height="50"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -324,9 +327,9 @@ LIMIT $P{Count}]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="ce5ad244-8f3b-439b-b9db-fc6e9c089b94">
-						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+						<jr:columnHeader style="table 3_CH" height="50" rowSpan="1">
 							<staticText>
-								<reportElement uuid="73dd06fc-5b01-4526-812d-98e50f19ec65" key="col_header" x="0" y="0" width="90" height="30"/>
+								<reportElement uuid="73dd06fc-5b01-4526-812d-98e50f19ec65" key="col_header" x="0" y="0" width="90" height="50"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -342,9 +345,9 @@ LIMIT $P{Count}]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="6a12da89-3288-4a2a-a10d-2a220ed5e5bc">
-						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+						<jr:columnHeader style="table 3_CH" height="50" rowSpan="1">
 							<staticText>
-								<reportElement uuid="1dfd19e3-33a7-4e28-843d-312032c685eb" key="col_header" x="0" y="0" width="90" height="30"/>
+								<reportElement uuid="1dfd19e3-33a7-4e28-843d-312032c685eb" key="col_header" x="0" y="0" width="90" height="50"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -360,9 +363,9 @@ LIMIT $P{Count}]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="140" uuid="dc641562-a4a6-4379-b438-ab59a09d5469">
-						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+						<jr:columnHeader style="table 3_CH" height="50" rowSpan="1">
 							<staticText>
-								<reportElement uuid="ac5982a0-3861-4547-9282-b234bb77018a" key="col_header" x="0" y="0" width="140" height="30"/>
+								<reportElement uuid="ac5982a0-3861-4547-9282-b234bb77018a" key="col_header" x="0" y="0" width="140" height="50"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -378,9 +381,9 @@ LIMIT $P{Count}]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="4feae40a-ff43-4499-bf69-5a2336649eb5">
-						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+						<jr:columnHeader style="table 3_CH" height="50" rowSpan="1">
 							<staticText>
-								<reportElement uuid="fb89b93d-f271-4c60-b9a7-7f093dbf624b" key="col_header" x="0" y="0" width="90" height="30"/>
+								<reportElement uuid="fb89b93d-f271-4c60-b9a7-7f093dbf624b" key="col_header" x="0" y="0" width="90" height="50"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -396,9 +399,9 @@ LIMIT $P{Count}]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="c260be0c-58ef-4f41-8084-371ea9bcec8e">
-						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+						<jr:columnHeader style="table 3_CH" height="50" rowSpan="1">
 							<staticText>
-								<reportElement uuid="9a7f8976-b606-46b9-832f-3672242ac546" key="col_header" x="0" y="0" width="90" height="30"/>
+								<reportElement uuid="9a7f8976-b606-46b9-832f-3672242ac546" key="col_header" x="0" y="0" width="90" height="50"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -413,6 +416,42 @@ LIMIT $P{Count}]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
+					<jr:column width="90" uuid="c260bbac-58ef-4f41-8084-371ea9bcec8e">
+						<jr:columnHeader style="table 3_CH" height="50" rowSpan="1">
+							<staticText>
+								<reportElement uuid="9a7f89b6-b606-46b9-832f-3672242ac546" key="col_header" x="0" y="0" width="90" height="50"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Certificate Course Duration in Mins]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="30" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="db6a85cf-9e28-47b4-9673-efbd60838867" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Certificate Course Duration in Mins}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="c260bc0c-58ef-4f41-80a4-371ea9b6ec8e">
+						<jr:columnHeader style="table 3_CH" height="50" rowSpan="1">
+							<staticText>
+								<reportElement uuid="9a7f8976-ba06-46b9-832f-3672242ac546" key="col_header" x="0" y="0" width="90" height="50"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Job Aid Duration in Mins]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="30" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="db6df5cf-9e28-47b4-9373-efbd60838867" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Job Aid Duration in Mins}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
 				</jr:table>
 			</componentElement>
 		</band>
@@ -423,12 +462,12 @@ LIMIT $P{Count}]]>
 	<pageFooter>
 		<band height="17">
 			<textField>
-				<reportElement uuid="8cd2b69f-f159-44d8-a4df-2a69b41efb08" mode="Opaque" x="0" y="4" width="1120" height="13" backcolor="#E6E6E6"/>
+				<reportElement uuid="8cd2b69f-f159-44d8-a4df-2a69b41efb08" mode="Opaque" x="0" y="4" width="1220" height="13" backcolor="#E6E6E6"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="7fd59b12-b1c9-479d-ba75-bcba2267a476" mode="Opaque" x="1120" y="4" width="40" height="13" backcolor="#E6E6E6"/>
+				<reportElement uuid="7fd59b12-b1c9-479d-ba75-bcba2267a476" mode="Opaque" x="1220" y="4" width="40" height="13" backcolor="#E6E6E6"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
