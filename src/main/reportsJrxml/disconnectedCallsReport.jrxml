@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="disconnectedCallsReport" language="groovy" pageWidth="1500" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="1460" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3367b391-b337-4e65-9b14-be596b69704b">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="208"/>
@@ -33,6 +34,7 @@
 		<parameter name="EndDate" class="java.util.Date" isForPrompting="false">
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
+		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<parameter name="StartDateExpression" class="java.lang.String" isForPrompting="false">
 			<defaultValueExpression><![CDATA[(($P{StartDate} == null) ? new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) :  new SimpleDateFormat("yyyy-MM-dd").format($P{StartDate}))]]></defaultValueExpression>
 		</parameter>
@@ -60,6 +62,7 @@ SELECT flw.msisdn AS "MSISDN",
        flw.name AS "Name",
        flw.status AS "FLW Registration Status",
        flw.verification_status as "Verification Status",
+       ld.state AS "State",
        ld.district AS "District",
        ld.block AS "Block",
        ld.panchayat AS "Panchayat",
@@ -69,7 +72,7 @@ JOIN disconnectedcalls ON cdm.flw_id = disconnectedcalls.flw_id
 JOIN report.front_line_worker_dimension AS flw ON cdm.flw_id = flw.id
 LEFT OUTER JOIN report.location_dimension AS ld ON cdm.location_id = ld.id
 WHERE (cdm.start_time,cdm.end_time) overlaps(DATE '$P!{StartDateExpression}', DATE '$P!{EndDatePlusDayExpression}')
-AND cdm.called_number = 5771102
+AND cdm.called_number = 5771102 and ld.state like $P{LoggedInUserAttribute_state}
 ORDER BY flw.msisdn,cdm.start_time;]]>
 		</queryString>
 		<field name="MSISDN" class="java.lang.Long"/>
@@ -84,6 +87,7 @@ ORDER BY flw.msisdn,cdm.start_time;]]>
 		<field name="Name" class="java.lang.String"/>
 		<field name="FLW Registration Status" class="java.lang.String"/>
 		<field name="Verification Status" class="java.lang.String"/>
+		<field name="State" class="java.lang.String"/>
 		<field name="District" class="java.lang.String"/>
 		<field name="Block" class="java.lang.String"/>
 		<field name="Panchayat" class="java.lang.String"/>
@@ -95,6 +99,7 @@ ORDER BY flw.msisdn,cdm.start_time;]]>
 	<parameter name="EndDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
+	<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="isFutureDate" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate}.after(new Date()) || $P{EndDate}.after(new Date())]]></defaultValueExpression>
 	</parameter>
@@ -185,6 +190,9 @@ ORDER BY flw.msisdn,cdm.start_time;]]>
 						</datasetParameter>
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="LoggedInUserAttribute_state">
+							<datasetParameterExpression><![CDATA[$P{LoggedInUserAttribute_state}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -401,6 +409,24 @@ ORDER BY flw.msisdn,cdm.start_time;]]>
 								<reportElement uuid="505fccad-e85a-43c5-8f71-a63dd8afdfc1" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{Verification Status}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="65c72469-2833-4129-ba5a-431fb126cb47">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="1aa861bb-b165-4a42-89df-f2840745ddf1" key="col_header" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[State]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="30" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="582a3756-2dde-4903-b8dc-7efd4cda71aa" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{State}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

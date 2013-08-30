@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contentAdminReport" language="groovy" pageWidth="1000" pageHeight="842" columnWidth="960" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4454a4ae-255c-48d9-b77c-104b2ce5d877">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -29,9 +30,10 @@
 	</style>
 	<subDataset name="ContentAdminDS" uuid="501ab630-40d0-4e1a-be4f-fbaa7f0a9ba2">
 		<queryString language="SQL">
-			<![CDATA[select 'IVR Certification' as "Mobile Service",content_id as "Content ID",file_name as "File Name",name as "Content Name" from report.course_item_dimension where upper(type) = 'AUDIO'
- union all
- select 'Job Aid' as "Mobile Service",content_id,file_name,name as Content_Name from report.job_aid_content_dimension where upper(type) = 'AUDIO']]>
+			<![CDATA[select 'IVR Certification' as "Mobile Service",cid.content_id as "Content ID",cidd.file_name as "File Name",cid.name as "Content Name" from report.course_item_dimension cid,
+			report.course_item_details_dimension cidd where upper(cid.type) = 'AUDIO' and cid.content_id=cidd.content_id and cidd.duration is not null 
+			union all 
+			select 'Job Aid' as "Mobile Service",jacd.content_id,jacdd.file_name,jacd.name as Content_Name from report.job_aid_content_dimension  jacd, report.job_aid_content_details_dimension jacdd where upper(jacd.type) = 'AUDIO' and jacd.content_id=jacd.content_id and jacdd.duration is not null]]>
 		</queryString>
 		<field name="Mobile Service" class="java.lang.String"/>
 		<field name="Content ID" class="java.lang.String"/>

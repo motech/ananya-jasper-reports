@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="percentageUsageReport" language="groovy" pageWidth="660" pageHeight="842" columnWidth="620" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e83f9fcc-d5bd-4ec9-a996-e9ffcd4181d9">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -34,13 +35,14 @@
 		<parameter name="EndDate" class="java.util.Date">
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
+		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
 			<![CDATA[select a.service as "Mobile Service",a.operator,a.total_count as "Total number",round((a.total_count::numeric/b.total_count::numeric)*100,1) as "Total %",a.total_uu_count as "Total UU",round((a.total_uu_count::numeric/b.total_uu_count::numeric)*100,1) as "Total UU %"
- from (select 'Job Aid' as service,flw.operator,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw where td.id= jm.time_id and flw.id = jm.flw_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1,2
+ from (select 'Job Aid' as service,flw.operator,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw,report.location_dimension ld where td.id= jm.time_id and flw.id = jm.flw_id and ld.id=jm.location_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by 1,2
  union all
- select 'IVR Certification' as service,flw.operator,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.course_item_dimension jd,report.course_item_measure jm,report.time_dimension td, report.front_line_worker_dimension flw where td.id= jm.time_id and flw.id = jm.flw_id and jm.course_item_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1,2) a,(select 'Job Aid' as service,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw where td.id= jm.time_id and flw.id = jm.flw_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1
+ select 'IVR Certification' as service,flw.operator,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.course_item_dimension jd,report.course_item_measure jm,report.time_dimension td, report.front_line_worker_dimension flw,report.location_dimension ld where td.id= jm.time_id and flw.id = jm.flw_id and ld.id=jm.location_id and jm.course_item_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by 1,2) a,(select 'Job Aid' as service,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw,report.location_dimension ld where td.id= jm.time_id and flw.id = jm.flw_id and ld.id=jm.location_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by 1
  union all
- select 'IVR Certification' as service,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.course_item_dimension jd,report.course_item_measure jm,report.time_dimension td, report.front_line_worker_dimension flw where td.id= jm.time_id and flw.id = jm.flw_id and jm.course_item_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1) b where a.service=b.service order by a.service]]>
+ select 'IVR Certification' as service,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.course_item_dimension jd,report.course_item_measure jm,report.time_dimension td, report.front_line_worker_dimension flw,report.location_dimension ld where td.id= jm.time_id and flw.id = jm.flw_id and ld.id=jm.location_id and jm.course_item_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by 1) b where a.service=b.service order by a.service]]>
 		</queryString>
 		<field name="Mobile Service" class="java.lang.String"/>
 		<field name="operator" class="java.lang.String"/>
@@ -58,6 +60,7 @@
 	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
 	</parameter>
+	<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select 1 as dummy_field]]>
 	</queryString>
@@ -113,9 +116,12 @@
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
 						</datasetParameter>
+						<datasetParameter name="LoggedInUserAttribute_state">
+							<datasetParameterExpression><![CDATA[$P{LoggedInUserAttribute_state}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:column uuid="87f46238-814b-4b87-a7c3-8caf63109e5b" width="90">
+					<jr:column width="90" uuid="87f46238-814b-4b87-a7c3-8caf63109e5b">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="4b20688d-7e32-4d65-a5dc-7dd19e1f45ab" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -133,7 +139,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="86a4b2af-56fe-45f8-b7d0-2faf370fa979" width="90">
+					<jr:column width="90" uuid="86a4b2af-56fe-45f8-b7d0-2faf370fa979">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="960bb974-77f3-4a9f-b5f9-4327485a7629" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -151,7 +157,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="a8a47bbd-57ad-4a0a-b982-8afc64aa212e" width="90">
+					<jr:column width="90" uuid="a8a47bbd-57ad-4a0a-b982-8afc64aa212e">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="41aa251a-df24-4db0-9389-0e616c3540ee" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -169,7 +175,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="bdedf6da-ee58-4689-b65a-db30c5f34ce8" width="90">
+					<jr:column width="90" uuid="bdedf6da-ee58-4689-b65a-db30c5f34ce8">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="bed3594c-566a-4efd-b444-33c87108ccec" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -187,7 +193,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="97437f5c-f58c-47c7-832d-e53994eac12f" width="90">
+					<jr:column width="90" uuid="97437f5c-f58c-47c7-832d-e53994eac12f">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="99c10f66-d13c-4030-939d-35c2c1f590f9" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -205,7 +211,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="65b5e14a-ad8f-449e-bc64-67d56ff963ba" width="90">
+					<jr:column width="90" uuid="65b5e14a-ad8f-449e-bc64-67d56ff963ba">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="042d5a3a-1d4b-4482-bcc2-19668217eaa8" key="col_header" x="0" y="0" width="90" height="30"/>

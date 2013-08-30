@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AverageCallDurationReport" language="groovy" pageWidth="1030" pageHeight="842" columnWidth="990" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2d91b369-73c4-4208-b3d0-35d84add282d">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -7,6 +8,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#999999"/>
@@ -34,17 +36,18 @@
 		<parameter name="EndDate" class="java.util.Date">
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
+		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
-			<![CDATA[select msisdn,name,district,block,panchayat,operator,circle,status,designation,round(avg(seconds_of_use)/60.0,2) as "Average Call Duration in Mins"
-from
-(select ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.circle,flw.status,flw.designation,c.call_id,sum(c.duration) as seconds_of_use
-	from report.call_duration_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,report.time_dimension td
-	where td.id = c.time_id and  c.flw_id=flw.id and c.location_id = ld.id  and c.type = 'CERTIFICATECOURSE' and td.date>=$P{StartDate} 	and td.date<=$P{EndDate}
-	group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,c.call_id,flw.circle ) call_usage
-group by district,block,panchayat,msisdn,operator,name,status,designation,circle]]>
+			<![CDATA[select msisdn,name,state,district,block,panchayat,operator,circle,status,designation,round(avg(seconds_of_use)/60.0,2) 
+			as "Average Call Duration in Mins" 
+			from 
+			(select ld.state,ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.circle,flw.status,flw.designation,c.call_id,sum(c.duration) as seconds_of_use 
+			from report.call_duration_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,report.time_dimension td 
+			where td.id = c.time_id and  c.flw_id=flw.id and c.location_id = ld.id  and c.type = 'CERTIFICATECOURSE' and td.date>=$P{StartDate} and td.date<=$P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by ld.state,ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,c.call_id,flw.circle ) call_usage group by state,district,block,panchayat,msisdn,operator,name,status,designation,circle]]>
 		</queryString>
 		<field name="msisdn" class="java.lang.Long"/>
 		<field name="name" class="java.lang.String"/>
+		<field name="state" class="java.lang.String"/>
 		<field name="district" class="java.lang.String"/>
 		<field name="block" class="java.lang.String"/>
 		<field name="panchayat" class="java.lang.String"/>
@@ -63,6 +66,7 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
 	</parameter>
+	<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select 1 as dummy_field]]>
 	</queryString>
@@ -118,9 +122,12 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
 						</datasetParameter>
+						<datasetParameter name="LoggedInUserAttribute_state">
+							<datasetParameterExpression><![CDATA[$P{LoggedInUserAttribute_state}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:column uuid="1fb8fe23-83ad-42fb-b9f7-625a40f7dde2" width="90">
+					<jr:column width="90" uuid="1fb8fe23-83ad-42fb-b9f7-625a40f7dde2">
 						<jr:columnHeader style="table_CH" height="50" rowSpan="1">
 							<staticText>
 								<reportElement uuid="5c6e05a4-22b6-45f3-8941-fa032ed46129" key="col_header" x="0" y="0" width="90" height="50"/>
@@ -138,7 +145,7 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="3c40776d-73ba-4ae3-ad37-552ecfd85671" width="90">
+					<jr:column width="90" uuid="3c40776d-73ba-4ae3-ad37-552ecfd85671">
 						<jr:columnHeader style="table_CH" height="50" rowSpan="1">
 							<staticText>
 								<reportElement uuid="45ff7b0a-b0ff-4645-a948-ad256abb386d" key="col_header" x="0" y="0" width="90" height="50"/>
@@ -156,7 +163,25 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="cabfd819-6083-4b23-8aab-891ac0db7c9c" width="90">
+					<jr:column width="90" uuid="cabfd819-6083-4b23-8aab-8976c0db7c9c">
+						<jr:columnHeader style="table_CH" height="50" rowSpan="1">
+							<staticText>
+								<reportElement uuid="65185ce8-3e1d-4f6e-af4e-e1357e060003" key="col_header" x="0" y="0" width="90" height="50"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[State]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="57ed3eb5-c5c0-4672-9d65-3e326aaa1842" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{state}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="cabfd819-6083-4b23-8aab-891ac0db7c9c">
 						<jr:columnHeader style="table_CH" height="50" rowSpan="1">
 							<staticText>
 								<reportElement uuid="65185ce8-3e1d-4f6e-af4e-e1647e060003" key="col_header" x="0" y="0" width="90" height="50"/>
@@ -174,7 +199,7 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="723e3e4a-b8fd-4512-9b5d-a8bc6158a7ac" width="90">
+					<jr:column width="90" uuid="723e3e4a-b8fd-4512-9b5d-a8bc6158a7ac">
 						<jr:columnHeader style="table_CH" height="50" rowSpan="1">
 							<staticText>
 								<reportElement uuid="e49cfe65-c05e-474a-af79-5392b7fd0bdd" key="col_header" x="0" y="0" width="90" height="50"/>
@@ -192,7 +217,7 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="9c70c357-90b3-4b49-b4b2-6d013e397f22" width="90">
+					<jr:column width="90" uuid="9c70c357-90b3-4b49-b4b2-6d013e397f22">
 						<jr:columnHeader style="table_CH" height="50" rowSpan="1">
 							<staticText>
 								<reportElement uuid="05bd3f7f-f0aa-40d6-9862-86cb4b38feec" key="col_header" x="0" y="0" width="90" height="50"/>
@@ -210,7 +235,7 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="34e5c4ff-057d-4930-8bea-88b48a21ed9b" width="90">
+					<jr:column width="90" uuid="34e5c4ff-057d-4930-8bea-88b48a21ed9b">
 						<jr:columnHeader style="table_CH" height="50" rowSpan="1">
 							<staticText>
 								<reportElement uuid="ed9cf754-9cdd-46d1-81ea-3d70dfdeb18d" key="col_header" x="0" y="0" width="90" height="50"/>
@@ -228,7 +253,7 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="c8cfa792-4c47-4772-bc93-9d909c2d17cc" width="90">
+					<jr:column width="90" uuid="c8cfa792-4c47-4772-bc93-9d909c2d17cc">
 						<jr:columnHeader style="table_CH" height="50" rowSpan="1">
 							<staticText>
 								<reportElement uuid="13d6f5aa-b75f-4095-8be2-ef56307fb6eb" key="col_header" x="0" y="0" width="90" height="50"/>
@@ -246,7 +271,7 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="cd523cfb-6744-4487-8688-3cee752bc44c" width="150">
+					<jr:column width="150" uuid="cd523cfb-6744-4487-8688-3cee752bc44c">
 						<jr:columnHeader style="table_CH" height="50" rowSpan="1">
 							<staticText>
 								<reportElement uuid="1d59a4b8-1449-434f-a662-e9ba04f24b99" key="col_header" x="0" y="0" width="150" height="50"/>
@@ -264,7 +289,7 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="e833937a-bee4-4ee4-b1d9-aa55b7d60143" width="90">
+					<jr:column width="90" uuid="e833937a-bee4-4ee4-b1d9-aa55b7d60143">
 						<jr:columnHeader style="table_CH" height="50" rowSpan="1">
 							<staticText>
 								<reportElement uuid="0c6dfd58-9df2-4e00-b79e-43a457c7b42e" key="col_header" x="0" y="0" width="90" height="50"/>
@@ -282,7 +307,7 @@ group by district,block,panchayat,msisdn,operator,name,status,designation,circle
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="5cd1f659-92ec-4561-b741-06da5f60b338" width="90">
+					<jr:column width="90" uuid="5cd1f659-92ec-4561-b741-06da5f60b338">
 						<jr:columnHeader style="table_CH" height="50" rowSpan="1">
 							<staticText>
 								<reportElement uuid="3edcb0f7-cdd1-42b8-833d-e1091873f371" key="col_header" x="0" y="0" width="90" height="50"/>

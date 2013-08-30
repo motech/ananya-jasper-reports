@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="certificateLessonUsageReport" language="groovy" pageWidth="638" pageHeight="842" columnWidth="598" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ccb74b3a-ddac-44ff-b2ab-6795fc5de060">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -34,9 +35,10 @@
 		<parameter name="EndDate" class="java.util.Date">
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
+		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
 			<![CDATA[select name as "Course Name",round(sum(duration),2) as "No. of Minutes",round(sum(duration)/sum(count),2) as "Avg Duration of Calls", sum(count - 1) as "Repeat Usage" from (
- select msisdn,cd1.name,cd.name as n1,sum(coalesce(c.duration,0))/60000.0 as duration ,count(*) as count from report.course_item_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,report.course_item_dimension cd,report.course_item_dimension cd1,report.time_dimension td where td.id = c.time_id and cd.parent_id = cd1.id and cd1.type in ('LESSON') and cd.name not ilike 'menu%' and cd.id = c.course_item_id and c.flw_id=flw.id and c.location_id = ld.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1,2,3 order by 2
+ select msisdn,cd1.name,cd.name as n1,sum(coalesce(c.duration,0))/60000.0 as duration ,count(*) as count from report.course_item_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,report.course_item_dimension cd,report.course_item_dimension cd1,report.time_dimension td where td.id = c.time_id and cd.parent_id = cd1.id and cd1.type in ('LESSON') and cd.name not ilike 'menu%' and cd.id = c.course_item_id and c.flw_id=flw.id and c.location_id = ld.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by 1,2,3 order by 2
  ) a group by 1 order by name]]>
 		</queryString>
 		<field name="Course Name" class="java.lang.String"/>
@@ -53,6 +55,7 @@
 	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
 	</parameter>
+<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select 1]]>
 	</queryString>
@@ -108,9 +111,12 @@
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
 						</datasetParameter>
+						<datasetParameter name="LoggedInUserAttribute_state">
+							<datasetParameterExpression><![CDATA[$P{LoggedInUserAttribute_state}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:column uuid="5aae5698-42a3-4fe6-95aa-356a2feb4b32" width="150">
+					<jr:column width="150" uuid="5aae5698-42a3-4fe6-95aa-356a2feb4b32">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="8f42e368-00f5-447d-b297-982c48f5d2b9" key="col_header" x="0" y="0" width="150" height="30"/>
@@ -128,7 +134,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="8823c00d-a72b-42f2-8ce2-aa2b1674b91d" width="120">
+					<jr:column width="120" uuid="8823c00d-a72b-42f2-8ce2-aa2b1674b91d">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="0f5deda1-b182-478f-a417-38325e1d7b52" key="col_header" x="0" y="0" width="120" height="30"/>
@@ -146,7 +152,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="85672307-a0f0-49f9-a13a-af5f0aecbf02" width="150">
+					<jr:column width="150" uuid="85672307-a0f0-49f9-a13a-af5f0aecbf02">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="e096fcf9-3cb0-4960-97b7-f14bc339d984" key="col_header" x="0" y="0" width="150" height="30"/>
@@ -164,7 +170,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="28c41410-a326-43e8-ad49-0782eef27fea" width="90">
+					<jr:column width="90" uuid="28c41410-a326-43e8-ad49-0782eef27fea">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="fc320d78-2023-4bd3-a78f-60b6db01b435" key="col_header" x="0" y="0" width="90" height="30"/>

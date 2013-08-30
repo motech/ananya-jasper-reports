@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateCourseUsageReport" language="groovy" pageWidth="2210" pageHeight="842" columnWidth="2170" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="098071cc-0603-4b48-82ef-303920d38ecf">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -34,12 +35,14 @@
 		<parameter name="EndDate" class="java.util.Date">
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
-		<queryString>
+		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
+<queryString>
 			<![CDATA[SELECT flw.flw_id AS "FLW Id",
        flw.msisdn,
        flw.operator,
        flw.circle,
        flw.name AS "FLW Name",
+       ld.state,
        ld.district,
        ld.block,
        ld.panchayat,
@@ -158,7 +161,9 @@ FROM
                report.front_line_worker_dimension flw
 WHERE ld.id = a.location_id
   AND flw.id = a.flw_id
-GROUP BY ld.district,
+  AND ld.state like $P{LoggedInUserAttribute_state}
+GROUP BY ld.state,
+		 ld.district,
          ld.block,
          ld.panchayat,
          flw.msisdn,
@@ -176,6 +181,7 @@ ORDER BY flw.msisdn]]>
 		<field name="operator" class="java.lang.String"/>
 		<field name="circle" class="java.lang.String"/>
 		<field name="FLW Name" class="java.lang.String"/>
+		<field name="state" class="java.lang.String"/>
 		<field name="district" class="java.lang.String"/>
 		<field name="block" class="java.lang.String"/>
 		<field name="panchayat" class="java.lang.String"/>
@@ -205,6 +211,7 @@ ORDER BY flw.msisdn]]>
 	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
 	</parameter>
+	<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[Select 1 as dummy_field]]>
 	</queryString>
@@ -260,6 +267,9 @@ ORDER BY flw.msisdn]]>
 						</datasetParameter>
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="LoggedInUserAttribute_state">
+							<datasetParameterExpression><![CDATA[$P{LoggedInUserAttribute_state}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -353,10 +363,28 @@ ORDER BY flw.msisdn]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="b2ce2ff0-a07c-4ff0-af89-70ae2a48511b">
+					<jr:column width="90" uuid="2ce22340-a07c-4ff0-af89-70ae2a48511b">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement uuid="7f4c415e-ec94-4fd1-ae56-bb2049119283" key="col_header" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[State]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="22563296-6aba-44c7-bcdc-798978892e15" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{state}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="b2ce2ff0-a07c-4f40-af89-70ae2a48511b">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="7f4c415e-ec94-4fd1-ae56-bb5349119283" key="col_header" x="0" y="0" width="90" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ivrCertificationReport" language="groovy" pageWidth="1500" pageHeight="842" columnWidth="1460" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2df126c8-06c4-4a66-8292-7d9e9b7084b5">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -34,6 +35,7 @@
 		<parameter name="EndDate" class="java.util.Date">
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
+		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
 			<![CDATA[select sum(case when agg = 'COMP' then c1 else 0 end) as "Course Completed",sum(case when agg = 'COMP' then c2 else 0 end) as "Chapter Completed",
  sum(case when agg = 'COMP' then c3 else 0 end) as "Lesson Completed",sum(case when agg = 'COMP' then c4 else 0 end) as "Quiz Completed",
@@ -44,23 +46,23 @@
  round(sum(case when agg = 'MOU' then c3 else 0 end)/sum(case when agg = 'CALLS' then c3 else 0 end),2) as "Lesson Average Duration",round(sum(case when agg = 'MOU' then c4 else 0 end)/sum(case when agg = 'CALLS' then c4 else 0 end),2) as "Quiz Average Duration",sum(case when agg = 'SMS' then c1 else 0 end) as "Sms Sent",sum(case when agg = 'DUR' then c1 else 0 end) as "Max Duration",sum(case when agg = 'DUR' then c2 else 0 end) as "Min Duration" from
  (select 'COMP' as agg,sum(case when type = 'COURSE' then 1 else 0 end) as c1,sum(case when type = 'CHAPTER' then 1 else 0 end) as c2,
  sum(case when type = 'LESSON' then 1 else 0 end) as c3,sum(case when type = 'QUIZ' then 1 else 0 end) as c4 from report.course_item_measure c,
- report.course_item_dimension cd,report.time_dimension td where c.course_item_id = cd.id and event = 'END' and c.time_id = td.id and
- td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1
+ report.course_item_dimension cd,report.time_dimension td,report.location_dimension ld where c.course_item_id = cd.id and event = 'END' and c.time_id = td.id and ld.id=c.location_id and
+ td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by 1
  union all
  select 'CALLS' as agg,sum(case when type = 'COURSE' then c.calls else 0 end) as c1,sum(case when type = 'CHAPTER' then c.calls else 0 end) as c2,sum(case when type = 'LESSON' then c.calls else 0 end) as c3,
  sum(case when type = 'QUIZ' then c.calls else 0 end) as c4 from (
- select course_item_id,count(distinct(call_id)) as calls from report.course_item_measure c,report.time_dimension td where c.time_id = td.id and
- td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1) c,report.course_item_dimension cd where c.course_item_id = cd.id group by 1
+ select course_item_id,count(distinct(call_id)) as calls from report.course_item_measure c,report.time_dimension td,report.location_dimension ld where c.time_id = td.id and ld.id=c.location_id and
+ td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by 1) c,report.course_item_dimension cd where c.course_item_id = cd.id group by 1
  union all
  select 'MOU' as agg,sum(case when type = 'COURSE' then a.mou else 0 end) as c1,sum(case when type = 'CHAPTER' then a.mou else 0 end) as c2,sum(case when type = 'LESSON' then a.mou else 0 end) as c3,sum(case when type = 'QUIZ' then a.mou else 0 end) as c4 from
- (select pcd.type,round(sum(coalesce(c.duration,0))/(1000*60.0),2) as mou from report.course_item_measure c,report.course_item_dimension cd,report.course_item_dimension pcd,report.time_dimension td where cd.type = 'AUDIO' and cd.id = c.course_item_id and pcd.id = cd.parent_id and c.time_id = td.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1) a group by 1
+ (select pcd.type,round(sum(coalesce(c.duration,0))/(1000*60.0),2) as mou from report.course_item_measure c,report.course_item_dimension cd,report.course_item_dimension pcd,report.time_dimension td,report.location_dimension ld where cd.type = 'AUDIO' and cd.id = c.course_item_id and pcd.id = cd.parent_id and c.time_id = td.id and ld.id=c.location_id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by 1) a group by 1
  union all
- select 'SUBS' as agg,count(distinct(flw_id)) as c1,0 as c2,0 as c3,0 as c4 from report.course_item_measure c,report.time_dimension td where c.time_id = td.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1
+ select 'SUBS' as agg,count(distinct(flw_id)) as c1,0 as c2,0 as c3,0 as c4 from report.course_item_measure c,report.time_dimension td,report.location_dimension ld where c.time_id = td.id and ld.id=c.location_id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by 1
  union all
- select 'SMS' as agg,count(*) as c1,0 as c2,0 as c3,0 as c4 from report.sms_sent_measure s,report.time_dimension td where sms_sent = 't' and s.time_id = td.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1
+ select 'SMS' as agg,count(*) as c1,0 as c2,0 as c3,0 as c4 from report.sms_sent_measure s,report.time_dimension td,report.location_dimension ld where sms_sent = 't' and s.time_id = td.id and ld.id=s.location_id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by 1
  union all
  select 'DUR' as agg, max(mou) as c1,min(mou) as c2,0 as c3,0 as c4 from
- (select call_id,round(sum(coalesce(c.duration,0)/(1000*60.0)),2) as mou from report.course_item_measure c,report.course_item_dimension cd,report.time_dimension td where cd.id = c.course_item_id and c.time_id = td.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1) a group by 1) report]]>
+ (select call_id,round(sum(coalesce(c.duration,0)/(1000*60.0)),2) as mou from report.course_item_measure c,report.course_item_dimension cd,report.time_dimension td,report.location_dimension ld where cd.id = c.course_item_id and c.time_id = td.id and ld.id=c.location_id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by 1) a group by 1) report]]>
 		</queryString>
 		<field name="Course Completed" class="java.math.BigDecimal"/>
 		<field name="Chapter Completed" class="java.math.BigDecimal"/>
@@ -88,6 +90,7 @@
 	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
 	</parameter>
+	<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select 1 as dummy_field]]>
 	</queryString>
@@ -143,9 +146,12 @@
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
 						</datasetParameter>
+						<datasetParameter name="LoggedInUserAttribute_state">
+							<datasetParameterExpression><![CDATA[$P{LoggedInUserAttribute_state}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:column uuid="5613de69-2b5f-4fe0-84b2-b590897ac034" width="90">
+					<jr:column width="90" uuid="5613de69-2b5f-4fe0-84b2-b590897ac034">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="e2c2c12a-53ca-4f63-be42-153d31141b7b" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -163,7 +169,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="53b9c2b4-1bed-412c-a647-1dd99fad9d89" width="90">
+					<jr:column width="90" uuid="53b9c2b4-1bed-412c-a647-1dd99fad9d89">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="ce733efd-67b7-4fd8-b2d3-d19954a29b94" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -181,7 +187,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="f765ce9e-b501-47ad-94f0-504a0ff3a330" width="90">
+					<jr:column width="90" uuid="f765ce9e-b501-47ad-94f0-504a0ff3a330">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="01a133f6-5bd1-4d24-8d07-251fb37eb9b5" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -199,7 +205,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="8b2e16e3-1f4e-4a4d-866b-487480ab71da" width="90">
+					<jr:column width="90" uuid="8b2e16e3-1f4e-4a4d-866b-487480ab71da">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="b114c359-7dce-44fb-892a-4dcfb656ed43" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -217,7 +223,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="ab4378c8-6cdd-4a89-8417-70e80d538fd8" width="90">
+					<jr:column width="90" uuid="ab4378c8-6cdd-4a89-8417-70e80d538fd8">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="b2172555-4e3f-4f9d-8c0b-cd645ec23157" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -235,7 +241,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="e98b1953-c9f9-424a-96c3-a47112793014" width="90">
+					<jr:column width="90" uuid="e98b1953-c9f9-424a-96c3-a47112793014">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="72f8d10a-d5d2-4b85-b7da-bd0bef282dc3" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -253,7 +259,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="d0b9ea1b-a0f7-4058-ba58-e9ae2864de64" width="90">
+					<jr:column width="90" uuid="d0b9ea1b-a0f7-4058-ba58-e9ae2864de64">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="29fffa60-6322-46ef-bcfd-72402b0d4724" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -271,7 +277,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="ac6f7ad3-0aa0-473a-947d-8f815485f67f" width="90">
+					<jr:column width="90" uuid="ac6f7ad3-0aa0-473a-947d-8f815485f67f">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="dfe30a5d-3b68-406b-801d-204abf508403" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -289,7 +295,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="0a7f0547-d83d-482b-9573-6cf3afc69645" width="90">
+					<jr:column width="90" uuid="0a7f0547-d83d-482b-9573-6cf3afc69645">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="8499916f-3627-445c-8edc-0d35cc813707" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -307,7 +313,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="b639340a-16fb-47ce-9c62-6752dc277a9c" width="90">
+					<jr:column width="90" uuid="b639340a-16fb-47ce-9c62-6752dc277a9c">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="dc8726be-10d3-43f5-b146-2706b1461ca0" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -325,7 +331,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="d1a60e93-587a-427e-938f-52704536d707" width="90">
+					<jr:column width="90" uuid="d1a60e93-587a-427e-938f-52704536d707">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="a0bdbb6d-15bc-47da-ad43-7dc29303bbe3" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -343,7 +349,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="f4db0b99-c54e-468d-93a4-103efc800416" width="90">
+					<jr:column width="90" uuid="f4db0b99-c54e-468d-93a4-103efc800416">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="7612af2a-b6d7-4c65-8a3e-a489073ba225" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -361,7 +367,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="fb6b1380-c851-412f-b153-516c7576abba" width="90">
+					<jr:column width="90" uuid="fb6b1380-c851-412f-b153-516c7576abba">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="ebbee961-c802-43bf-9a42-d3fd0232537e" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -379,7 +385,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="b2f87db3-c8d8-4348-ab4e-ae54abc0539c" width="90">
+					<jr:column width="90" uuid="b2f87db3-c8d8-4348-ab4e-ae54abc0539c">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="25cd08ad-4970-446d-aeb3-245c02857086" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -397,7 +403,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="2f6351de-8917-4243-84e2-cbd9b61d7f5c" width="90">
+					<jr:column width="90" uuid="2f6351de-8917-4243-84e2-cbd9b61d7f5c">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="33c9056a-1b59-4262-9fea-9786336b640f" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -415,7 +421,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="2024d929-698e-4d77-a623-fa74f01ff66a" width="90">
+					<jr:column width="90" uuid="2024d929-698e-4d77-a623-fa74f01ff66a">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="23b746e0-af16-4fa0-b43d-40cfd4ea2ad8" key="col_header" x="0" y="0" width="90" height="30"/>

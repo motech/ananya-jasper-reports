@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jobAidDateWiseNightUsageReport" language="groovy" pageWidth="1600" pageHeight="842" columnWidth="1560" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1a86da0a-853c-41e0-b18a-0d301a0e9464">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -40,6 +41,7 @@
 		<parameter name="DayStartTime" class="java.lang.String">
 			<defaultValueExpression><![CDATA["07:00"]]></defaultValueExpression>
 		</parameter>
+		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<parameter name="StartDateTimeExpression" class="java.lang.String" isForPrompting="false">
 			<defaultValueExpression><![CDATA[(new SimpleDateFormat("yyyy-MM-dd").format($P{StartDate}).toString()) +" "+ $P{DayEndTime}]]></defaultValueExpression>
 		</parameter>
@@ -52,6 +54,7 @@
 	flw.name as Name,
 	flw.status as "FLW Registration Status",
 	flw.verification_status as "Verification Status",
+	loc.state as State,
 	loc.district as District,
 	loc.block as Block,
 	loc.panchayat as Panchayat,
@@ -72,6 +75,7 @@ WHERE
 	call.type = 'CALL' AND
     call.called_number <> 33578057 AND
     call.called_number <> 5771102 AND
+    loc.state like $P{LoggedInUserAttribute_state} AND
     call.end_time >= TIMESTAMP '$P!{StartDateTimeExpression}' AND
     call.start_time <= TIMESTAMP '$P!{EndDateTimeExpression}' AND
     (("time" (call.start_time) not between "time" '$P!{DayStartTime}' and "time" '$P!{DayEndTime}') OR
@@ -82,6 +86,7 @@ WHERE
 		<field name="name" class="java.lang.String"/>
 		<field name="FLW Registration Status" class="java.lang.String"/>
 		<field name="Verification Status" class="java.lang.String"/>
+		<field name="state" class="java.lang.String"/>
 		<field name="district" class="java.lang.String"/>
 		<field name="block" class="java.lang.String"/>
 		<field name="panchayat" class="java.lang.String"/>
@@ -107,6 +112,7 @@ WHERE
 	<parameter name="DayStartTime" class="java.lang.String">
 		<defaultValueExpression><![CDATA["07:00"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="isFutureDate" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate}.after(new Date()) || $P{EndDate}.after(new Date())]]></defaultValueExpression>
 	</parameter>
@@ -197,6 +203,9 @@ WHERE
 						</datasetParameter>
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="LoggedInUserAttribute_state">
+							<datasetParameterExpression><![CDATA[$P{LoggedInUserAttribute_state}]]></datasetParameterExpression>
 						</datasetParameter>
 						<datasetParameter name="DayStartTime">
 							<datasetParameterExpression><![CDATA[$P{DayStartTime}]]></datasetParameterExpression>
@@ -419,6 +428,24 @@ WHERE
 								<reportElement uuid="e08ba1af-0fbe-480c-b7a0-5181d6ed52af" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{Verification Status}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="a9e25d27-af68-47e0-8812-f3619bfb3327">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="ba8b35b9-a676-40d5-8dd9-f028095665b8" key="col_header" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[State]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="05976b89-d356-4b22-bb48-d757398482d0" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{state}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

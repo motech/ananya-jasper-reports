@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="certificateRepeatVisitReport" language="groovy" pageWidth="1100" pageHeight="842" columnWidth="1060" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7d189f88-9e2d-4e71-bc6b-64b5b59ba0ef">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -33,13 +34,15 @@
 		<parameter name="EndDate" class="java.util.Date">
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
+			<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
-			<![CDATA[select flw.msisdn,flw.operator,flw.circle,flw.name as "FLW Name",ld.district,ld.block,ld.panchayat,flw.status,flw.designation,count(c.*) as total_calls from report.call_duration_measure c,report.front_line_worker_dimension flw,report.location_dimension ld where c.flw_id=flw.id and c.location_id = ld.id and c.start_time >=$P{StartDate} and c.start_time <= $P{EndDate} and c.type = 'CERTIFICATECOURSE' group by ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,flw.circle]]>
+			<![CDATA[select flw.msisdn,flw.operator,flw.circle,flw.name as "FLW Name",ld.state,ld.district,ld.block,ld.panchayat,flw.status,flw.designation,count(c.*) as total_calls from report.call_duration_measure c,report.front_line_worker_dimension flw,report.location_dimension ld where c.flw_id=flw.id and c.location_id = ld.id and c.start_time >=$P{StartDate} and c.start_time <= $P{EndDate} and c.type = 'CERTIFICATECOURSE' and ld.state like $P{LoggedInUserAttribute_state} group by ld.state,ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,flw.circle]]>
 		</queryString>
 		<field name="msisdn" class="java.lang.Long"/>
 		<field name="operator" class="java.lang.String"/>
 		<field name="circle" class="java.lang.String"/>
 		<field name="FLW Name" class="java.lang.String"/>
+		<field name="state" class="java.lang.String"/>
 		<field name="district" class="java.lang.String"/>
 		<field name="block" class="java.lang.String"/>
 		<field name="panchayat" class="java.lang.String"/>
@@ -56,6 +59,7 @@
 	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
 	</parameter>
+	<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select 1]]>
 	</queryString>
@@ -111,9 +115,12 @@
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
 						</datasetParameter>
+						<datasetParameter name="LoggedInUserAttribute_state">
+							<datasetParameterExpression><![CDATA[$P{LoggedInUserAttribute_state}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:column uuid="c859df3d-81ec-4588-9901-375e8086bb6f" width="90">
+					<jr:column width="90" uuid="c859df3d-81ec-4588-9901-375e8086bb6f">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="63dcfd0e-4d24-439a-a48a-c4d064a1ec50" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -131,7 +138,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="d255d607-9052-44e9-adee-3d570dcc5636" width="90">
+					<jr:column width="90" uuid="d255d607-9052-44e9-adee-3d570dcc5636">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="446a3aea-9201-447b-a05e-7821ac098cc2" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -149,7 +156,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="339be03f-ccce-4a1c-bfc5-7edbca6e4dfe" width="90">
+					<jr:column width="90" uuid="339be03f-ccce-4a1c-bfc5-7edbca6e4dfe">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="29fb554e-ab2c-4848-b205-f676f54b17c0" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -167,7 +174,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="f9eb6e05-f6ef-4d1b-acff-8af7f1c52be3" width="90">
+					<jr:column width="90" uuid="f9eb6e05-f6ef-4d1b-acff-8af7f1c52be3">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="1c59c871-14c8-4325-b6fa-2c2028bc14cc" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -185,7 +192,25 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="9aeb244c-9427-428b-bb05-a1d4cac7d915" width="90">
+					<jr:column width="90" uuid="9aeb244c-9427-428b-bb05-a1d4cac7d915">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="9f04c2d9-a509-42d8-81f1-901c3ab15795" key="col_header" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[State]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="a29f73e5-6e36-4963-a773-44471d18e800" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{state}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="9aeb244c-9427-428b-bb05-a1d4cac7d915">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="9f04c2d9-a509-42d8-81f1-901c3ab15795" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -203,7 +228,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="8c8497c2-3246-4b6b-a58f-72c7fe08f375" width="90">
+					<jr:column width="90" uuid="8c8497c2-3246-4b6b-a58f-72c7fe08f375">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="a028ca41-0be3-4632-ba2b-a87895c64ded" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -221,7 +246,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="237a9a86-e44d-4836-b408-c95465c33523" width="90">
+					<jr:column width="90" uuid="237a9a86-e44d-4836-b408-c95465c33523">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="ea1cf501-d9c5-41ae-83e6-7893dc9fe8e6" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -239,7 +264,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="cbfa74f4-5d68-424f-86eb-0915d736fdb6" width="90">
+					<jr:column width="90" uuid="cbfa74f4-5d68-424f-86eb-0915d736fdb6">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="3d5063b6-f5aa-46f8-83f4-937bcdf192a0" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -257,7 +282,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="b5177560-041e-4149-9708-b25c276fc565" width="90">
+					<jr:column width="90" uuid="b5177560-041e-4149-9708-b25c276fc565">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="7b088479-f4b2-4c7f-9606-2a3b8f67cb0c" key="col_header" x="0" y="0" width="90" height="30"/>
@@ -275,7 +300,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="53f2585d-f1b4-4efd-9a00-3592083b0802" width="90">
+					<jr:column width="90" uuid="53f2585d-f1b4-4efd-9a00-3592083b0802">
 						<jr:columnHeader style="table_CH" height="30">
 							<staticText>
 								<reportElement uuid="b477fd3c-1ff2-43c5-8fe5-63506af870dd" key="col_header" x="0" y="0" width="90" height="30"/>

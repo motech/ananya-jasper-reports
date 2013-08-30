@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jobAidUsageReport" language="groovy" pageWidth="1500" pageHeight="842" columnWidth="1460" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="01034c07-ac0b-44f7-bbc9-4a45268652fd">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -54,6 +55,7 @@
 		<parameter name="EndDate" class="java.util.Date">
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
+		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
 			<![CDATA[SELECT msisdn,
 OPERATOR,circle,
@@ -61,6 +63,7 @@ OPERATOR,circle,
          designation,
          status,
          verification_status,
+         state,
          district,
          block,
          panchayat,
@@ -77,6 +80,7 @@ FROM
             flw.circle,
             flw.status,
 	  flw.verification_status,
+	  		ld.state,
             ld.district,
             ld.block,
             ld.panchayat,
@@ -92,14 +96,16 @@ FROM
      AND cd.type = 'JOBAID'
      AND td.date >= $P{StartDate}
      AND td.date <= $P{EndDate}
+     AND ld.state like $P{LoggedInUserAttribute_state} 
    GROUP BY flw.flw_id,
-            flw.
-   OPERATOR,flw.msisdn,
+            flw.OPERATOR,
+            flw.msisdn,
             flw.name,
             flw.designation,
             flw.status,
             flw.verification_status,
             flw.circle,
+            ld.state,
             ld.district,
             ld.block,
             ld.panchayat,
@@ -111,6 +117,7 @@ OPERATOR,circle,
          designation,
          status,
          verification_status,
+         state,
          district,
          block,
          panchayat
@@ -124,6 +131,7 @@ OPERATOR,status]]>
 		<field name="designation" class="java.lang.String"/>
 		<field name="status" class="java.lang.String"/>
 		<field name="verification_status" class="java.lang.String"/>
+		<field name="state" class="java.lang.String"/>
 		<field name="district" class="java.lang.String"/>
 		<field name="block" class="java.lang.String"/>
 		<field name="panchayat" class="java.lang.String"/>
@@ -138,6 +146,7 @@ OPERATOR,status]]>
 	<parameter name="EndDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
+	<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="isFutureDate" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate}.after(new Date()) || $P{EndDate}.after(new Date())]]></defaultValueExpression>
 	</parameter>
@@ -209,6 +218,9 @@ OPERATOR,status]]>
 						</datasetParameter>
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="LoggedInUserAttribute_state">
+							<datasetParameterExpression><![CDATA[$P{LoggedInUserAttribute_state}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -299,6 +311,25 @@ OPERATOR,status]]>
 								<reportElement uuid="38ba31fc-53aa-4108-bf96-9d5d72af75f1" x="0" y="0" width="90" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="e1e67f49-f41c-4d54-96d3-3ce8457aa22a">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="832fcedd-d768-4a41-8e10-c7a2476adc46" key="col_header" mode="Transparent" x="0" y="0" width="90" height="30" forecolor="#000000" backcolor="#FFFFFF"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+									<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+									<paragraph lineSpacing="Single"/>
+								</textElement>
+								<text><![CDATA[State]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="38ba31fc-53aa-4108-bf96-9d5d72af75aa" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{state}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
