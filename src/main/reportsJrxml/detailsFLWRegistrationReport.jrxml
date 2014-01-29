@@ -36,10 +36,11 @@
 		</parameter>
 		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
-			<![CDATA[select flw.msisdn,flw.alternate_contact_number as "Alternate Contact Number",flw.operator,flw.circle,flw.name as "FLW Name",ld.state,ld.district,ld.block,ld.panchayat,flw.status,flw.designation,(case when ld.district = 'C00' then ' Via Call Center' else '-' end) as "CallCenter Status" from report.call_duration_measure cd,report.time_dimension td,report.front_line_worker_dimension flw,report.location_dimension ld where ld.id=cd.location_id and cd.flw_id = flw.id and td.id = cd.time_id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by flw.operator,flw.msisdn,flw.alternate_contact_number,flw.name,flw.designation,flw.status,ld.state,ld.district,ld.block,ld.panchayat,flw.circle order by status]]>
+			<![CDATA[select flw.msisdn,flw.alternate_contact_number as "Alternate Contact Number",flw.operator,flw.circle,flw.name as "FLW Name",ld.state,ld.district,ld.block,ld.panchayat,flw.status,flw.designation,(case when ld.district = 'C00' then ' Via Call Center' else '-' end) as "CallCenter Status",history.old_msisdn as "Old Msisdn" from report.call_duration_measure cd,report.time_dimension td,report.front_line_worker_dimension flw,report.location_dimension ld,(select flw_id,array_to_string(array_agg(case when is_current='f' then msisdn end),',') as old_msisdn from report.front_line_worker_history group by 1) history where ld.id=cd.location_id and cd.flw_id = flw.id and td.id = cd.time_id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} and flw.id=history.flw_id  group by flw.operator,flw.msisdn,flw.alternate_contact_number,flw.name,flw.designation,flw.status,ld.state,ld.district,ld.block,ld.panchayat,flw.circle,history.old_msisdn order by status desc]]>
 		</queryString>
 		<field name="msisdn" class="java.lang.Long"/>
 		<field name="operator" class="java.lang.String"/>
+		<field name="Old Msisdn" class="java.lang.String"/>
 		<field name="circle" class="java.lang.String"/>
 		<field name="FLW Name" class="java.lang.String"/>
 		<field name="state" class="java.lang.String"/>
@@ -330,6 +331,24 @@
 								<reportElement uuid="427366b8-1b48-4699-9e70-bd7ccc63034b" x="0" y="0" width="120" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{CallCenter Status}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="120" uuid="f5460a8f-4ccf-4287-a856-25e365366293">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="f4d3b92c-9384-4c93-b0d9-88aaf4dba2c5" key="col_header" x="0" y="0" width="120" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Old Mobile Number]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="30" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="427366b8-1b48-4699-9e70-bd7ccc63034b" x="0" y="0" width="120" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Old Msisdn}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

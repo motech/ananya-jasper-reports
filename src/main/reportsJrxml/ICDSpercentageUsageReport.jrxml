@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="percentageUsageReport" language="groovy" pageWidth="660" pageHeight="842" columnWidth="620" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e83f9fcc-d5bd-4ec9-a996-e9ffcd4181d9">
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.key.col_header"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#999999"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#999999"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#999999"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#999999"/>
+		</box>
+	</style>
+	<subDataset name="PercentageUsageDS" uuid="44bcf514-e23e-45fb-aa3d-677b23f27946">
+		<parameter name="StartDate" class="java.util.Date">
+			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+		</parameter>
+		<parameter name="EndDate" class="java.util.Date">
+			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+		</parameter>
+		<parameter name="State" class="java.lang.String">
+			<defaultValueExpression><![CDATA['Bihar']]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select a.service as "Mobile Service",a.operator,a.total_count as "Total number",round((a.total_count::numeric/b.total_count::numeric)*100,1) as "Total %",a.total_uu_count as "Total UU",round((a.total_uu_count::numeric/b.total_uu_count::numeric)*100,1) as "Total UU %"
+ from (select 'Job Aid' as service,flw.operator,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw,report.location_dimension ld where td.id= jm.time_id and flw.designation='AWW' and flw.id = jm.flw_id and ld.id=jm.location_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{State} group by 1,2) a,
+ (select 'Job Aid' as service,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw,report.location_dimension ld where td.id= jm.time_id and flw.id = jm.flw_id and flw.designation='AWW' and ld.id=jm.location_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{State} group by 1
+ ) b where a.service=b.service order by a.service]]>
+		</queryString>
+		<field name="Mobile Service" class="java.lang.String"/>
+		<field name="operator" class="java.lang.String"/>
+		<field name="Total number" class="java.lang.Long"/>
+		<field name="Total %" class="java.math.BigDecimal"/>
+		<field name="Total UU" class="java.lang.Long"/>
+		<field name="Total UU %" class="java.math.BigDecimal"/>
+	</subDataset>
+	<parameter name="StartDate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EndDate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="State" class="java.lang.String">
+		<defaultValueExpression><![CDATA['Bihar']]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select 1 as dummy_field]]>
+	</queryString>
+	<field name="dummy_field" class="java.lang.Integer"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement uuid="a687ae44-010e-4fe7-bce6-6aa08c980973" mode="Opaque" x="-20" y="-20" width="660" height="92" backcolor="#006699"/>
+				<staticText>
+					<reportElement uuid="a0351f15-b2d6-4aa1-aec7-ee15e7e71109" x="10" y="53" width="550" height="20" forecolor="#FFFFFF"/>
+					<textElement verticalAlignment="Middle">
+						<font size="14" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Operator-wise summary report for Kunji and Academy]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="ea438855-f36b-4591-aad9-be5dec8b796c" x="10" y="10" width="550" height="43" forecolor="#FFFFFF"/>
+					<textElement>
+						<font size="24" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Percentage Usage Report]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="34">
+			<staticText>
+				<reportElement uuid="94ef1556-1809-430f-9d3a-498024e2df0e" x="0" y="7" width="620" height="20" forecolor="#FF0033">
+					<printWhenExpression><![CDATA[$P{isDateValid} == false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[The given date range is invalid.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="68" splitType="Stretch">
+			<componentElement>
+				<reportElement uuid="66c6b952-b499-42f2-8860-c96761991408" key="table" style="table" x="40" y="9" width="540" height="50">
+					<printWhenExpression><![CDATA[$P{isDateValid}]]></printWhenExpression>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="PercentageUsageDS" uuid="d2aee5e1-5fec-4376-ad2c-c0f9b80ace04">
+						<datasetParameter name="StartDate">
+							<datasetParameterExpression><![CDATA[$P{StartDate}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="EndDate">
+							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="State">
+							<datasetParameterExpression><![CDATA[$P{State}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="90" uuid="87f46238-814b-4b87-a7c3-8caf63109e5b">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="4b20688d-7e32-4d65-a5dc-7dd19e1f45ab" key="col_header" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Mobile Service]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="c69321b5-1cb6-4233-aa6e-cab2f8610812" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Mobile Service}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="86a4b2af-56fe-45f8-b7d0-2faf370fa979">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="960bb974-77f3-4a9f-b5f9-4327485a7629" key="col_header" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Operator]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="f0b56418-3ba6-47de-8a79-75d994f455e7" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{operator}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="a8a47bbd-57ad-4a0a-b982-8afc64aa212e">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="41aa251a-df24-4db0-9389-0e616c3540ee" key="col_header" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Total Number]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="39c940fb-d0bd-4db0-bc6a-36d4b7fd05e6" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Total number}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="bdedf6da-ee58-4689-b65a-db30c5f34ce8">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="bed3594c-566a-4efd-b444-33c87108ccec" key="col_header" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Total %]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="f7114501-c060-4058-933c-b80ce29c3855" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Total %}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="97437f5c-f58c-47c7-832d-e53994eac12f">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="99c10f66-d13c-4030-939d-35c2c1f590f9" key="col_header" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Total UU]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="ab849550-3678-4889-b0c9-b6c8c5c2aa23" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Total UU}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="65b5e14a-ad8f-449e-bc64-67d56ff963ba">
+						<jr:columnHeader style="table_CH" height="30">
+							<staticText>
+								<reportElement uuid="042d5a3a-1d4b-4482-bcc2-19668217eaa8" key="col_header" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Total UU %]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="e342b5f0-fda3-4ada-bced-a8c942e830b2" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Total UU %}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement uuid="95c94696-c487-4497-957e-54d31e11b05d" mode="Opaque" x="0" y="4" width="580" height="13" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="f5a2a738-05da-4e54-85b2-4160039d649b" mode="Opaque" x="580" y="4" width="40" height="13" backcolor="#E6E6E6"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="93fe0287-1e80-4779-b193-64e211f6ed10" x="0" y="4" width="205" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

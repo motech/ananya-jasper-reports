@@ -35,12 +35,12 @@
 		<parameter name="EndDate" class="java.util.Date">
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
-		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="State" class="java.lang.String">
+			<defaultValueExpression><![CDATA['Bihar']]></defaultValueExpression>
+		</parameter>
 		<queryString>
 			<![CDATA[select 'Job Aid' as "Mobile Service",jdd.file_name as "File Name",(case when short_code::text is null or short_code::text ='' then '5771101' else short_code::text end) as "Short Code", sum(case when jm.percentage >= 0 and jm.percentage <25 then 1 else 0 end) as "<25%",sum(case when jm.percentage >= 25 and jm.percentage <50 then 1 else 0 end) as "25-50%",sum(case when jm.percentage >= 50 and jm.percentage <75 then 1 else 0 end) as
- "50-75%",sum(case when jm.percentage >= 75 and jm.percentage <100 then 1 else 0 end) as "75-100%",sum(case when jm.percentage=100 then 1 else 0 end) as "100%",count(*) as "Total Accessed Count" from report.job_aid_content_dimension jd,report.job_air_content_details_dimension jdd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw,report.location_dimension ld where td.id= jm.time_id and flw.id = jm.flw_id and jm.job_aid_content_id = jd.id and ld.id=jm.location_id and ld.state like $P{LoggedInUserAttribute_state} and jd.type = 'Audio' and jd.content_id=jdd.content_id and jdd.file_name is not null and td.date >= $P{StartDate} and td.date <= $P{EndDate}  group by jdd.file_name,short_code,1
- union all
- select 'IVR Certification' as "Mobile Service",jdd.file_name as "File Name",'5771102' as "Short Code",sum(case when jm.percentage >= 0 and jm.percentage <25 then 1 else 0 end) as "<25%",sum(case when jm.percentage >= 25 and jm.percentage <50 then 1 else 0 end) as "25-50%",sum(case when jm.percentage >= 50 and jm.percentage <75 then 1 else 0 end) as "50-75%",sum(case when jm.percentage >= 75 and jm.percentage <100 then 1 else 0 end) as "75-100%",sum(case when jm.percentage=100 then 1 else 0 end) as "100%",count(*) as "Total Accessed Count" from report.course_item_dimension jd,report.course_item_details_dimension jdd,report.course_item_measure jm,report.time_dimension td,report.front_line_worker_dimension flw,report.location_dimension ld where td.id= jm.time_id and flw.id = jm.flw_id and jm.course_item_id = jd.id and ld.id=jm.location_id and ld.state like $P{LoggedInUserAttribute_state} and jd.type = 'AUDIO' and jd.content_id=jdd.content_id and jdd.file_name is not null and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by 1,2,3]]>
+ "50-75%",sum(case when jm.percentage >= 75 and jm.percentage <100 then 1 else 0 end) as "75-100%",sum(case when jm.percentage=100 then 1 else 0 end) as "100%",count(*) as "Total Accessed Count" from report.job_aid_content_dimension jd,report.job_aid_content_details_dimension jdd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw,report.location_dimension ld where td.id= jm.time_id and flw.id = jm.flw_id and flw.designation = 'AWW' and jm.job_aid_content_id = jd.id and ld.id=jm.location_id and ld.state like $P{State} and jd.type = 'Audio' and jd.content_id=jdd.content_id and jdd.file_name is not null and td.date >= $P{StartDate} and td.date <= $P{EndDate}  group by jdd.file_name,short_code,1]]>
 		</queryString>
 		<field name="Mobile Service" class="java.lang.String"/>
 		<field name="File Name" class="java.lang.String"/>
@@ -58,7 +58,9 @@
 	<parameter name="EndDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
-	<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="State" class="java.lang.String">
+		<defaultValueExpression><![CDATA['Bihar']]></defaultValueExpression>
+	</parameter>
 	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
 	</parameter>
@@ -117,8 +119,8 @@
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
 						</datasetParameter>
-						<datasetParameter name="LoggedInUserAttribute_state">
-							<datasetParameterExpression><![CDATA[$P{LoggedInUserAttribute_state}]]></datasetParameterExpression>
+						<datasetParameter name="State">
+							<datasetParameterExpression><![CDATA[$P{State}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>

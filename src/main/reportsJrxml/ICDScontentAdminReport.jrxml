@@ -30,11 +30,9 @@
 	</style>
 	<subDataset name="ContentAdminDS" uuid="501ab630-40d0-4e1a-be4f-fbaa7f0a9ba2">
 		<queryString language="SQL">
-			<![CDATA[select 'IVR Certification' as "Mobile Service",cid.content_id as "Content ID",cidd.file_name as "File Name",cid.name as "Content Name" from report.course_item_dimension cid,
-			report.course_item_details_dimension cidd where upper(cid.type) = 'AUDIO' and cid.content_id=cidd.content_id and cidd.duration is not null 
-			union all 
-			select 'Job Aid' as "Mobile Service",jcd.content_id as "Content ID",jcdd.file_name as "File Name",jcd.name as "Content Name" from report.job_aid_content_dimension jcd,
-			report.job_aid_content_details_dimension jcdd where upper(jcd.type) = 'AUDIO' and jcd.content_id=jcdd.content_id and jcdd.duration is not null]]>
+			<![CDATA[select 'Job Aid' as "Mobile Service",jcd.content_id as "Content ID",jcdd.file_name as "File Name",jcd.name as "Content Name" from report.job_aid_content_dimension jcd,
+			report.job_aid_content_details_dimension jcdd where upper(jcd.type) = 'AUDIO' and jcd.content_id=jcdd.content_id and jcdd.duration is not null 
+			]]>
 		</queryString>
 		<field name="Mobile Service" class="java.lang.String"/>
 		<field name="Content ID" class="java.lang.String"/>
