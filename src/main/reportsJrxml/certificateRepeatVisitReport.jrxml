@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="certificateRepeatVisitReport" language="groovy" pageWidth="1100" pageHeight="842" columnWidth="1060" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7d189f88-9e2d-4e71-bc6b-64b5b59ba0ef">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -34,7 +33,7 @@
 		<parameter name="EndDate" class="java.util.Date">
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
-			<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
 			<![CDATA[select flw.msisdn,flw.operator,flw.circle,flw.name as "FLW Name",ld.state,ld.district,ld.block,ld.panchayat,flw.status,flw.designation,count(c.*) as total_calls from report.call_duration_measure c,report.front_line_worker_dimension flw,report.location_dimension ld where c.flw_id=flw.id and c.location_id = ld.id and c.start_time >=$P{StartDate} and c.start_time <= $P{EndDate} and c.type = 'CERTIFICATECOURSE' and ld.state like $P{LoggedInUserAttribute_state} group by ld.state,ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,flw.circle]]>
 		</queryString>
@@ -76,7 +75,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Certificate Repeat Visit Report]]></text>
+					<text><![CDATA[Mobile Academy Repeat Visit Report]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="16e77414-790c-4703-ab1b-cadb856a9f16" x="20" y="63" width="358" height="20" forecolor="#FFFFFF"/>

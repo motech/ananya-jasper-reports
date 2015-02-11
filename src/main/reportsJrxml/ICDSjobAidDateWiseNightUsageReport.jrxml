@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jobAidDateWiseNightUsageReport" language="groovy" pageWidth="1600" pageHeight="842" columnWidth="1560" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1a86da0a-853c-41e0-b18a-0d301a0e9464">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -41,9 +40,7 @@
 		<parameter name="DayStartTime" class="java.lang.String">
 			<defaultValueExpression><![CDATA["07:00"]]></defaultValueExpression>
 		</parameter>
-		<parameter name="State" class="java.lang.String">
-			<defaultValueExpression><![CDATA['Bihar']]></defaultValueExpression>
-		</parameter>
+		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<parameter name="StartDateTimeExpression" class="java.lang.String" isForPrompting="false">
 			<defaultValueExpression><![CDATA[(new SimpleDateFormat("yyyy-MM-dd").format($P{StartDate}).toString()) +" "+ $P{DayEndTime}]]></defaultValueExpression>
 		</parameter>
@@ -78,7 +75,7 @@ WHERE
 	flw.designation='AWW' AND
     call.called_number <> 33578057 AND
     call.called_number <> 5771102 AND
-    loc.state like $P{State} AND
+    loc.state like $P{LoggedInUserAttribute_state} AND
     call.end_time >= TIMESTAMP '$P!{StartDateTimeExpression}' AND
     call.start_time <= TIMESTAMP '$P!{EndDateTimeExpression}' AND
     (("time" (call.start_time) not between "time" '$P!{DayStartTime}' and "time" '$P!{DayEndTime}') OR
@@ -115,9 +112,7 @@ WHERE
 	<parameter name="DayStartTime" class="java.lang.String">
 		<defaultValueExpression><![CDATA["07:00"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="State" class="java.lang.String">
-		<defaultValueExpression><![CDATA['Bihar']]></defaultValueExpression>
-	</parameter>
+	<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="isFutureDate" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate}.after(new Date()) || $P{EndDate}.after(new Date())]]></defaultValueExpression>
 	</parameter>
@@ -148,7 +143,7 @@ WHERE
 					<textElement verticalAlignment="Middle">
 						<font size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Job Aid Date-wise Night Usage Report]]></text>
+					<text><![CDATA[Mobile Kunji Date-wise Night Usage Report]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="1242e29f-cae6-4584-b428-1e9b7687780f" x="21" y="63" width="243" height="20" forecolor="#FFFFFF"/>
@@ -209,8 +204,8 @@ WHERE
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
 						</datasetParameter>
-						<datasetParameter name="State">
-							<datasetParameterExpression><![CDATA[$P{State}]]></datasetParameterExpression>
+						<datasetParameter name="LoggedInUserAttribute_state">
+							<datasetParameterExpression><![CDATA[$P{LoggedInUserAttribute_state}]]></datasetParameterExpression>
 						</datasetParameter>
 						<datasetParameter name="DayStartTime">
 							<datasetParameterExpression><![CDATA[$P{DayStartTime}]]></datasetParameterExpression>

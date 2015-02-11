@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contentAdminReport" language="groovy" pageWidth="1000" pageHeight="842" columnWidth="960" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4454a4ae-255c-48d9-b77c-104b2ce5d877">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="title"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.key.col_header"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="30"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -31,8 +30,7 @@
 	<subDataset name="ContentAdminDS" uuid="501ab630-40d0-4e1a-be4f-fbaa7f0a9ba2">
 		<queryString language="SQL">
 			<![CDATA[select 'Job Aid' as "Mobile Service",jcd.content_id as "Content ID",jcdd.file_name as "File Name",jcd.name as "Content Name" from report.job_aid_content_dimension jcd,
-			report.job_aid_content_details_dimension jcdd where upper(jcd.type) = 'AUDIO' and jcd.content_id=jcdd.content_id and jcdd.duration is not null 
-			]]>
+			report.job_aid_content_details_dimension jcdd where upper(jcd.type) = 'AUDIO' and jcd.content_id=jcdd.content_id and jcdd.duration is not null]]>
 		</queryString>
 		<field name="Mobile Service" class="java.lang.String"/>
 		<field name="Content ID" class="java.lang.String"/>
@@ -62,7 +60,7 @@
 					<textElement>
 						<font size="14" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Content name detail for Kunji and Academy]]></text>
+					<text><![CDATA[Content name detail for Kunji]]></text>
 				</staticText>
 			</frame>
 		</band>

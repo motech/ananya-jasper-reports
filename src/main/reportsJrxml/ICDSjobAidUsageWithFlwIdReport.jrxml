@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jobAidUsageReport" language="groovy" pageWidth="1500" pageHeight="842" columnWidth="1460" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="01034c07-ac0b-44f7-bbc9-4a45268652fd">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -55,9 +54,7 @@
 		<parameter name="EndDate" class="java.util.Date">
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
-		<parameter name="State" class="java.lang.String">
-			<defaultValueExpression><![CDATA['Bihar']]></defaultValueExpression>
-		</parameter>
+		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
 			<![CDATA[SELECT msisdn,
 OPERATOR,circle,
@@ -99,7 +96,7 @@ FROM
      AND cd.type = 'JOBAID'
      AND td.date >= $P{StartDate}
      AND td.date <= $P{EndDate}
-     AND ld.state like $P{State} 
+     AND ld.state like $P{LoggedInUserAttribute_state}
    GROUP BY flw.flw_id,
             flw.OPERATOR,
             flw.msisdn,
@@ -149,9 +146,7 @@ OPERATOR,status]]>
 	<parameter name="EndDate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
-	<parameter name="State" class="java.lang.String">
-		<defaultValueExpression><![CDATA['Bihar']]></defaultValueExpression>
-	</parameter>
+	<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="isFutureDate" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate}.after(new Date()) || $P{EndDate}.after(new Date())]]></defaultValueExpression>
 	</parameter>
@@ -182,7 +177,7 @@ OPERATOR,status]]>
 					<textElement>
 						<font size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Job Aid Usage Report with Flw Id
+					<text><![CDATA[Mobile Kunji Usage Report with Flw Id
 
 ]]></text>
 				</staticText>
@@ -224,8 +219,8 @@ OPERATOR,status]]>
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
 						</datasetParameter>
-						<datasetParameter name="State">
-							<datasetParameterExpression><![CDATA[$P{State}]]></datasetParameterExpression>
+						<datasetParameter name="LoggedInUserAttribute_state">
+							<datasetParameterExpression><![CDATA[$P{LoggedInUserAttribute_state}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>

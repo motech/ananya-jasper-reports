@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jobAidUsageReport" language="groovy" pageWidth="1500" pageHeight="842" columnWidth="1460" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="01034c07-ac0b-44f7-bbc9-4a45268652fd">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -67,7 +66,7 @@ OPERATOR,circle,
          district,
          block,
          panchayat,
-         count(call_id) AS "Call count",
+         count(callid) AS "Call count",
          round(sum(duration_in_seconds)/60.0,2) AS "Usage in Mins",
          round(avg(duration_in_seconds)/60.0,2) AS "Average Usage in Mins",
          flw_id
@@ -84,19 +83,19 @@ FROM
             ld.district,
             ld.block,
             ld.panchayat,
-            call_id,
+            cd.call_id as callid,
             sum(duration) AS duration_in_seconds
    FROM report.call_duration_measure cd,
         report.time_dimension td,
-        report.front_line_worker_dimension flw,
-        report.location_dimension ld
+        report.front_line_worker_dimension flw
+	join report.registration_measure rm on rm.flw_id=flw.id
+	join report.location_dimension ld on ld.id = rm.location_id
    WHERE cd.flw_id = flw.id
      AND td.id = cd.time_id
-     AND cd.location_id = ld.id
      AND cd.type = 'JOBAID'
      AND td.date >= $P{StartDate}
      AND td.date <= $P{EndDate}
-     AND ld.state like $P{LoggedInUserAttribute_state} 
+     AND ld.state like $P{LoggedInUserAttribute_state}
    GROUP BY flw.flw_id,
             flw.OPERATOR,
             flw.msisdn,
@@ -109,7 +108,7 @@ FROM
             ld.district,
             ld.block,
             ld.panchayat,
-            call_id) a
+            cd.call_id) a
 GROUP BY flw_id,
 OPERATOR,circle,
          msisdn,
@@ -177,7 +176,7 @@ OPERATOR,status]]>
 					<textElement>
 						<font size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Job Aid Usage Report with Flw Id
+					<text><![CDATA[Mobile Kunji Usage Report with Flw Id
 
 ]]></text>
 				</staticText>

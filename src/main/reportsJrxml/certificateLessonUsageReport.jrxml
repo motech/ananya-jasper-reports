@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="certificateLessonUsageReport" language="groovy" pageWidth="638" pageHeight="842" columnWidth="598" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ccb74b3a-ddac-44ff-b2ab-6795fc5de060">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -55,7 +54,7 @@
 	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
 	</parameter>
-<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select 1]]>
 	</queryString>
@@ -72,7 +71,7 @@
 					<textElement>
 						<font size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Certificate Lesson Usage Report]]></text>
+					<text><![CDATA[Mobile Academy Lesson Usage Report]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="1242e29f-cae6-4584-b428-1e9b7687780e" x="10" y="53" width="459" height="17" forecolor="#FFFFFF"/>

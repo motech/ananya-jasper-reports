@@ -36,7 +36,7 @@
 		</parameter>
 		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
-			<![CDATA[select flw.msisdn,flw.alternate_contact_number as "Alternate Contact Number",flw.operator,flw.circle,flw.name as "FLW Name",ld.state,ld.district,ld.block,ld.panchayat,flw.status,flw.designation,(case when ld.district = 'C00' then ' Via Call Center' else '-' end) as "CallCenter Status",history.old_msisdn as "Old Msisdn" from report.call_duration_measure cd,report.time_dimension td,report.front_line_worker_dimension flw,report.location_dimension ld,(select flw_id,array_to_string(array_agg(case when is_current='f' then msisdn end),',') as old_msisdn from report.front_line_worker_history group by 1) history where ld.id=cd.location_id and cd.flw_id = flw.id and td.id = cd.time_id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} and flw.id=history.flw_id  group by flw.operator,flw.msisdn,flw.alternate_contact_number,flw.name,flw.designation,flw.status,ld.state,ld.district,ld.block,ld.panchayat,flw.circle,history.old_msisdn order by status desc]]>
+			<![CDATA[select flw.msisdn,flw.alternate_contact_number as "Alternate Contact Number",flw.operator,flw.circle,flw.name as "FLW Name",ld.state,ld.district,ld.block,ld.panchayat,flw.status,flw.designation,(case when ld.district = 'C00' then ' Via Call Center' else '-' end) as "CallCenter Status",history.old_msisdn as "Old Msisdn" from report.registration_measure rms,report.front_line_worker_dimension flw,report.time_dimension td,report.location_dimension ld,(select flw_id,array_to_string(array_agg(case when is_current='f' then msisdn end),'--') as old_msisdn from report.front_line_worker_history group by 1) history where rms.location_id= ld.id and rms.flw_id = flw.id and flw.id=history.flw_id and td.id = rms.time_id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by flw.operator,flw.msisdn,flw.alternate_contact_number,flw.name,flw.designation,flw.status,ld.state,ld.district,ld.block,ld.panchayat,flw.circle,history.old_msisdn order by status desc]]>
 		</queryString>
 		<field name="msisdn" class="java.lang.Long"/>
 		<field name="operator" class="java.lang.String"/>
@@ -72,7 +72,7 @@
 	<title>
 		<band height="72">
 			<frame>
-				<reportElement uuid="fde4df0a-07e2-417c-a0eb-44a42ffccd4b" mode="Opaque" x="0" y="0" width="1090" height="72" backcolor="#006699"/>
+				<reportElement uuid="fde4df0a-07e2-417c-a0eb-44a42ffccd4b" mode="Opaque" x="0" y="0" width="1268" height="72" backcolor="#006699"/>
 				<staticText>
 					<reportElement uuid="9eb41402-118f-472b-873f-d4e3bcaf6c43" x="20" y="9" width="515" height="43" forecolor="#FFFFFF"/>
 					<textElement>
@@ -334,10 +334,10 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="120" uuid="f5460a8f-4ccf-4287-a856-25e365366293">
+					<jr:column width="186" uuid="f5460a8f-4ccf-4287-a856-25e365366293">
 						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="f4d3b92c-9384-4c93-b0d9-88aaf4dba2c5" key="col_header" x="0" y="0" width="120" height="30"/>
+								<reportElement uuid="f4d3b92c-9384-4c93-b0d9-88aaf4dba2c5" key="col_header" x="0" y="0" width="170" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>
 								</textElement>
@@ -346,7 +346,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="30" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="427366b8-1b48-4699-9e70-bd7ccc63034b" x="0" y="0" width="120" height="20"/>
+								<reportElement uuid="427366b8-1b48-4699-9e70-bd7ccc63034b" x="0" y="0" width="170" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{Old Msisdn}]]></textFieldExpression>
 							</textField>
@@ -359,12 +359,12 @@
 	<pageFooter>
 		<band height="17">
 			<textField>
-				<reportElement uuid="89fa6068-244f-4945-9ba3-3ea13fa1b494" mode="Opaque" x="0" y="4" width="1050" height="13" backcolor="#E6E6E6"/>
+				<reportElement uuid="89fa6068-244f-4945-9ba3-3ea13fa1b494" mode="Opaque" x="0" y="4" width="1228" height="13" backcolor="#E6E6E6"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="00d652b5-0a36-4196-92a6-a98863f5a496" mode="Opaque" x="1050" y="4" width="40" height="13" backcolor="#E6E6E6"/>
+				<reportElement uuid="00d652b5-0a36-4196-92a6-a98863f5a496" mode="Opaque" x="1228" y="4" width="40" height="13" backcolor="#E6E6E6"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>

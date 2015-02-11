@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateCourseUsageReport" language="groovy" pageWidth="2210" pageHeight="842" columnWidth="2170" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="098071cc-0603-4b48-82ef-303920d38ecf">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -36,7 +35,7 @@
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
 		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
-<queryString>
+		<queryString>
 			<![CDATA[SELECT flw.flw_id AS "FLW Id",
        flw.msisdn,
        flw.operator,
@@ -227,7 +226,7 @@ ORDER BY flw.msisdn]]>
 					<textElement verticalAlignment="Middle">
 						<font size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Certificate Course Usage with Flw Id
+					<text><![CDATA[Mobile Academy Usage with Flw Id
 
 ]]></text>
 				</staticText>

@@ -143,7 +143,7 @@ WHERE
 					<textElement verticalAlignment="Middle">
 						<font size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Job Aid Date-wise Night Usage Report]]></text>
+					<text><![CDATA[Mobile Kunji Date-wise Night Usage Report]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="1242e29f-cae6-4584-b428-1e9b7687780f" x="21" y="63" width="243" height="20" forecolor="#FFFFFF"/>

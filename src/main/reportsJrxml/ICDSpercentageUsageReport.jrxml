@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="percentageUsageReport" language="groovy" pageWidth="660" pageHeight="842" columnWidth="620" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e83f9fcc-d5bd-4ec9-a996-e9ffcd4181d9">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -35,13 +34,11 @@
 		<parameter name="EndDate" class="java.util.Date">
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
-		<parameter name="State" class="java.lang.String">
-			<defaultValueExpression><![CDATA['Bihar']]></defaultValueExpression>
-		</parameter>
+		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
 			<![CDATA[select a.service as "Mobile Service",a.operator,a.total_count as "Total number",round((a.total_count::numeric/b.total_count::numeric)*100,1) as "Total %",a.total_uu_count as "Total UU",round((a.total_uu_count::numeric/b.total_uu_count::numeric)*100,1) as "Total UU %"
- from (select 'Job Aid' as service,flw.operator,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw,report.location_dimension ld where td.id= jm.time_id and flw.designation='AWW' and flw.id = jm.flw_id and ld.id=jm.location_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{State} group by 1,2) a,
- (select 'Job Aid' as service,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw,report.location_dimension ld where td.id= jm.time_id and flw.id = jm.flw_id and flw.designation='AWW' and ld.id=jm.location_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{State} group by 1
+ from (select 'Job Aid' as service,flw.operator,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw,report.location_dimension ld where td.id= jm.time_id and flw.designation='AWW' and flw.id = jm.flw_id and ld.id=jm.location_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like  $P{LoggedInUserAttribute_state} group by 1,2) a,
+ (select 'Job Aid' as service,count(flw.msisdn) as total_count,count(distinct(msisdn)) as total_uu_count from report.job_aid_content_dimension jd,report.job_aid_content_measure jm,report.time_dimension td, report.front_line_worker_dimension flw,report.location_dimension ld where td.id= jm.time_id and flw.id = jm.flw_id and flw.designation='AWW' and ld.id=jm.location_id and jm.job_aid_content_id = jd.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like  $P{LoggedInUserAttribute_state} group by 1
  ) b where a.service=b.service order by a.service]]>
 		</queryString>
 		<field name="Mobile Service" class="java.lang.String"/>
@@ -60,9 +57,7 @@
 	<parameter name="isDateValid" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[$P{StartDate} <= $P{EndDate}]]></defaultValueExpression>
 	</parameter>
-	<parameter name="State" class="java.lang.String">
-		<defaultValueExpression><![CDATA['Bihar']]></defaultValueExpression>
-	</parameter>
+	<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select 1 as dummy_field]]>
 	</queryString>
@@ -79,7 +74,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="14" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Operator-wise summary report for Kunji and Academy]]></text>
+					<text><![CDATA[Operator-wise summary report for Kunji]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="ea438855-f36b-4591-aad9-be5dec8b796c" x="10" y="10" width="550" height="43" forecolor="#FFFFFF"/>
@@ -118,8 +113,8 @@
 						<datasetParameter name="EndDate">
 							<datasetParameterExpression><![CDATA[$P{EndDate}]]></datasetParameterExpression>
 						</datasetParameter>
-						<datasetParameter name="State">
-							<datasetParameterExpression><![CDATA[$P{State}]]></datasetParameterExpression>
+						<datasetParameter name="LoggedInUserAttribute_state">
+							<datasetParameterExpression><![CDATA[$P{LoggedInUserAttribute_state}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
