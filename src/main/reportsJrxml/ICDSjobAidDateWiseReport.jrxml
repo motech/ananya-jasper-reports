@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jobAidDateWiseReport" language="groovy" pageWidth="950" pageHeight="842" columnWidth="910" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="19001dd4-1440-4882-8a6a-d72e6098f405">
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.keep.first.band.2" value="columnHeader"/>
@@ -35,8 +36,8 @@
 			<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 		</parameter>
 		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
-		<queryString>
-			<![CDATA[select flw.operator,flw.circle,flw.msisdn,flw.name,flw.designation,flw.status,min(to_char(start_time,'dd-Mon-yyyy')) as date,min(to_char(start_time,'hh24:mi:ss')) as call_time, sum(duration) as duration_in_seconds,cd.called_number as short_code,ld.state,ld.district,ld.block,ld.panchayat from report.call_duration_measure cd,report.time_dimension td,report.front_line_worker_dimension flw,report.location_dimension ld where cd.flw_id = flw.id and td.id = cd.time_id and cd.type = 'JOBAID' and cd.location_id=ld.id and flw.designation = 'AWW' and ld.state like $P{LoggedInUserAttribute_state} and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by flw.operator,flw.msisdn,flw.name,flw.designation,flw.status,call_id,short_code,flw.circle,ld.state,ld.district,ld.block,ld.panchayat]]>
+        <queryString>
+			<![CDATA[select flw.operator,flw.circle,flw.msisdn,flw.name,flw.designation,flw.status,min(to_char(start_time,'dd-Mon-yyyy')) as date,min(to_char(start_time,'hh24:mi:ss')) as call_time, sum(duration) as duration_in_seconds,cd.called_number as short_code,ld.state,ld.district,ld.block,ld.panchayat from report.call_duration_measure cd,report.time_dimension td,report.front_line_worker_dimension flw,report.location_dimension ld where cd.flw_id = flw.id and td.id = cd.time_id and cd.type = 'JOBAID' and cd.location_id=ld.id and flw.designation = 'AWW' and flw.circle like $P{LoggedInUserAttribute_state} and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by flw.operator,flw.msisdn,flw.name,flw.designation,flw.status,call_id,short_code,flw.circle,ld.state,ld.district,ld.block,ld.panchayat]]>
 		</queryString>
 		<field name="operator" class="java.lang.String"/>
 		<field name="circle" class="java.lang.String"/>
@@ -74,7 +75,7 @@
 					<textElement>
 						<font size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Mobile Kunji Date wise Report]]></text>
+					<text><![CDATA[Job Aid Date wise Report]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="a0351f15-b2d6-4aa1-aec7-ee15e7e71109" x="20" y="53" width="550" height="20" forecolor="#FFFFFF"/>

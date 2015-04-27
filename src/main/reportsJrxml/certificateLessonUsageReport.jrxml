@@ -37,7 +37,7 @@
 		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
 			<![CDATA[select name as "Course Name",round(sum(duration),2) as "No. of Minutes",round(sum(duration)/sum(count),2) as "Avg Duration of Calls", sum(count - 1) as "Repeat Usage" from (
- select msisdn,cd1.name,cd.name as n1,sum(coalesce(c.duration,0))/60000.0 as duration ,count(*) as count from report.course_item_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,report.course_item_dimension cd,report.course_item_dimension cd1,report.time_dimension td where td.id = c.time_id and cd.parent_id = cd1.id and cd1.type in ('LESSON') and cd.name not ilike 'menu%' and cd.id = c.course_item_id and c.flw_id=flw.id and c.location_id = ld.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by 1,2,3 order by 2
+ select msisdn,cd1.name,cd.name as n1,sum(coalesce(c.duration,0))/60000.0 as duration ,count(*) as count from report.course_item_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,report.course_item_dimension cd,report.course_item_dimension cd1,report.time_dimension td where td.id = c.time_id and cd.parent_id = cd1.id and cd1.type in ('LESSON') and cd.name not ilike 'menu%' and cd.id = c.course_item_id and c.flw_id=flw.id and c.location_id = ld.id and td.date >= $P{StartDate} and td.date <= $P{EndDate} and flw.circle like $P{LoggedInUserAttribute_state} group by 1,2,3 order by 2
  ) a group by 1 order by name]]>
 		</queryString>
 		<field name="Course Name" class="java.lang.String"/>

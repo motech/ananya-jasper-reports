@@ -43,7 +43,7 @@
 from report.course_item_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,
 	report.course_item_dimension cd,report.time_dimension td
 where td.id = c.time_id and cd.type = 'QUIZ' and cd.id = c.course_item_id and c.event = 'END' and c.flw_id=flw.id and c.location_id = ld.id
-	and td.date >=$P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state}
+	and td.date >=$P{StartDate} and td.date <= $P{EndDate} and flw.circle like $P{LoggedInUserAttribute_state}
 group by ld.state,ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,cd.content_id,cd.name,flw.circle]]>
 		</queryString>
 		<field name="msisdn" class="java.lang.Long"/>

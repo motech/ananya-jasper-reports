@@ -38,7 +38,7 @@
 		<queryString>
 			<![CDATA[select msisdn,operator,circle,name,designation,status,count(call_id) as "Call count",round(sum(duration_in_seconds)/60.0,2) as "Usage in Mins",round(avg(duration_in_seconds)/60.0,2) as "Average Usage in Mins" from (
 
- select flw.operator,flw.msisdn,flw.name,flw.designation,flw.circle,flw.status,call_id,sum(duration) as duration_in_seconds from report.call_duration_measure cd,report.time_dimension td,report.front_line_worker_dimension flw,report.location_dimension ld where cd.flw_id = flw.id and td.id = cd.time_id and ld.id=cd.location_id and cd.type = 'JOBAID' and td.date >= $P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by flw.operator,flw.msisdn,flw.name,flw.designation,flw.status,flw.circle,call_id) a group by operator,circle,msisdn,name,designation,status order by operator,status]]>
+ select flw.operator,flw.msisdn,flw.name,flw.designation,flw.circle,flw.status,call_id,sum(duration) as duration_in_seconds from report.call_duration_measure cd,report.time_dimension td,report.front_line_worker_dimension flw,report.location_dimension ld where cd.flw_id = flw.id and td.id = cd.time_id and ld.id=cd.location_id and cd.type = 'JOBAID' and td.date >= $P{StartDate} and td.date <= $P{EndDate} and flw.circle like $P{LoggedInUserAttribute_state} group by flw.operator,flw.msisdn,flw.name,flw.designation,flw.status,flw.circle,call_id) a group by operator,circle,msisdn,name,designation,status order by operator,status]]>
 		</queryString>
 		<field name="msisdn" class="java.lang.Long"/>
 		<field name="operator" class="java.lang.String"/>

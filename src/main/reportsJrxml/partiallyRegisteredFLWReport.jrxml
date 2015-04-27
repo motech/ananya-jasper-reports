@@ -113,7 +113,7 @@ WHERE
     flw.status = 'PARTIALLY_REGISTERED'
     AND td.date >= $P{StartDate}
     AND td.date <= $P{EndDate}
-    AND ld.state like $P{LoggedInUserAttribute_state} 
+    AND flw.circle like $P{LoggedInUserAttribute_state}
   AND flw.verification_status IS NULL
 GROUP BY flw.flw_id, flw.operator, flw.msisdn, flw.name, flw.designation, flw.status,
          ld.state,ld.district, ld.block, ld.panchayat, flw.circle, flw.verification_status

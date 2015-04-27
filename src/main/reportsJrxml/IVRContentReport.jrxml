@@ -51,7 +51,7 @@ union all
 from
 report.course_item_dimension jd,report.course_item_details_dimension jdd,report.course_item_measure jm,report.time_dimension td,report.front_line_worker_dimension flw,report.location_dimension ld
 where
-td.id= jm.time_id and flw.id = jm.flw_id and jm.course_item_id = jd.id and ld.id=jm.location_id and ld.state like $P{LoggedInUserAttribute_state} and jd.type = 'AUDIO' and jd.content_id=jdd.content_id and jdd.file_name is not null and td.date >= $P{StartDate} and td.date <= $P{EndDate}
+td.id= jm.time_id and flw.id = jm.flw_id and jm.course_item_id = jd.id and ld.id=jm.location_id and flw.circle like $P{LoggedInUserAttribute_state} and jd.type = 'AUDIO' and jd.content_id=jdd.content_id and jdd.file_name is not null and td.date >= $P{StartDate} and td.date <= $P{EndDate}
  group by 1,2,3]]>
 		</queryString>
 		<field name="Mobile Service" class="java.lang.String"/>

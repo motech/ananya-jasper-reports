@@ -35,7 +35,7 @@
 		</parameter>
 		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
-			<![CDATA[select flw.msisdn,flw.operator,flw.circle,flw.name as "FLW Name",ld.state,ld.district,ld.block,ld.panchayat,flw.status,flw.designation,count(c.*) as total_calls from report.call_duration_measure c,report.front_line_worker_dimension flw,report.location_dimension ld where c.flw_id=flw.id and c.location_id = ld.id and c.start_time >=$P{StartDate} and c.start_time <= $P{EndDate} and c.type = 'CERTIFICATECOURSE' and ld.state like $P{LoggedInUserAttribute_state} group by ld.state,ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,flw.circle]]>
+			<![CDATA[select flw.msisdn,flw.operator,flw.circle,flw.name as "FLW Name",ld.state,ld.district,ld.block,ld.panchayat,flw.status,flw.designation,count(c.*) as total_calls from report.call_duration_measure c,report.front_line_worker_dimension flw,report.location_dimension ld where c.flw_id=flw.id and c.location_id = ld.id and c.start_time >=$P{StartDate} and c.start_time <= $P{EndDate} and c.type = 'CERTIFICATECOURSE' and flw.circle like $P{LoggedInUserAttribute_state} group by ld.state,ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,flw.circle]]>
 		</queryString>
 		<field name="msisdn" class="java.lang.Long"/>
 		<field name="operator" class="java.lang.String"/>

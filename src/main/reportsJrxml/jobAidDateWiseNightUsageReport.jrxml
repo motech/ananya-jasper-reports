@@ -75,7 +75,7 @@ WHERE
 	call.type = 'CALL' AND
     call.called_number <> 33578057 AND
     call.called_number <> 5771102 AND
-    loc.state like $P{LoggedInUserAttribute_state} AND
+    flw.circle like $P{LoggedInUserAttribute_state} AND
     call.end_time >= TIMESTAMP '$P!{StartDateTimeExpression}' AND
     call.start_time <= TIMESTAMP '$P!{EndDateTimeExpression}' AND
     (("time" (call.start_time) not between "time" '$P!{DayStartTime}' and "time" '$P!{DayEndTime}') OR

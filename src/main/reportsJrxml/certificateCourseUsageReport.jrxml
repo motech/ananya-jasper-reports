@@ -67,7 +67,7 @@
  report.course_item_measure c,report.course_item_dimension cd,report.time_dimension td WHERE td.id = c.time_id and td.date >= $P{StartDate} and td.date <= $P{EndDate}
  and cd.id = c.course_item_id and cd.type = 'QUIZ' and cd.parent_id = 1 group by 1,2,3,4 order by 2,3) c where rank = 1) a group by 1,2
 
- ) a,report.location_dimension ld, report.front_line_worker_dimension flw, report.registration_measure rm where rm.flw_id=flw.id and ld.id = rm.location_id and flw.id = a.flw_id and ld.state like $P{LoggedInUserAttribute_state} group by ld.state,ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.circle,
+ ) a,report.location_dimension ld, report.front_line_worker_dimension flw, report.registration_measure rm where rm.flw_id=flw.id and ld.id = rm.location_id and flw.id = a.flw_id and flw.circle like $P{LoggedInUserAttribute_state} group by ld.state,ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.circle,
  flw.name,flw.status,flw.designation order by flw.msisdn]]>
 		</queryString>
 		<field name="msisdn" class="java.lang.Long"/>

@@ -37,7 +37,7 @@
 		</parameter>
 		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
-			<![CDATA[select flw.msisdn,flw.operator,flw.circle,flw.name as "FLW Name",ld.state,ld.district,ld.block,ld.panchayat,flw.status,flw.designation,sum(COALESCE(c.duration,0))/(1000*60.0) as "Duration in Minutes" from report.course_item_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,report.course_item_dimension cd,report.time_dimension td where td.id = c.time_id and cd.id = c.course_item_id and c.flw_id=flw.id and c.location_id = ld.id and td.date >=$P{StartDate} and td.date <= $P{EndDate} and ld.state like $P{LoggedInUserAttribute_state} group by ld.state,ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,flw.circle]]>
+			<![CDATA[select flw.msisdn,flw.operator,flw.circle,flw.name as "FLW Name",ld.state,ld.district,ld.block,ld.panchayat,flw.status,flw.designation,sum(COALESCE(c.duration,0))/(1000*60.0) as "Duration in Minutes" from report.course_item_measure c,report.front_line_worker_dimension flw,report.location_dimension ld,report.course_item_dimension cd,report.time_dimension td where td.id = c.time_id and cd.id = c.course_item_id and c.flw_id=flw.id and c.location_id = ld.id and td.date >=$P{StartDate} and td.date <= $P{EndDate} and flw.circle like $P{LoggedInUserAttribute_state} group by ld.state,ld.district,ld.block,ld.panchayat,flw.msisdn,flw.operator,flw.name,flw.status,flw.designation,flw.circle]]>
 		</queryString>
 		<field name="msisdn" class="java.lang.Long"/>
 		<field name="operator" class="java.lang.String"/>

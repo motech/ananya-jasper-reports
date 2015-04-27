@@ -36,7 +36,7 @@
 		</parameter>
 		<parameter name="LoggedInUserAttribute_state" class="java.lang.String" isForPrompting="false"/>
 		<queryString>
-			<![CDATA[select flw.operator,flw.circle,flw.msisdn,flw.flw_id,flw.name,flw.designation,flw.status,min(to_char(start_time,'dd-Mon-yyyy')) as date,min(to_char(start_time,'hh24:mi:ss')) as call_time, sum(duration) as duration_in_seconds,cd.called_number from report.call_duration_measure cd,report.time_dimension td,report.front_line_worker_dimension flw,report.location_dimension ld where cd.flw_id = flw.id and td.id = cd.time_id and cd.type = 'JOBAID' and cd.location_id=ld.id and ld.state like $P{LoggedInUserAttribute_state} and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by flw.operator,flw.msisdn,flw.name,flw.designation,flw.status,call_id,flw.circle,cd.called_number,flw.flw_id]]>
+			<![CDATA[select flw.operator,flw.circle,flw.msisdn,flw.flw_id,flw.name,flw.designation,flw.status,min(to_char(start_time,'dd-Mon-yyyy')) as date,min(to_char(start_time,'hh24:mi:ss')) as call_time, sum(duration) as duration_in_seconds,cd.called_number from report.call_duration_measure cd,report.time_dimension td,report.front_line_worker_dimension flw,report.location_dimension ld where cd.flw_id = flw.id and td.id = cd.time_id and cd.type = 'JOBAID' and cd.location_id=ld.id and flw.circle like $P{LoggedInUserAttribute_state} and td.date >= $P{StartDate} and td.date <= $P{EndDate} group by flw.operator,flw.msisdn,flw.name,flw.designation,flw.status,call_id,flw.circle,cd.called_number,flw.flw_id]]>
 		</queryString>
 		<field name="operator" class="java.lang.String"/>
 		<field name="circle" class="java.lang.String"/>
